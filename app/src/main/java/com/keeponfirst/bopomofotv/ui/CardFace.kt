@@ -17,8 +17,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.tv.material3.Text
 import com.keeponfirst.bopomofotv.data.Card
 import com.keeponfirst.bopomofotv.data.ZhuyinWord
@@ -41,25 +39,25 @@ fun CardFace(
     val image = word.image?.let { rememberAssetImage(it) }
     BoxWithConstraints(Modifier.fillMaxSize()) {
         val symbolBox = maxHeight * 0.5f
-        val imageBox = (maxHeight - 96.dp) * 0.7f
+        val imageBox = (maxHeight - Spacing.L * 2) * 0.7f
         if (image != null) {
             Row(
-                Modifier.fillMaxSize().padding(48.dp),
-                horizontalArrangement = Arrangement.spacedBy(64.dp, Alignment.CenterHorizontally),
+                Modifier.fillMaxSize().padding(Spacing.L),
+                horizontalArrangement = Arrangement.spacedBy(Spacing.XL, Alignment.CenterHorizontally),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 Image(image, word.word, Modifier.size(imageBox), contentScale = ContentScale.Fit)
                 SymbolAndWord(card, word, symbolBox)
             }
         } else {
-            Box(Modifier.fillMaxSize().padding(48.dp), contentAlignment = Alignment.Center) {
+            Box(Modifier.fillMaxSize().padding(Spacing.L), contentAlignment = Alignment.Center) {
                 SymbolAndWord(card, word, symbolBox)
             }
         }
-        Box(Modifier.fillMaxSize().padding(horizontal = 48.dp, vertical = 24.dp)) {
-            topLeft?.let { Text(it, Modifier.align(Alignment.TopStart), fontSize = 20.sp, color = SubtleColor) }
-            topRight?.let { Text(it, Modifier.align(Alignment.TopEnd), fontSize = 20.sp, color = SubtleColor) }
-            bottomRight?.let { Text(it, Modifier.align(Alignment.BottomEnd), fontSize = 20.sp, color = SubtleColor) }
+        Box(Modifier.fillMaxSize().safeArea()) {
+            topLeft?.let { Text(it, Modifier.align(Alignment.TopStart), fontSize = TextSize.Hint, color = SubtleColor) }
+            topRight?.let { Text(it, Modifier.align(Alignment.TopEnd), fontSize = TextSize.Hint, color = SubtleColor) }
+            bottomRight?.let { Text(it, Modifier.align(Alignment.BottomEnd), fontSize = TextSize.Hint, color = SubtleColor) }
         }
     }
 }
@@ -79,7 +77,7 @@ private fun SymbolAndWord(card: Card, word: ZhuyinWord, symbolBox: Dp) {
                 color = SymbolColor,
             )
         }
-        Text(word.word, fontSize = 56.sp, color = TextColor)
-        Text(word.zhuyin, fontSize = 28.sp, color = SubtleColor)
+        Text(word.word, fontSize = TextSize.Word, color = TextColor)
+        Text(word.zhuyin, fontSize = TextSize.Zhuyin, color = SubtleColor)
     }
 }

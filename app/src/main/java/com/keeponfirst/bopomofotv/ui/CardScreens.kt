@@ -23,8 +23,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.input.key.onPreviewKeyEvent
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.tv.material3.Text
 import com.keeponfirst.bopomofotv.audio.AudioPlayer
 import com.keeponfirst.bopomofotv.audio.AudioResolver
@@ -167,17 +165,17 @@ fun ParentStartScreen(
         },
     ) {
         Column(
-            Modifier.fillMaxSize().padding(48.dp),
+            Modifier.fillMaxSize().padding(Spacing.L),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            Text("從第幾單元開始？", fontSize = 40.sp, color = TextColor)
-            Text("‹  第 $unit 單元  ›", fontSize = 72.sp, color = SymbolColor)
-            Text(symbols, fontSize = 56.sp, color = TextColor)
-            Text(if (resume) "接著上次沒做完的卡" else " ", fontSize = 24.sp, color = SubtleColor)
+            Text("從第幾單元開始？", fontSize = TextSize.Heading, color = TextColor)
+            Text("‹  第 $unit 單元  ›", fontSize = TextSize.Display, color = SymbolColor)
+            Text(symbols, fontSize = TextSize.Word, color = TextColor)
+            Text(if (resume) "接著上次沒做完的卡" else " ", fontSize = TextSize.Info, color = SubtleColor)
         }
-        Box(Modifier.fillMaxSize().padding(horizontal = 48.dp, vertical = 24.dp)) {
-            Text(PARENT_START_HINT, Modifier.align(Alignment.BottomEnd), fontSize = 20.sp, color = SubtleColor)
+        Box(Modifier.fillMaxSize().safeArea()) {
+            Text(PARENT_START_HINT, Modifier.align(Alignment.BottomEnd), fontSize = TextSize.Hint, color = SubtleColor)
         }
     }
 }

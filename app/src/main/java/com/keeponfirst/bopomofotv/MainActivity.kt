@@ -8,6 +8,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import com.keeponfirst.bopomofotv.audio.AudioPlayer
 import com.keeponfirst.bopomofotv.audio.AudioResolver
@@ -29,6 +30,7 @@ import com.keeponfirst.bopomofotv.ui.BopomofoTheme
 import com.keeponfirst.bopomofotv.ui.ParentCardScreen
 import com.keeponfirst.bopomofotv.ui.ParentStartScreen
 import com.keeponfirst.bopomofotv.ui.DoneScreen
+import com.keeponfirst.bopomofotv.ui.HomeEntry
 import com.keeponfirst.bopomofotv.ui.HomeScreen
 import com.keeponfirst.bopomofotv.ui.SelfPlayCardScreen
 import com.keeponfirst.bopomofotv.ui.YogaPickScreen
@@ -86,6 +88,8 @@ private fun BopomofoApp(
     store: PracticeStore,
 ) {
     var screen by remember { mutableStateOf<Screen>(Screen.Home) }
+    // 首頁最後聚焦的入口。回首頁時焦點回到這顆，不跳回第一顆。
+    var homeFocus by rememberSaveable { mutableStateOf(HomeEntry.PARENT) }
     val scope = rememberCoroutineScope()
     val selfDeck = remember(cards, words) { Decks.zhuyin(cards, words) }
     val goHome = {
@@ -95,6 +99,8 @@ private fun BopomofoApp(
 
     when (val s = screen) {
         Screen.Home -> HomeScreen(
+            focus = homeFocus,
+            onFocus = { homeFocus = it },
             onParent = { scope.launch { screen = Screen.ParentStart(store.parentProgress()) } },
             onSelf = {
                 scope.launch {

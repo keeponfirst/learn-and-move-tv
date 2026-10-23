@@ -15,9 +15,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.tv.material3.Button
+import androidx.tv.material3.ButtonDefaults
 import androidx.tv.material3.Text
 
 /**
@@ -45,15 +44,15 @@ fun DoneScreen(locked: Boolean, onEnter: () -> Unit, onHome: () -> Unit) {
 @Composable
 private fun DoneContent(locked: Boolean, onHome: () -> Unit) {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
-        Text("今天練完了", fontSize = 120.sp, color = SymbolColor)
-        Spacer(Modifier.height(48.dp))
+        Text("今天練完了", fontSize = TextSize.Hero, color = SymbolColor)
+        Spacer(Modifier.height(Spacing.L))
         if (locked) {
-            Text("按返回鍵回首頁", fontSize = 18.sp, color = SubtleColor)
+            Text("按返回鍵回首頁", fontSize = TextSize.Note, color = SubtleColor)
         } else {
             val focus = remember { FocusRequester() }
             LaunchedEffect(Unit) { focus.requestFocus() }
-            Button(onClick = onHome, modifier = Modifier.focusRequester(focus)) {
-                Text("回首頁", fontSize = 32.sp, modifier = Modifier.padding(8.dp))
+            Button(onClick = onHome, modifier = Modifier.focusRequester(focus), shape = ButtonDefaults.shape(ButtonShape)) {
+                Text("回首頁", fontSize = TextSize.Body, modifier = Modifier.padding(Spacing.XS))
             }
         }
     }

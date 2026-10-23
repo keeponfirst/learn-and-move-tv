@@ -20,8 +20,6 @@ import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.tv.material3.Text
 import com.keeponfirst.bopomofotv.data.AbcCard
 import com.keeponfirst.bopomofotv.data.AbcWord
@@ -33,12 +31,12 @@ import com.keeponfirst.bopomofotv.data.AbcWord
 @Composable
 fun AbcCardFace(card: AbcCard, word: AbcWord = AbcWord(card.word, card.zh, card.image, card.audioWord)) {
     val image = word.image?.let { rememberAssetImage(it) }
-    BoxWithConstraints(Modifier.fillMaxSize().padding(48.dp)) {
+    BoxWithConstraints(Modifier.fillMaxSize().padding(Spacing.L)) {
         val imageBox = maxHeight * 0.7f
         val letterSize = with(LocalDensity.current) { (maxHeight * 0.4f).toSp() }
         Row(
             Modifier.fillMaxSize(),
-            horizontalArrangement = Arrangement.spacedBy(64.dp, Alignment.CenterHorizontally),
+            horizontalArrangement = Arrangement.spacedBy(Spacing.XL, Alignment.CenterHorizontally),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Box(Modifier.size(imageBox), contentAlignment = Alignment.Center) {
@@ -50,8 +48,8 @@ fun AbcCardFace(card: AbcCard, word: AbcWord = AbcWord(card.word, card.zh, card.
             }
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 Text("${card.upper} ${card.lower}", fontSize = letterSize, color = SymbolColor)
-                Text(word.word, fontSize = 56.sp, color = TextColor)
-                Text(word.zh, fontSize = 32.sp, color = SubtleColor)
+                Text(word.word, fontSize = TextSize.Word, color = TextColor)
+                Text(word.zh, fontSize = TextSize.Body, color = SubtleColor)
             }
         }
     }

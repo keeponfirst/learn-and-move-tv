@@ -1,7 +1,12 @@
 package com.keeponfirst.bopomofotv.ui
 
 import androidx.activity.compose.BackHandler
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
@@ -25,8 +30,6 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.TextUnit
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LifecycleEventEffect
 import androidx.tv.material3.Text
@@ -62,19 +65,19 @@ fun YogaPickScreen(choices: List<YogaChoice>, onStart: (YogaChoice) -> Unit, onE
             }
         },
     ) {
-        BoxWithConstraints(Modifier.fillMaxSize().padding(48.dp)) {
+        BoxWithConstraints(Modifier.fillMaxSize().padding(Spacing.L)) {
             val imageW = minOf(maxWidth * 0.5f, maxHeight * 0.55f * 16f / 9f)
             Column(Modifier.fillMaxSize(), verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally) {
                 if (image != null) {
                     Image(image, choice.nameZh, Modifier.size(imageW, imageW * 9f / 16f), contentScale = ContentScale.Fit)
-                    Spacer(Modifier.height(16.dp))
+                    Spacer(Modifier.height(Spacing.S))
                 }
                 val left = if (index > 0) "‹  " else "    "
                 val right = if (index < choices.lastIndex) "  ›" else "    "
-                Text("$left${choice.nameZh}$right", fontSize = if (image != null) 72.sp else 120.sp, color = SymbolColor)
-                Text("${index + 1} / ${choices.size}", fontSize = 24.sp, color = SubtleColor)
+                Text("$left${choice.nameZh}$right", fontSize = if (image != null) TextSize.Display else TextSize.Hero, color = SymbolColor)
+                Text("${index + 1} / ${choices.size}", fontSize = TextSize.Info, color = SubtleColor)
             }
-            Text(YOGA_PICK_HINT, Modifier.align(Alignment.BottomEnd), fontSize = 16.sp, color = SubtleColor)
+            Text(YOGA_PICK_HINT, Modifier.align(Alignment.BottomEnd), fontSize = TextSize.KeyHint, color = SubtleColor)
         }
     }
 }
@@ -143,30 +146,48 @@ fun YogaScreen(
                 YogaIntro(choice.nameZh)
             } else {
                 YogaPoseFace(pose)
-                val count = "${session.poseIndex + 1} / ${program.poses.size}"
-                val info = if (choice.rounds > 1) "第 ${session.round} 輪　$count" else count
-                Text(info, Modifier.align(Alignment.TopStart).padding(32.dp), fontSize = 24.sp, color = SubtleColor)
+            }
+            // 角落文字都放在安全區內。
+            Box(Modifier.fillMaxSize().safeArea()) {
+                if (session.phase != YogaPhase.INTRO) {
+                    val count = "${session.poseIndex + 1} / ${program.poses.size}"
+                    val info = if (choice.rounds > 1) "第 ${session.round} 輪　$count" else count
+                    Text(info, Modifier.align(Alignment.TopStart), fontSize = TextSize.Info, color = SubtleColor)
+                }
                 if (session.phase == YogaPhase.COUNTDOWN) {
                     // 最後 3 秒換黃色當提示（目前沒有提示音素材）。
                     val color = if (session.remaining <= 3) SymbolColor else TextColor
-                    Text(
-                        "${session.remaining}",
-                        Modifier.align(Alignment.TopEnd).padding(horizontal = 48.dp, vertical = 16.dp),
-                        fontSize = 120.sp,
-                        color = color,
-                    )
+                    Text("${session.remaining}", Modifier.align(Alignment.TopEnd), fontSize = TextSize.Hero, color = color)
+                }
+                // 底部兩行給大人看：安全提醒、按鍵提示。
+                Column(Modifier.align(Alignment.BottomCenter), horizontalAlignment = Alignment.CenterHorizontally) {
+                    if (session.phase != YogaPhase.INTRO && pose.safety.isNotEmpty()) {
+                        Text(pose.safety, fontSize = TextSize.Note, color = SubtleColor)
+                    }
+                    Text(YOGA_KEY_HINT, fontSize = TextSize.KeyHint, color = SubtleColor)
                 }
             }
-            // 底部兩行給大人看：安全提醒、按鍵提示。
-            Column(Modifier.align(Alignment.BottomCenter).padding(bottom = 16.dp), horizontalAlignment = Alignment.CenterHorizontally) {
-                if (session.phase != YogaPhase.INTRO && pose.safety.isNotEmpty()) {
-                    Text(pose.safety, fontSize = 18.sp, color = SubtleColor)
-                }
-                Text(YOGA_KEY_HINT, fontSize = 16.sp, color = SubtleColor)
-            }
-            if (session.paused) {
-                Text("暫停", Modifier.align(Alignment.Center), fontSize = 120.sp, color = SymbolColor)
-            }
+            PauseOverlay(visible = session.paused)
+        }
+    }
+}
+
+/** 暫停：半透明遮罩蓋住整個畫面，中間大字「暫停」與「按 OK 繼續」。淡入淡出。 */
+@Composable
+private fun PauseOverlay(visible: Boolean) {
+    AnimatedVisibility(
+        visible = visible,
+        enter = fadeIn(tween(Motion.SHORT_MS)),
+        exit = fadeOut(tween(Motion.SHORT_MS)),
+    ) {
+        Column(
+            Modifier.fillMaxSize().background(ScrimColor),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally,
+        ) {
+            Text("暫停", fontSize = TextSize.Hero, color = SymbolColor)
+            Spacer(Modifier.height(Spacing.S))
+            Text("按 OK 繼續", fontSize = TextSize.Heading, color = TextColor)
         }
     }
 }
@@ -174,9 +195,9 @@ fun YogaScreen(
 @Composable
 private fun YogaIntro(name: String) {
     Column(Modifier.fillMaxSize(), verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally) {
-        Text(name, fontSize = 120.sp, color = SymbolColor)
-        Spacer(Modifier.height(32.dp))
-        Text("請大人陪在旁邊", fontSize = 64.sp, color = TextColor)
+        Text(name, fontSize = TextSize.Hero, color = SymbolColor)
+        Spacer(Modifier.height(Spacing.M))
+        Text("請大人陪在旁邊", fontSize = TextSize.Headline, color = TextColor)
     }
 }
 
@@ -187,18 +208,18 @@ private fun YogaIntro(name: String) {
 @Composable
 private fun YogaPoseFace(pose: YogaPose) {
     val image = rememberAssetImage(pose.image)
-    BoxWithConstraints(Modifier.fillMaxSize().padding(48.dp)) {
+    BoxWithConstraints(Modifier.fillMaxSize().padding(Spacing.L)) {
         // 示範圖是 16:9：寬取畫面 50%，高不超過畫面 80%。正方形小框在電視上太小，孩子看不清。
         val imageW = minOf(maxWidth * 0.5f, maxHeight * 0.8f * 16f / 9f)
         if (image != null) {
             Row(
                 Modifier.fillMaxSize(),
-                horizontalArrangement = Arrangement.spacedBy(48.dp, Alignment.CenterHorizontally),
+                horizontalArrangement = Arrangement.spacedBy(Spacing.L, Alignment.CenterHorizontally),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 Image(image, pose.nameZh, Modifier.size(imageW, imageW * 9f / 16f), contentScale = ContentScale.Fit)
                 // 52 sp：最長「大樹（左腳站）」7 字約 364 dp，加圖 432 dp、間距 48 dp，放得進 864 dp 寬。
-                PoseName(pose, zhSize = 52.sp)
+                PoseName(pose, zhSize = TextSize.PoseName)
             }
         } else {
             val zhSize = with(LocalDensity.current) { (maxHeight * 0.2f).toSp() }
@@ -211,6 +232,6 @@ private fun YogaPoseFace(pose: YogaPose) {
 private fun PoseName(pose: YogaPose, zhSize: TextUnit) {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         Text(pose.nameZh, fontSize = zhSize, color = SymbolColor, textAlign = TextAlign.Center)
-        Text(pose.nameEn, fontSize = 30.sp, lineHeight = 38.sp, color = TextColor, textAlign = TextAlign.Center)
+        Text(pose.nameEn, fontSize = TextSize.Caption, lineHeight = TextSize.CaptionLine, color = TextColor, textAlign = TextAlign.Center)
     }
 }
