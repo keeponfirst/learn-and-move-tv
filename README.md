@@ -54,7 +54,7 @@
 
 App 沒有上架 Google Play，要用「側載」安裝。側載的意思是：不經過商店，直接把 APK 檔裝進電視。
 
-下面兩種方法選一種就好。
+下面兩種方法選一種就好。也可以把 [PROMPT.md](PROMPT.md) 整段貼給 AI 助手，請它照著帶你用方法二安裝。
 
 ### 方法一：一般家長（用 Downloader App）
 
@@ -104,6 +104,14 @@ adb connect <電視IP>:5555
 ```
 
 電視會跳「允許 USB 偵錯？」，選「一律允許這台電腦」。電視重開機或關掉無線偵錯後可能會斷。連不上時先跑 `adb mdns services` 看電視廣播的 port。
+
+### 安全守則
+
+adb 能完整控制電視。裝完 App 請做下面幾件事：
+
+- **關閉無線偵錯。** 設定 > 系統 > 開發人員選項 > 關「無線偵錯」。
+- **撤銷授權。** 同一頁選「撤銷 USB 偵錯授權」（Revoke USB debugging authorizations）。電視會忘記所有授權過的電腦。
+- **5555 只能短暫用。** 5555 port 的傳統 adb 連線沒有加密。同一個網段裡的任何裝置都可能連上。只在自己家的網路短暫使用，用完就關。
 
 ## 建置
 
@@ -222,7 +230,9 @@ App 首頁底部也有一行標示。
 - No ads and no in-app purchases.
 - Collects no data. Practice records stay on the TV.
 
-**Install.** The app is not on Google Play. Download the APK from GitHub Releases. Then sideload it with the Downloader app, or with `adb install`. See the Chinese steps above.
+**Install.** The app is not on Google Play. Download the APK from GitHub Releases. Then sideload it with the Downloader app, or with `adb install`. See the Chinese steps above. You can also paste [PROMPT.md](PROMPT.md) into an AI assistant and let it guide you.
+
+**Safety.** After install, turn off wireless debugging. Then revoke USB debugging authorizations in Developer options. The classic port 5555 connection is not encrypted. Use it only briefly on your home network.
 
 **Build.** Run `./gradlew assembleDebug`. Release builds need your own `keystore.properties`. No signing key is in this repo.
 
