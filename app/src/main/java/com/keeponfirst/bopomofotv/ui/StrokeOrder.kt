@@ -33,6 +33,16 @@ import kotlinx.coroutines.delay
 /** 還沒畫到的筆畫用淡色底稿，讓孩子先看到整個字的樣子。 */
 private const val GHOST_ALPHA = 0.18f
 
+/**
+ * 筆順字和字型大字對齊：筆順路徑在 1024 方框裡留了邊、筆寬也比 Black 字重細，
+ * 按下去時字會「縮一下」。不改路徑 JSON，改在畫布上放大、加粗、往下移。
+ * 數值是 37 個符號和 notosanstc_black 比對的中位數（字框約大 22%、粗 1.5 倍、字型中心偏下約 6% 字級），
+ * 再以模擬器截圖的字框確認。
+ */
+private const val STROKE_ZOOM = 1.2f
+private const val STROKE_WEIGHT = 1.45f
+private const val STROKE_DROP = 0.0625f
+
 /** C 主題符號的金色光暈（同 [SymbolText]）。 */
 private val GLOW = Color(0xB2FFD65A)
 
@@ -95,16 +105,21 @@ fun rememberStrokePlayback(symbol: StrokeSymbol?, play: Int): StrokePlayback? {
 fun StrokeCanvas(playback: StrokePlayback, size: Dp) {
     val theme = LocalAppTheme.current
     Canvas(Modifier.size(size)) {
-        val scale = this.size.minDimension / playback.symbol.size
+        val side = this.size.minDimension
+        // 以畫布中心放大 [STROKE_ZOOM]，再下移 [STROKE_DROP]；畫到框外沒關係（Canvas 不裁切）。
+        val scale = side / playback.symbol.size * STROKE_ZOOM
         // 外框、光暈的寬度用 dp 算，換成 viewBox 單位（畫布有縮放）。
         val outline = 4.dp.toPx() / scale
         val glow = 3.dp.toPx() / scale
-        withTransform({ scale(scale, scale, pivot = Offset.Zero) }) {
-            line(playback.ghost, theme.symbol.copy(alpha = GHOST_ALPHA), playback.ghostWidth)
+        withTransform({
+            translate(side * (1f - STROKE_ZOOM) / 2f, side * ((1f - STROKE_ZOOM) / 2f + STROKE_DROP))
+            scale(scale, scale, pivot = Offset.Zero)
+        }) {
+            line(playback.ghost, theme.symbol.copy(alpha = GHOST_ALPHA), playback.ghostWidth * STROKE_WEIGHT)
             val f = playback.fraction.value
             for (i in 0..playback.index) {
                 val p = if (i < playback.index) playback.paths[i] else playback.partial(i, f)
-                val w = playback.symbol.strokes[i].width
+                val w = playback.symbol.strokes[i].width * STROKE_WEIGHT
                 when (theme.id) {
                     ThemeId.B -> line(p, theme.outline, w + outline * 2)
                     // 和 DecoratedText 的發光同一組層次。
