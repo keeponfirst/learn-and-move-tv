@@ -65,6 +65,13 @@ They are not human recordings. Do not use them to train speech models.
 All illustrations were drawn programmatically by this project (SVG to PNG).
 No AI image generation and no stock art.
 
+筆順路徑：app/src/main/assets/zhuyin/strokes/*.json（37 個注音符號）
+筆順路徑為本專案原創（MIT），筆順參照教育部公告標準。
+沒有使用教育部或其他第三方的筆順圖形資料。
+
+Stroke-order paths are original work of this project (MIT).
+The stroke order follows the Ministry of Education standard.
+
 ======================================================================
 4. App icon 與 TV banner
 ======================================================================
