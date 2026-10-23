@@ -15,21 +15,41 @@
 | ![首頁](docs/screenshots/home.png) | ![注音卡](docs/screenshots/zhuyin.png) |
 | **ABC** | **瑜伽：選一套** |
 | ![ABC 卡](docs/screenshots/abc.png) | ![瑜伽選套](docs/screenshots/yoga-sets.png) |
-| **瑜伽：跟著做** | |
-| ![瑜伽動作](docs/screenshots/yoga-pose.png) | |
+| **瑜伽：跟著做** | **今天的小旅程** |
+| ![瑜伽動作](docs/screenshots/yoga-pose.png) | ![旅程地圖](docs/screenshots/journey.png) |
+| **拿到新貼紙** | **貼紙冊** |
+| ![拿到新貼紙](docs/screenshots/sticker-new.png) | ![貼紙冊](docs/screenshots/sticker-book.png) |
 
 ## 有哪些玩法
 
-首頁有四個按鈕：
+首頁有五張卡：
 
 | 按鈕 | 內容 |
 |---|---|
+| 小旅程 | 每天排好 3 站：1 個注音、1 個字母、1 個瑜伽動作，約 5 分鐘走完。每站拿 1 張貼紙。 |
 | 大人陪 | 大人陪孩子一起練注音。一次一個單元，大人用上／下鍵記「答對／再練」。 |
 | 自己玩 | 孩子自己按。任何方向鍵都換下一張卡並播音。10 分鐘自動結束。 |
 | ABC | 26 個英文字母，每個字母有幾個例詞和插圖。玩法同自己玩。 |
 | 瑜伽 | 跟著口令做動作。開場會提醒「請大人陪在旁邊」。 |
 
-**大人設定：在首頁按上到齒輪、長按 OK 可換主題。** 有三套主題：活力遊樂場（預設）、繪本小屋、星空探險。選好的主題會記住，重開 App 也一樣。短按 OK 只會提示「請大人長按 OK」，小孩不容易誤觸。
+首頁右上角有兩顆圓鈕：貼紙冊、齒輪（大人設定）。從卡片按上鍵到達。
+
+**大人設定：在首頁按上到貼紙冊、再按右到齒輪，長按 OK 可換主題。** 有三套主題：活力遊樂場（預設）、繪本小屋、星空探險。選好的主題會記住，重開 App 也一樣。短按 OK 只會提示「請大人長按 OK」，小孩不容易誤觸。
+
+### 今天的小旅程
+
+- 每天依電視的日期排 3 站。注音站優先選還沒拿到貼紙、或大人陪按過「再練」的符號；字母站、瑜伽站優先選還沒拿到貼紙的。
+- 注音站、字母站：看完那一項的例詞卡。動一動站：做一個動作（口令＋倒數）。
+- 每站做完回到地圖：站牌打勾、「第 N 站 完成！」、小女孩走到下一站，然後拿到這一項的貼紙。
+- 同一天中途離開，回來從那一站接著。3 站都走完，再進去會顯示「今天的旅程完成了！」和今天拿到的貼紙。隔天排新的旅程。
+- 10 分鐘上限同自己玩，從進旅程開始算。
+
+### 貼紙冊
+
+- 分注音、ABC、瑜伽三類。左右鍵翻頁，上下鍵換類。已收集的是彩色貼紙，還沒收集的是灰影。
+- 貼紙怎麼來：小旅程每站 1 張；自己玩看完一個符號的所有例詞卡、ABC 看完一個字母的所有例詞卡、瑜伽一個動作倒數做完，也會拿到那一項的貼紙。同一項只給一次。
+- 第一次拿到時有動畫。紀錄只存在電視本機，不上傳。
+- 不算連續天數：中斷一天也不會失去什麼。
 
 ### 大人陪
 
@@ -222,6 +242,8 @@ App 首頁底部也有一行標示。
 - Works offline. The app has no network permission.
 - No ads and no in-app purchases.
 - Collects no data. Practice records stay on the TV.
+
+**Today's trip.** The first home card plans 3 short stops each day: one Zhuyin symbol, one letter, one yoga pose. Each stop gives a sticker. The sticker book shows all stickers by category. There is no daily streak.
 
 **Install.** The app is not on Google Play. Download the APK from GitHub Releases. Then sideload it with the Downloader app, or with `adb install`. See the Chinese steps above. You can also paste [PROMPT.md](PROMPT.md) into an AI assistant and let it guide you.
 
