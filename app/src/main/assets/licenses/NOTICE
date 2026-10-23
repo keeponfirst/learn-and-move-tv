@@ -66,11 +66,19 @@ All illustrations were drawn programmatically by this project (SVG to PNG).
 No AI image generation and no stock art.
 
 筆順路徑：app/src/main/assets/zhuyin/strokes/*.json（37 個注音符號）
-筆順路徑為本專案原創（MIT），筆順參照教育部公告標準。
-沒有使用教育部或其他第三方的筆順圖形資料。
+筆順路徑的圖形與座標由本專案自行繪製，隨本專案以 MIT License 提供。
+筆畫數、筆順與書寫方向，參照教育部「國字標準字體筆順學習網」的注音筆順。
+  https://stroke-order.learningweb.moe.edu.tw/phonetic.jsp
+本專案沒有使用教育部或其他第三方的筆順動畫、圖形或資料檔。
+本專案與教育部無關聯，也未經教育部審定或背書。
 
-Stroke-order paths are original work of this project (MIT).
-The stroke order follows the Ministry of Education standard.
+Stroke paths (shapes and coordinates) were drawn by this project (MIT).
+Stroke count, order, and direction follow the MOE stroke-order website.
+No MOE or third-party stroke animations, graphics, or data files are used.
+This project is not affiliated with or endorsed by the Ministry of Education.
+
+截圖：docs/screenshots/*.png 是本 App 的畫面截圖，隨本專案以 MIT License 提供。
+Screenshots in docs/screenshots/ show this app and are provided under the MIT License.
 
 ======================================================================
 4. App icon 與 TV banner

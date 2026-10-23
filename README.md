@@ -83,7 +83,7 @@
 - 37 個注音符號都有。自己玩按下鍵、大人陪長按確定鍵，就從第一筆開始描。
 - 一筆一筆沿書寫方向畫出來，每筆約 0.6～0.9 秒，筆和筆之間停 0.2 秒。還沒畫到的筆畫是淡色底稿。
 - 描的時候卡片左上角顯示「第 N 筆」，畫完顯示「共 N 筆」並停在完整的字。再按一次重播，換卡就收起來。
-- 筆順路徑是本專案自己畫的（MIT），筆順參照教育部公告標準。
+- 筆順路徑是本專案自己畫的（MIT）。筆畫數、順序與方向參照教育部「國字標準字體筆順學習網」；本專案與教育部無關聯，也未經審定或背書。
 
 ### 瑜伽
 
@@ -241,7 +241,8 @@ App 內建合成語音。家長可以換成自己錄的聲音，孩子會更有�
 | 內建合成語音（關鍵字、固定語句、ABC、瑜伽口令） | Google Cloud Text-to-Speech 合成，不是真人錄音 | MIT |
 | 插圖（注音例詞、ABC、瑜伽、三套主題） | 本專案以程式繪製（SVG 轉 PNG），沒有 AI 生圖 | MIT |
 | App icon、TV banner | 本專案以程式繪製 | MIT |
-| 注音筆順路徑 `zhuyin/strokes/*.json` | 本專案原創，筆順參照教育部公告標準 | MIT |
+| 注音筆順路徑 `zhuyin/strokes/*.json` | 本專案自行繪製；筆順參照教育部筆順學習網（與教育部無關聯） | MIT |
+| 文字內容（例詞清單、瑜伽口令與安全提醒） | 本專案撰寫 | MIT |
 | 字型 Noto Sans TC（Bold、Black 子集） | `res/font/`，全文 `LICENSES/OFL-1.1.txt` | SIL OFL 1.1 |
 | 第三方套件（AndroidX、Kotlin 等） | 隨 APK 散布 | Apache 2.0；protobuf-lite 為 BSD 3-Clause |
 
@@ -279,7 +280,7 @@ App 首頁底部也有標示：出處與授權、授權網址，以及「完整�
 
 **Easier yoga.** Eight harder poses have an easier version. Press Down to switch, Up to switch back. Each set shows its length in minutes.
 
-**Stroke order.** Every Zhuyin card can animate its stroke order, one stroke at a time. In self-play, press Down. In parent mode, hold OK. The paths are original work (MIT) and follow the Ministry of Education standard.
+**Stroke order.** Every Zhuyin card can animate its stroke order, one stroke at a time. In self-play, press Down. In parent mode, hold OK. The paths were drawn by this project (MIT). Stroke order follows the Taiwan MOE stroke-order website; this project is not affiliated with or endorsed by the MOE.
 
 **Install.** The app is not on Google Play. Download the APK from GitHub Releases. Then sideload it with the Downloader app, or with `adb install`. See the Chinese steps above. You can also paste [PROMPT.md](PROMPT.md) into an AI assistant and let it guide you.
 
