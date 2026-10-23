@@ -110,8 +110,6 @@ App 沒有上架 Google Play，要用「側載」安裝。側載的意思是：�
 
 不需要電腦。
 
-> **Release 準備中：** 第一版 APK 還沒發布，下面的下載網址暫時打不開。想先試，可以照下方「建置」一節自己建。
-
 1. **在電視上安裝 Downloader。** 打開 Google Play，搜尋「Downloader」（作者 AFTVnews），安裝。
 2. **開開發人員模式。** 設定 > 系統 > 關於 > 在「Android TV OS 版本號」上連按確定鍵約 7 次。畫面出現「你現在是開發人員」就成功了。
 3. **允許 Downloader 安裝 App（開啟未知來源）。** 設定 > 應用程式 > 安全性與限制 > 不明來源 > 打開 Downloader。
@@ -283,7 +281,7 @@ App 首頁底部也有標示：出處與授權、授權網址，以及「完整�
 
 **Stroke order.** Every Zhuyin card can animate its stroke order, one stroke at a time. In self-play, press Down. In parent mode, hold OK. The paths were drawn by this project (MIT). Stroke order follows the Taiwan MOE stroke-order website; this project is not affiliated with or endorsed by the MOE.
 
-**Install.** The app is not on Google Play. Download the APK from GitHub Releases (the first release is still being prepared; until then, build it yourself as described under 建置). Then sideload it with the Downloader app, or with `adb install`. See the Chinese steps above. You can also paste [PROMPT.md](PROMPT.md) into an AI assistant and let it guide you.
+**Install.** The app is not on Google Play. Download the APK from GitHub Releases. Then sideload it with the Downloader app, or with `adb install`. See the Chinese steps above. You can also paste [PROMPT.md](PROMPT.md) into an AI assistant and let it guide you.
 
 **Safety.** After install, turn off wireless debugging. Then revoke USB debugging authorizations in Developer options. The classic port 5555 connection is not encrypted. Use it only briefly on your home network.
 

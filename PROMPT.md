@@ -71,8 +71,6 @@ adb connect <電視IP>:5555
 
 ### 步驟四：下載並安裝 APK
 
-（Release 準備中：如果 Releases 頁面還沒有 APK，請告訴使用者「第一版還沒發布」，然後停下，不要從別的網站下載。）
-
 1. 從 GitHub Releases 下載最新版 APK。Releases 頁面在：
    ```
    https://github.com/keeponfirst/learn-and-move-tv/releases/latest
@@ -164,8 +162,6 @@ The TV shows an "Allow debugging?" dialog. Tell me to choose "Allow". I do not n
 This connection is not encrypted. Anyone on the same network may connect. Use it only on my home network, and only for a short time. Turn it off after install (see Step 5).
 
 ### Step 4: Download and install the APK
-
-(Release in preparation: if the Releases page has no APK yet, tell the user "the first version has not been released yet" and stop. Do not download it from any other site.)
 
 1. Download the latest APK from GitHub Releases. The Releases page is:
    ```
