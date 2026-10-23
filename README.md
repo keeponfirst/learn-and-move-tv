@@ -29,11 +29,14 @@
 | ABC | 26 個英文字母，每個字母有幾個例詞和插圖。玩法同自己玩。 |
 | 瑜伽 | 跟著口令做動作。開場會提醒「請大人陪在旁邊」。 |
 
+**大人設定：在首頁按上到齒輪、長按 OK 可換主題。** 有三套主題：活力遊樂場（預設）、繪本小屋、星空探險。選好的主題會記住，重開 App 也一樣。短按 OK 只會提示「請大人長按 OK」，小孩不容易誤觸。
+
 ### 大人陪
 
 - 開頭先選「從第幾單元開始」。預設是上次練的單元。
 - 左右鍵換卡，確定鍵播音。
 - 上鍵記「答對」，下鍵記「再練」。按「再練」的卡會排到本輪最後。
+- 畫面下方有「再聽一次／答對了／再練練」三顆提示，分別對應確定鍵、上鍵、下鍵。按「答對了」會播一段約 0.8 秒的小動畫。
 - 新卡做完會打亂順序再複習一輪。
 - 連續 2 次每張卡第一次就答對，或同一單元練滿 4 次，下次自動進下一單元。
 - 10 分鐘到會自動結束，下次從沒做完的卡接著做。
@@ -46,7 +49,7 @@
 
 ### 瑜伽
 
-- 每個姿勢先播口令，口令播完才倒數。
+- 每個姿勢先播口令，口令播完才倒數。大圓環顯示剩幾秒，上方進度點顯示「第幾個／共幾個」。
 - 確定鍵暫停／繼續，右鍵跳下一個，返回鍵回首頁。
 - 不偵測動作、不計分。請大人在旁邊看著孩子。
 
@@ -145,17 +148,6 @@ repo 裡沒有任何金鑰。沒有 `keystore.properties` 時只能建 debug 版
 
 `keystore.properties`、`*.jks`、`*.keystore` 都在 `.gitignore` 裡。不要提交它們。金鑰弄丟就不能更新已安裝的 App，請自己備份。
 
-### 重產 TV banner
-
-banner 用 Noto Sans TC（SIL OFL 1.1）。repo 不收錄字型檔，請自己下載：https://fonts.google.com/noto/specimen/Noto+Sans+TC
-
-```
-pip install pillow
-python3 tools/make_banner.py app/src/main/res/drawable-xhdpi/banner.png --font <NotoSansTC 字型檔路徑>
-```
-
-也可以設環境變數 `BANNER_FONT` 指定字型檔，省略 `--font`。
-
 ### 模擬器截圖
 
 ```
@@ -200,8 +192,9 @@ App 內建合成語音。家長可以換成自己錄的聲音，孩子會更有�
 |---|---|---|
 | 注音符號音檔 `audio/moe/F1.WAV`…`F37.WAV` | 教育部《國語注音符號手冊》開放部件 | CC BY 4.0 |
 | 內建合成語音（關鍵字、固定語句、ABC、瑜伽口令） | Google Cloud Text-to-Speech 合成，不是真人錄音 | MIT |
-| 插圖（注音例詞、ABC、瑜伽） | 本專案以程式繪製（SVG 轉 PNG），沒有 AI 生圖 | MIT |
-| TV banner | `tools/make_banner.py` 產生，文字用 Noto Sans TC | MIT（字型為 SIL OFL 1.1） |
+| 插圖（注音例詞、ABC、瑜伽、三套主題） | 本專案以程式繪製（SVG 轉 PNG），沒有 AI 生圖 | MIT |
+| App icon、TV banner | 本專案以程式繪製 | MIT |
+| 字型 Noto Sans TC（Bold、Black 子集） | `res/font/`，全文 `LICENSES/OFL-1.1.txt` | SIL OFL 1.1 |
 | 第三方套件（AndroidX、Kotlin 等） | 隨 APK 散布 | Apache 2.0；protobuf-lite 為 BSD 3-Clause |
 
 **音檔請勿用於訓練語音模型。**
