@@ -1,0 +1,161 @@
+{
+ "version": "2026-10-23",
+ "note": "簡單版示範圖與口令。needEasy=false 的動作沿用原版圖與口令。image 路徑格式比照 sets.json。",
+ "poses": [
+  {
+   "id": "mountain",
+   "needEasy": false,
+   "image": null,
+   "cueTextEasy": null,
+   "why": "兩腳站、手舉高，所有孩子都做得到。"
+  },
+  {
+   "id": "star",
+   "needEasy": false,
+   "image": null,
+   "cueTextEasy": null,
+   "why": "兩腳站穩、手腳打開，沒有平衡或撐重量的難度。"
+  },
+  {
+   "id": "tree_left",
+   "needEasy": true,
+   "image": "yoga/img-easy/tree_left.png",
+   "cueTextEasy": "一隻手扶牆。另一隻腳的腳尖點在地上。",
+   "why": "單腳平衡最容易跌倒。扶牆加腳尖點地，有三個支撐點，站不穩的孩子也能做。",
+   "cueAudioEasy": "yoga/audio/c_tree_left_easy.m4a"
+  },
+  {
+   "id": "tree_right",
+   "needEasy": true,
+   "image": "yoga/img-easy/tree_right.png",
+   "cueTextEasy": "一隻手扶牆。另一隻腳的腳尖點在地上。",
+   "why": "單腳平衡最容易跌倒。扶牆加腳尖點地，有三個支撐點，站不穩的孩子也能做。",
+   "cueAudioEasy": "yoga/audio/c_tree_right_easy.m4a"
+  },
+  {
+   "id": "cat_cow",
+   "needEasy": false,
+   "image": null,
+   "cueTextEasy": null,
+   "why": "手和膝蓋四點著地，本身就很穩。"
+  },
+  {
+   "id": "dog",
+   "needEasy": true,
+   "image": "yoga/img-easy/dog.png",
+   "cueTextEasy": "膝蓋跪在地上。手往前伸，屁股抬高。",
+   "why": "倒 V 字要用手臂撐住全身，手會酸痛。膝蓋著地後，手的負擔少很多。",
+   "cueAudioEasy": "yoga/audio/c_dog_easy.m4a"
+  },
+  {
+   "id": "butterfly",
+   "needEasy": false,
+   "image": null,
+   "cueTextEasy": null,
+   "why": "坐著做，腳底碰不到也可以，原版已經很輕鬆。"
+  },
+  {
+   "id": "rock",
+   "needEasy": false,
+   "image": null,
+   "cueTextEasy": null,
+   "why": "這是休息動作。原版安全提醒已寫膝蓋不舒服可墊枕頭。"
+  },
+  {
+   "id": "sleep",
+   "needEasy": false,
+   "image": null,
+   "cueTextEasy": null,
+   "why": "平躺休息，不需要簡化。"
+  },
+  {
+   "id": "frog",
+   "needEasy": false,
+   "image": null,
+   "cueTextEasy": null,
+   "why": "4～5 歲孩子平常就會蹲。手碰地是支撐，原版也允許腳跟離地。"
+  },
+  {
+   "id": "lion",
+   "needEasy": true,
+   "image": "yoga/img-easy/lion.png",
+   "cueTextEasy": "盤腿坐好，不用跪。手放膝蓋上，哈～",
+   "why": "跪坐在腳跟上，有些孩子膝蓋和腳背會痛。重點是吐氣，坐姿不影響。",
+   "cueAudioEasy": "yoga/audio/c_lion_easy.m4a"
+  },
+  {
+   "id": "bird",
+   "needEasy": false,
+   "image": null,
+   "cueTextEasy": null,
+   "why": "原版已經是兩腳站穩，不用再簡化。"
+  },
+  {
+   "id": "snake",
+   "needEasy": false,
+   "image": null,
+   "cueTextEasy": null,
+   "why": "趴著只抬頭一點點，原版已經是最輕的版本。"
+  },
+  {
+   "id": "turtle",
+   "needEasy": false,
+   "image": null,
+   "cueTextEasy": null,
+   "why": "坐著抱膝，原版已經很輕鬆。"
+  },
+  {
+   "id": "moon",
+   "needEasy": true,
+   "image": "yoga/img-easy/moon.png",
+   "cueTextEasy": "兩腳打開一點。一手插腰，一手舉高，彎一點點。",
+   "why": "兩腳併攏又雙手舉高側彎，容易站不穩。兩腳打開、一手插腰，比較穩。",
+   "cueAudioEasy": "yoga/audio/c_moon_easy.m4a"
+  },
+  {
+   "id": "rocket",
+   "needEasy": true,
+   "image": "yoga/img-easy/rocket.png",
+   "cueTextEasy": "腳跟踩在地上，不用踮腳。手舉高高！",
+   "why": "踮腳加手舉高，容易往前或往後倒。腳跟踩地就穩了。",
+   "cueAudioEasy": "yoga/audio/c_rocket_easy.m4a"
+  },
+  {
+   "id": "chair",
+   "needEasy": true,
+   "image": "yoga/img-easy/chair.png",
+   "cueTextEasy": "膝蓋彎一點點。手放在腿上。",
+   "why": "手往前伸又要撐住，腿和肩膀都會酸。手放腿上可以幫忙撐，比較撐得住。",
+   "cueAudioEasy": "yoga/audio/c_chair_easy.m4a"
+  },
+  {
+   "id": "flower",
+   "needEasy": false,
+   "image": null,
+   "cueTextEasy": null,
+   "why": "坐著，腳放在地上，原版已經是簡單版。"
+  },
+  {
+   "id": "boat",
+   "needEasy": true,
+   "image": "yoga/img-easy/boat.png",
+   "cueTextEasy": "手放在屁股後面撐地。腳踩在地上。",
+   "why": "腳離地要靠肚子出力，容易往後倒。手撐地、腳踩地，就不會倒。",
+   "cueAudioEasy": "yoga/audio/c_boat_easy.m4a"
+  },
+  {
+   "id": "bee",
+   "needEasy": false,
+   "image": null,
+   "cueTextEasy": null,
+   "why": "坐著呼吸，不需要簡化。"
+  },
+  {
+   "id": "balloon",
+   "needEasy": false,
+   "image": null,
+   "cueTextEasy": null,
+   "why": "坐著呼吸，不需要簡化。"
+  }
+ ]
+}
