@@ -21,6 +21,7 @@
    "needEasy": true,
    "image": "yoga/img-easy/tree_left.png",
    "cueTextEasy": "一隻手扶牆。另一隻腳的腳尖點在地上。",
+   "safety": "扶牆就好，不要扶門、窗簾或會滑動的家具；另一腳的腳尖輕輕點地。",
    "why": "單腳平衡最容易跌倒。扶牆加腳尖點地，有三個支撐點，站不穩的孩子也能做。",
    "cueAudioEasy": "yoga/audio/c_tree_left_easy.m4a"
   },
@@ -29,6 +30,7 @@
    "needEasy": true,
    "image": "yoga/img-easy/tree_right.png",
    "cueTextEasy": "一隻手扶牆。另一隻腳的腳尖點在地上。",
+   "safety": "扶牆就好，不要扶門、窗簾或會滑動的家具；另一腳的腳尖輕輕點地。",
    "why": "單腳平衡最容易跌倒。扶牆加腳尖點地，有三個支撐點，站不穩的孩子也能做。",
    "cueAudioEasy": "yoga/audio/c_tree_right_easy.m4a"
   },
@@ -44,6 +46,7 @@
    "needEasy": true,
    "image": "yoga/img-easy/dog.png",
    "cueTextEasy": "膝蓋跪在地上。手往前伸，屁股抬高。",
+   "safety": "膝蓋跪在軟墊上；屁股抬到舒服的高度就好，孩子說手酸就趴下休息。",
    "why": "倒 V 字要用手臂撐住全身，手會酸痛。膝蓋著地後，手的負擔少很多。",
    "cueAudioEasy": "yoga/audio/c_dog_easy.m4a"
   },
@@ -80,6 +83,7 @@
    "needEasy": true,
    "image": "yoga/img-easy/lion.png",
    "cueTextEasy": "盤腿坐好，不用跪。手放膝蓋上，哈～",
+   "safety": "隨意盤腿就好，不要把腳扳到大腿上；吐氣不用喉嚨喊，頭暈就停。",
    "why": "跪坐在腳跟上，有些孩子膝蓋和腳背會痛。重點是吐氣，坐姿不影響。",
    "cueAudioEasy": "yoga/audio/c_lion_easy.m4a"
   },
@@ -109,6 +113,7 @@
    "needEasy": true,
    "image": "yoga/img-easy/moon.png",
    "cueTextEasy": "兩腳打開一點。一手插腰，一手舉高，彎一點點。",
+   "safety": "兩腳打開到站得穩；只往旁邊彎一點，不往後仰，兩邊各做一次。",
    "why": "兩腳併攏又雙手舉高側彎，容易站不穩。兩腳打開、一手插腰，比較穩。",
    "cueAudioEasy": "yoga/audio/c_moon_easy.m4a"
   },
@@ -117,6 +122,7 @@
    "needEasy": true,
    "image": "yoga/img-easy/rocket.png",
    "cueTextEasy": "腳跟踩在地上，不用踮腳。手舉高高！",
+   "safety": "腳跟踩地、手往上伸就好，不用跳；舉手時身體不要往後仰。",
    "why": "踮腳加手舉高，容易往前或往後倒。腳跟踩地就穩了。",
    "cueAudioEasy": "yoga/audio/c_rocket_easy.m4a"
   },
@@ -125,6 +131,7 @@
    "needEasy": true,
    "image": "yoga/img-easy/chair.png",
    "cueTextEasy": "膝蓋彎一點點。手放在腿上。",
+   "safety": "膝蓋彎一點點就好，手放在大腿上幫忙撐；腿酸就站直休息。",
    "why": "手往前伸又要撐住，腿和肩膀都會酸。手放腿上可以幫忙撐，比較撐得住。",
    "cueAudioEasy": "yoga/audio/c_chair_easy.m4a"
   },
@@ -140,6 +147,7 @@
    "needEasy": true,
    "image": "yoga/img-easy/boat.png",
    "cueTextEasy": "手放在屁股後面撐地。腳踩在地上。",
+   "safety": "手撐在屁股後方的地上，腳踩著地；身體往後靠一點就好，背累了就坐直。",
    "why": "腳離地要靠肚子出力，容易往後倒。手撐地、腳踩地，就不會倒。",
    "cueAudioEasy": "yoga/audio/c_boat_easy.m4a"
   },

@@ -11,7 +11,7 @@ data class YogaCue(val cueAudio: String, val cueText: String = "")
 
 /**
  * 一個瑜伽姿勢。[seconds] 是口令播完後的倒數秒數。
- * 簡單版三欄（[imageEasy]、[cueTextEasy]、[cueAudioEasy]）不在 sets.json 裡，由 [YogaParser.withEasy] 從 easy.json 補上；
+ * 簡單版四欄（[imageEasy]、[cueTextEasy]、[cueAudioEasy]、[safetyEasy]）不在 sets.json 裡，由 [YogaParser.withEasy] 從 easy.json 補上；
  * [imageEasy] 是 null＝這個動作沒有簡單版。
  */
 @Serializable
@@ -27,11 +27,15 @@ data class YogaPose(
     val imageEasy: String? = null,
     val cueTextEasy: String? = null,
     val cueAudioEasy: String? = null,
+    val safetyEasy: String? = null,
 ) {
     val hasEasy: Boolean get() = imageEasy != null
+
+    /** 畫面下方的安全提醒：簡單版用簡單版提醒（姿勢不同，原版提醒會講錯），沒有就退回一般版。 */
+    fun safetyFor(easy: Boolean): String = if (easy) safetyEasy?.takeIf { it.isNotBlank() } ?: safety else safety
 }
 
-/** easy.json 的一筆。needEasy=false 的動作沿用原版。 */
+/** easy.json 的一筆（[safety] 是簡單版安全提醒）。needEasy=false 的動作沿用原版。 */
 @Serializable
 data class YogaEasyDef(
     val id: String,
@@ -39,6 +43,7 @@ data class YogaEasyDef(
     val image: String? = null,
     val cueTextEasy: String? = null,
     val cueAudioEasy: String? = null,
+    val safety: String? = null,
 )
 
 @Serializable
@@ -107,7 +112,7 @@ object YogaParser {
         if (defs.isEmpty()) return choices
         fun easy(p: YogaPose): YogaPose {
             val d = defs[p.id] ?: return p
-            return p.copy(imageEasy = d.image, cueTextEasy = d.cueTextEasy, cueAudioEasy = d.cueAudioEasy?.takeIf(exists))
+            return p.copy(imageEasy = d.image, cueTextEasy = d.cueTextEasy, cueAudioEasy = d.cueAudioEasy?.takeIf(exists), safetyEasy = d.safety)
         }
         return choices.map { c -> c.copy(program = c.program.copy(poses = c.program.poses.map(::easy))) }
     }

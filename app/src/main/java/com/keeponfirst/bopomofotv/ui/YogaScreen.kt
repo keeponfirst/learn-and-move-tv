@@ -255,8 +255,9 @@ fun YogaScreen(
                 }
                 // 底部兩行給大人看：安全提醒、按鍵提示。
                 Column(Modifier.align(Alignment.BottomCenter), horizontalAlignment = Alignment.CenterHorizontally) {
-                    if (session.phase != YogaPhase.INTRO && pose.safety.isNotEmpty()) {
-                        Text(pose.safety, fontSize = TextSize.Note, color = TextColor)
+                    val safety = pose.safetyFor(useEasy)
+                    if (session.phase != YogaPhase.INTRO && safety.isNotEmpty()) {
+                        Text(safety, fontSize = TextSize.Note, color = TextColor)
                     }
                     val easyHint = when {
                         session.phase == YogaPhase.INTRO || !pose.hasEasy -> ""

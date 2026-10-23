@@ -73,6 +73,29 @@ class YogaEasyTest {
     }
 
     @Test
+    fun bundledEasyFileHasSafetyForEveryPoseThatNeedsIt() {
+        // 簡單版姿勢和原版不同（例如獅子改盤腿），原版提醒會講錯。每個簡單版都要有自己的提醒。
+        // 用沒有 safety 欄的舊 easy.json 蓋掉時，這個測試會失敗。
+        val file = File(assets, "yoga/easy.json")
+        if (!file.exists()) return
+        val defs = YogaParser.parseEasy(file.readText(Charsets.UTF_8)).poses.filter { it.needEasy }
+        assertTrue("easy.json 有 8 個簡單版", defs.size >= 8)
+        defs.forEach { d -> assertFalse("${d.id} 沒有簡單版安全提醒", d.safety.isNullOrBlank()) }
+    }
+
+    @Test
+    fun easyScreenShowsEasySafetyAndFallsBackToNormalWhenMissing() {
+        val withSafety = """{"poses":[{"id":"tree","needEasy":true,"image":"yoga/img-easy/tree.png","cueTextEasy":"扶牆","safety":"扶牆就好"}]}"""
+        val tree = pose("tree").copy(safety = "原版提醒")
+        val easyTree = YogaParser.withEasy(listOf(choice(tree)), withSafety) { true }.single().program.poses.single()
+        assertEquals("扶牆就好", easyTree.safetyFor(easy = true))
+        assertEquals("一般版仍是原版提醒", "原版提醒", easyTree.safetyFor(easy = false))
+        // easy.json 沒寫 safety：簡單版畫面退回一般版提醒，不能留白。
+        val noSafety = YogaParser.withEasy(listOf(choice(tree)), easy) { true }.single().program.poses.single()
+        assertEquals("原版提醒", noSafety.safetyFor(easy = true))
+    }
+
+    @Test
     fun minutesAddIntroEveryCueAndCountdownAndDoneThenRound() {
         // 開場 10 秒＋(口令 5 秒＋倒數 20 秒) × 4 個＋結束 10 秒＝120 秒＝2 分鐘。
         val c = choice(pose("a", 20), pose("b", 20), pose("c", 20), pose("d", 20))
