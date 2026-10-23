@@ -383,18 +383,13 @@ private fun EntryCard(
             ) {
                 if (entry == HomeEntry.JOURNEY) {
                     // 小旅程卡比較寬：插圖固定 120 dp，下面多一排今天的站點圓。
-                    theme.entryArt[i]?.let { path -> rememberThemeImage(path)?.let { Image(it, label, Modifier.size(120.dp)) } }
+                    rememberThemeImage(theme.entryArt[i])?.let { Image(it, label, Modifier.size(120.dp)) }
                     Spacer(Modifier.height(Spacing.XS))
                     EntryLabel(label, sub, labelSize)
                     Spacer(Modifier.height(4.dp))
                     StationDots(journey.first, journey.second, size = 12.dp)
                 } else {
-                    val art = theme.entryArt[i]
-                    if (art != null) {
-                        rememberThemeImage(art)?.let { Image(it, label, Modifier.fillMaxWidth(0.92f).aspectRatio(1f)) }
-                    } else {
-                        ListenEntryArt(theme, i, Modifier.fillMaxWidth(0.92f).aspectRatio(1f))
-                    }
+                    rememberThemeImage(theme.entryArt[i])?.let { Image(it, label, Modifier.fillMaxWidth(0.92f).aspectRatio(1f)) }
                     Spacer(Modifier.height(Spacing.XS))
                     EntryLabel(label, sub, labelSize)
                 }
@@ -426,23 +421,6 @@ private fun EntryLabel(label: String, sub: String, size: androidx.compose.ui.uni
             DecoratedText(label, fontSize = size, color = theme.textPrimary)
             Text(sub, fontSize = 15.sp, color = theme.textSecondary, maxLines = 1)
         }
-    }
-}
-
-/**
- * 「聽聽看」卡的插圖：主題還沒有這張卡的圖（待美術），先用畫的。
- * 圓底（A 底板色、B 白、C 星球色）＋喇叭與聲波。
- */
-@Composable
-private fun ListenEntryArt(theme: AppTheme, i: Int, modifier: Modifier) {
-    val plate = if (theme.id == ThemeId.B) Color.White else theme.entryColors[i]
-    val ink = theme.outline.copy(alpha = 1f)
-    Box(modifier, contentAlignment = Alignment.Center) {
-        androidx.compose.foundation.Canvas(Modifier.fillMaxSize(0.86f)) {
-            drawCircle(plate)
-            drawCircle(ink, style = androidx.compose.ui.graphics.drawscope.Stroke(2.5.dp.toPx()))
-        }
-        Speaker(Modifier.fillMaxSize(0.5f), active = false)
     }
 }
 

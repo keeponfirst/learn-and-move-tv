@@ -37,8 +37,8 @@ data class AppTheme(
     val bgYoga: String,
     /** 設定頁的預覽縮圖（首頁）。 */
     val preview: String,
-    /** 首頁 6 張入口插圖，順序同 [HomeEntry]。null＝主題還沒有這張圖（聽聽看），畫面用畫的。 */
-    val entryArt: List<String?>,
+    /** 首頁 6 張入口插圖，順序同 [HomeEntry]。 */
+    val entryArt: List<String>,
     /** 入口卡顏色 6 個，順序同 [HomeEntry]。A 是插圖底板色，B 是卡片底色，C 是卡內星球色。 */
     val entryColors: List<Color>,
     /** 入口卡底下的立體厚度色。A 沒有，用投影色代替。 */
@@ -88,8 +88,7 @@ object Themes {
      */
     private fun entries(dir: String) =
         listOf("theme/$dir/journey/${if (dir == "b") "entry_journey_art" else "entry_journey"}.png") +
-            listOf("parent", "self", "abc", "yoga").map { "theme/$dir/entry/entry_$it.png" } +
-            listOf(null) // 聽聽看：還沒有美術圖
+            listOf("parent", "self", "abc", "yoga", "listen").map { "theme/$dir/entry/entry_$it.png" }
 
     val A = AppTheme(
         id = ThemeId.A,
