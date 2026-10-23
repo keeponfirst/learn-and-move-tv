@@ -14,5 +14,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "bopomofo-tv"
+rootProject.name = "learn-and-move-tv"
 include(":app")

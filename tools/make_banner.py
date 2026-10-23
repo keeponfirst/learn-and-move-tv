@@ -25,10 +25,11 @@ def load_font(size):
 def main(out_path):
     img = Image.new("RGB", (320, 180), (38, 70, 83))
     draw = ImageDraw.Draw(img)
-    big = load_font(72)
-    small = load_font(34)
-    draw.text((160, 72), "ㄅㄆㄇ", font=big, fill=(255, 214, 102), anchor="mm")
-    draw.text((160, 140), "注音卡", font=small, fill=(255, 255, 255), anchor="mm")
+    # 4 字 × 60 px ＝ 240 px，左右各留 40 px。
+    big = load_font(60)
+    small = load_font(30)
+    draw.text((160, 76), "動動學學", font=big, fill=(255, 214, 102), anchor="mm")
+    draw.text((160, 140), "Learn & Move", font=small, fill=(255, 255, 255), anchor="mm")
     img.save(out_path)
 
 

@@ -1,6 +1,6 @@
-# 注音卡：Android TV 上的注音、ABC 與兒童瑜伽
+# 動動學學（Learn & Move）：Android TV 上的注音、ABC 與兒童瑜伽
 
-給學齡前孩子用的 Android TV／Google TV 教具 App。用電視遙控器就能玩。
+動動學學是給學齡前孩子用的 Android TV／Google TV 教具 App。孩子可以學注音、學 ABC，也可以跟著做瑜伽。用電視遙控器就能玩。
 
 - **離線**：App 沒有網路權限，所有圖和聲音都在 APK 裡。
 - **無廣告**：沒有廣告，也沒有內購。
@@ -61,13 +61,13 @@ App 沒有上架 Google Play，要用「側載」安裝。側載的意思是：�
    - 選單名稱依電視品牌和系統版本不同，可能叫「安裝不明應用程式」。
 4. **下載 APK。** 打開 Downloader，在網址欄輸入本專案 GitHub Releases 的 APK 下載網址：
    ```
-   https://github.com/<OWNER>/<REPO>/releases/latest/download/zhuyin-tv.apk
+   https://github.com/keeponfirst/learn-and-move-tv/releases/latest/download/learn-and-move-tv.apk
    ```
-   <!-- TODO：repo 建好後換成實際網址，或附短網址。 -->
+   <!-- TODO：repo 建好、發 Release 後確認網址可下載，或附短網址。 -->
 5. **安裝。** 下載完會跳出安裝畫面，選「安裝」。
 6. **刪掉 APK 檔。** 安裝完 Downloader 會問要不要刪除檔案，選「刪除」，省空間。
 7. **（建議）關掉未知來源。** 回到步驟 3 的地方，把 Downloader 關掉。
-8. **開 App。** 主畫面「您的應用程式」列會出現「注音卡」。找不到就到 設定 > 應用程式 > 查看所有應用程式 > 注音卡。
+8. **開 App。** 主畫面「您的應用程式」列會出現「動動學學」。找不到就到 設定 > 應用程式 > 查看所有應用程式 > 動動學學。
 
 ### 方法二：工程師（用 adb）
 
@@ -87,7 +87,7 @@ App 沒有上架 Google Play，要用「側載」安裝。側載的意思是：�
    ```
 5. **安裝。**
    ```
-   adb install -r zhuyin-tv.apk
+   adb install -r learn-and-move-tv.apk
    ```
    自己建置的話，APK 在 `app/build/outputs/apk/debug/app-debug.apk`。
 
@@ -193,7 +193,7 @@ App 首頁底部也有一行標示。
 
 ## English
 
-**Zhuyin Cards** is an Android TV / Google TV app for preschoolers. It teaches Zhuyin (Bopomofo), the ABCs, and simple kids yoga. You play it with the TV remote.
+**Learn & Move** (動動學學) is an Android TV / Google TV app for preschoolers. It teaches Zhuyin (Bopomofo), the ABCs, and simple kids yoga. You play it with the TV remote.
 
 - Works offline. The app has no network permission.
 - No ads and no in-app purchases.

@@ -35,7 +35,7 @@ fun HomeScreen(onParent: () -> Unit, onSelf: () -> Unit, onAbc: () -> Unit, onYo
             modifier = Modifier.align(Alignment.Center),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            Text("注音卡", fontSize = 48.sp, color = TextColor)
+            Text("動動學學", fontSize = 48.sp, color = TextColor)
             Spacer(Modifier.height(48.dp))
             // 四顆 200 dp ＋ 三個 32 dp 間距 ＝ 896 dp，放得進 1080p 電視的 960 dp 寬。
             Row(horizontalArrangement = Arrangement.spacedBy(32.dp)) {
