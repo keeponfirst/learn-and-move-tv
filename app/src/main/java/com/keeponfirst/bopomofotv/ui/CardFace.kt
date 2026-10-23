@@ -23,9 +23,10 @@ import com.keeponfirst.bopomofotv.data.ZhuyinWord
  * 卡片內容（放在 [CardPage] 的大卡裡）：符號大字、例詞、例詞注音。
  * 例詞有圖：左圖右字，圖是大卡高度 82% 的方框（框的樣子照主題）。沒圖：三行整組置中。
  * 符號字級＝大卡高度的 55%。大人陪大卡約 320 dp 高：符號框 176 dp＋例詞 48 sp（約 70 dp）＋注音（約 38 dp）＝284 dp。
+ * [strokes] 不是 null：符號大字換成筆順畫布（同大小），左上角顯示「第 N 筆」。
  */
 @Composable
-fun CardFace(card: Card, word: ZhuyinWord = ZhuyinWord(card.keyword, card.keywordZhuyin)) {
+fun CardFace(card: Card, word: ZhuyinWord = ZhuyinWord(card.keyword, card.keywordZhuyin), strokes: StrokePlayback? = null) {
     val image = word.image?.let { rememberAssetImage(it) }
     BoxWithConstraints(Modifier.fillMaxSize()) {
         val symbolBox = maxHeight * 0.55f
@@ -37,25 +38,26 @@ fun CardFace(card: Card, word: ZhuyinWord = ZhuyinWord(card.keyword, card.keywor
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 CardImage(image, word.word, imageBox)
-                SymbolAndWord(card, word, symbolBox)
+                SymbolAndWord(card, word, symbolBox, strokes)
             }
         } else {
             Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                SymbolAndWord(card, word, symbolBox)
+                SymbolAndWord(card, word, symbolBox, strokes)
             }
         }
+        strokes?.let { InfoPill(Modifier.align(Alignment.TopStart)) { PillText(strokeLabel(it)) } }
     }
 }
 
 @Composable
-private fun SymbolAndWord(card: Card, word: ZhuyinWord, symbolBox: Dp) {
+private fun SymbolAndWord(card: Card, word: ZhuyinWord, symbolBox: Dp, strokes: StrokePlayback?) {
     val symbolSize = with(LocalDensity.current) { symbolBox.toSp() }
     Column(verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally) {
         // 中文字型上下自帶留白，符號的文字框約 1.5 倍字級高，會把下方的字擠出畫面
         // （模擬器實測，lineHeight 改不掉）。所以版面只給一個字級高的框，
         // 字在框內置中，留白畫到框外，不佔版面。
         Box(Modifier.height(symbolBox), contentAlignment = Alignment.Center) {
-            SymbolText(card.symbol, symbolSize)
+            if (strokes != null) StrokeCanvas(strokes, symbolBox) else SymbolText(card.symbol, symbolSize)
         }
         Text(word.word, fontSize = 48.sp, color = TextColor, fontWeight = androidx.compose.ui.text.font.FontWeight.Black)
         Text(word.zhuyin, fontSize = 26.sp, color = SubtleColor)

@@ -29,6 +29,8 @@ import com.keeponfirst.bopomofotv.data.CardRepository
 import com.keeponfirst.bopomofotv.data.DeckPosition
 import com.keeponfirst.bopomofotv.data.Decks
 import com.keeponfirst.bopomofotv.data.StickerCatalog
+import com.keeponfirst.bopomofotv.data.StrokeRepository
+import com.keeponfirst.bopomofotv.data.StrokeSymbol
 import com.keeponfirst.bopomofotv.data.WordsRepository
 import com.keeponfirst.bopomofotv.data.YogaChoice
 import com.keeponfirst.bopomofotv.data.YogaParser
@@ -83,6 +85,7 @@ class MainActivity : ComponentActivity() {
         val words = WordsRepository.loadZhuyin(this)
         val abcDeck = Decks.abc(AbcRepository.load(this), WordsRepository.loadAbc(this))
         val yoga = YogaRepository.load(this)
+        val strokes = StrokeRepository.load(this)
         val resolver = AudioResolver(AudioPlayer.listAvailable(assets))
         player = AudioPlayer(assets)
         val store = PracticeStore(this)
@@ -94,7 +97,7 @@ class MainActivity : ComponentActivity() {
             val scope = rememberCoroutineScope()
             themeId?.let { id ->
                 BopomofoTheme(Themes.of(id)) {
-                    BopomofoApp(cards, words, abcDeck, yoga, resolver, player, store, themeId = id) { picked ->
+                    BopomofoApp(cards, words, abcDeck, yoga, strokes, resolver, player, store, themeId = id) { picked ->
                         themeId = picked
                         scope.launch { themeStore.save(picked) }
                     }
@@ -156,6 +159,7 @@ private fun BopomofoApp(
     words: Map<String, List<ZhuyinWord>>,
     abcDeck: List<AbcWordCard>,
     yoga: List<YogaChoice>,
+    strokes: Map<String, StrokeSymbol>,
     resolver: AudioResolver,
     player: AudioPlayer,
     store: PracticeStore,
@@ -328,6 +332,7 @@ private fun BopomofoApp(
                         mode = mode,
                         startedAt = s.startedAt,
                         onDeckEnd = { completeStation(s) },
+                        strokes = strokes,
                     )
                     StickerKind.ABC -> AbcCardScreen(
                         deck = remember { abcDeck.filter { it.card.upper == id.key } },
@@ -371,6 +376,7 @@ private fun BopomofoApp(
                     scope.launch { store.saveParentProgress(progress) }
                     screen = Screen.Done(locked = false, phrase = phrase)
                 },
+                strokes = strokes,
             )
             // 位置用 App 層的 scope 存：卡片頁的 scope 會隨換頁取消。
             is Screen.SelfPlay -> SelfPlayCardScreen(
@@ -382,6 +388,7 @@ private fun BopomofoApp(
                 onExit = goHome,
                 onTimeUp = timeUp,
                 onSymbolDone = { award(StickerId(StickerKind.ZHUYIN, it.card.symbol)) },
+                strokes = strokes,
             )
             is Screen.Abc -> AbcCardScreen(
                 deck = abcDeck,

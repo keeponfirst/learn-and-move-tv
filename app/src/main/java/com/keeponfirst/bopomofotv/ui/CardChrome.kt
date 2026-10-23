@@ -108,7 +108,7 @@ fun CardPage(
 }
 
 @Composable
-private fun PillText(text: String) {
+internal fun PillText(text: String) {
     val theme = LocalAppTheme.current
     Text(text, fontSize = TextSize.Info, color = if (theme.id == ThemeId.B) theme.hudText else theme.textSecondary, fontWeight = FontWeight.Black)
 }
