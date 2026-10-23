@@ -1,314 +1,314 @@
 {
-  "version": "2026-10-23",
-  "character": "Original character, same in every image: a cheerful 4-year-old child with a short round black bob haircut, rosy cheeks, mint-green short-sleeve top, navy shorts, barefoot. Flat vector children's-book style, thick soft outlines, pastel colors, plain cream background, full body visible, centered. No text, no letters, no numbers, no logos.",
-  "poses": [
-    {
-      "id": "mountain",
-      "nameZh": "高山",
-      "nameEn": "Mountain Pose",
-      "seconds": 15,
-      "image": "yoga/img/mountain.png",
-      "cueAudio": "yoga/audio/c_mountain.m4a",
-      "cueText": "站好，兩腳併攏。手舉高高，變成一座高山。慢慢吸氣，慢慢吐氣。",
-      "imagePrompt": "The character stands tall facing the viewer, feet together, both arms stretched straight up overhead with palms facing each other, calm smile, eyes open. {character}",
-      "safety": "這是暖身，讓孩子手舉高、慢慢呼吸就好，不用憋氣。"
-    },
-    {
-      "id": "star",
-      "nameZh": "星星",
-      "nameEn": "Star Pose",
-      "seconds": 15,
-      "image": "yoga/img/star.png",
-      "cueAudio": "yoga/audio/c_star.m4a",
-      "cueText": "兩腳打開，兩手打開。變成一顆大星星！亮晶晶，閃一閃。",
-      "imagePrompt": "The character stands facing the viewer with legs spread wide apart and arms stretched out diagonally up and to the sides, fingers spread, forming a five-point star shape, big happy smile. {character}",
-      "safety": "兩腳打開到站得穩就好，周圍一臂距離內不要有家具。"
-    },
-    {
-      "id": "tree_left",
-      "nameZh": "大樹（左腳站）",
-      "nameEn": "Tree Pose (standing on left foot)",
-      "seconds": 15,
-      "image": "yoga/img/tree_left.png",
-      "cueAudio": "yoga/audio/c_tree_left.m4a",
-      "cueText": "用左腳站好。右腳腳底貼在左腳上。手合起來，變成一棵大樹！",
-      "imagePrompt": "The character balances on the left leg facing the viewer, the right foot's sole resting against the inside of the left ankle with toes touching the floor, palms pressed together in front of the chest, focused happy face. {character}",
-      "safety": "腳貼在腳踝或小腿就好，不要壓在膝蓋上；搖晃時可以扶牆或扶大人。"
-    },
-    {
-      "id": "tree_right",
-      "nameZh": "大樹（右腳站）",
-      "nameEn": "Tree Pose (standing on right foot)",
-      "seconds": 15,
-      "image": "yoga/img/tree_right.png",
-      "cueAudio": "yoga/audio/c_tree_right.m4a",
-      "cueText": "換右腳站。左腳腳底貼在右腳上。大樹長高高，風吹也不怕！",
-      "imagePrompt": "Mirror image of the tree pose: the character balances on the right leg facing the viewer, the left foot's sole resting against the inside of the right ankle with toes touching the floor, palms pressed together in front of the chest, focused happy face. {character}",
-      "safety": "腳貼在腳踝或小腿就好，不要壓在膝蓋上；搖晃時可以扶牆或扶大人。"
-    },
-    {
-      "id": "cat_cow",
-      "nameZh": "貓咪和小牛",
-      "nameEn": "Cat-Cow Pose",
-      "seconds": 20,
-      "image": "yoga/img/cat_cow.png",
-      "cueAudio": "yoga/audio/c_cat_cow.m4a",
-      "cueText": "趴下來，手和膝蓋放地上。背拱起來，喵～是貓咪！頭抬起來，哞～是小牛！",
-      "imagePrompt": "Side view. The character is on hands and knees on a soft mat, hands under shoulders and knees under hips, back gently rounded up like a stretching cat, chin tucked, playful expression. Only one character in the image. {character}",
-      "safety": "慢慢換動作，抬頭時不要把脖子用力往後仰。"
-    },
-    {
-      "id": "dog",
-      "nameZh": "小狗",
-      "nameEn": "Downward-Facing Dog",
-      "seconds": 10,
-      "image": "yoga/img/dog.png",
-      "cueAudio": "yoga/audio/c_dog.m4a",
-      "cueText": "手撐地，屁股抬高高。變成伸懶腰的小狗！汪汪！",
-      "imagePrompt": "Side view. The character makes an upside-down V shape: hands flat on the mat with fingers spread wide, hips lifted high, knees slightly bent, heels lifted off the floor, head relaxed between the arms, smiling. {character}",
-      "safety": "只撐 10 秒，膝蓋可以彎；手指張開分散重量，孩子說手痛就放下休息。"
-    },
-    {
-      "id": "butterfly",
-      "nameZh": "蝴蝶",
-      "nameEn": "Butterfly Pose",
-      "seconds": 20,
-      "image": "yoga/img/butterfly.png",
-      "cueAudio": "yoga/audio/c_butterfly.m4a",
-      "cueText": "坐下來，兩個腳底碰在一起。腿像翅膀，輕輕拍一拍。蝴蝶飛呀飛！",
-      "imagePrompt": "Front view. The character sits upright on a soft mat, soles of the feet pressed together, knees out to the sides like wings, hands holding the feet, joyful face. {character}",
-      "safety": "腿輕輕上下拍就好，不要幫孩子把膝蓋往下壓。"
-    },
-    {
-      "id": "rock",
-      "nameZh": "小石頭",
-      "nameEn": "Child's Pose",
-      "seconds": 15,
-      "image": "yoga/img/rock.png",
-      "cueAudio": "yoga/audio/c_rock.m4a",
-      "cueText": "跪坐下來，身體往前趴。額頭碰地，變成一顆小石頭。好安靜喔。",
-      "imagePrompt": "Side view. The character kneels on a soft mat and folds forward, sitting back on the heels, forehead resting on the mat, arms resting along the sides of the body, peaceful closed eyes. {character}",
-      "safety": "額頭下要是軟墊；膝蓋不舒服可以在屁股下墊一個小枕頭。"
-    },
-    {
-      "id": "sleep",
-      "nameZh": "睡午覺",
-      "nameEn": "Resting Pose",
-      "seconds": 20,
-      "image": "yoga/img/sleep.png",
-      "cueAudio": "yoga/audio/c_sleep.m4a",
-      "cueText": "躺下來，手腳放鬆。眼睛閉起來，肚子慢慢鼓起來，再慢慢扁下去。",
-      "imagePrompt": "Top-down view. The character lies flat on the back on a soft mat, arms relaxed at the sides with palms up, legs relaxed, eyes gently closed, peaceful smile, a few small soft stars floating nearby as decoration. {character}",
-      "safety": "躺在軟墊上，頭附近不要有桌角；孩子不想閉眼也沒關係。"
-    },
-    {
-      "id": "frog",
-      "nameZh": "青蛙",
-      "nameEn": "Frog Squat",
-      "seconds": 15,
-      "image": "yoga/img/frog.png",
-      "cueAudio": "yoga/audio/c_frog.m4a",
-      "cueText": "蹲下來，兩腳打開。手放在兩腳中間的地上。變成小青蛙！呱呱，呱呱！",
-      "imagePrompt": "Front view. The character squats low with feet flat and apart, knees pointing out, both hands touching the mat between the feet, cheeks puffed, playful frog-like grin. Only one character in the image. {character}",
-      "safety": "腳跟可以離地；要跳的話只輕輕跳，落地時膝蓋彎彎。（來源：preschoolinspirations.com/animal-yoga-poses-for-kids、yogajournal.com 5 kid-friendly animal poses，2026-10-23 讀取）"
-    },
-    {
-      "id": "lion",
-      "nameZh": "獅子",
-      "nameEn": "Lion's Breath",
-      "seconds": 10,
-      "image": "yoga/img/lion.png",
-      "cueAudio": "yoga/audio/c_lion.m4a",
-      "cueText": "跪坐下來，手放膝蓋上。大口吸氣，嘴巴張大，舌頭伸出來。哈～我是小獅子！",
-      "imagePrompt": "Front view. The character kneels sitting back on the heels on a soft mat, hands on the knees with fingers spread like paws, mouth wide open with tongue out, eyes wide, playful roaring face. {character}",
-      "safety": "吐氣大聲但不要用喉嚨喊；做 2～3 次就好，頭暈就停。（來源：acefitness.org/blog/5672、yogajournal.com 5 kid-friendly animal poses，2026-10-23 讀取）"
-    },
-    {
-      "id": "bird",
-      "nameZh": "小鳥",
-      "nameEn": "Little Bird (two-foot airplane)",
-      "seconds": 15,
-      "image": "yoga/img/bird.png",
-      "cueAudio": "yoga/audio/c_bird.m4a",
-      "cueText": "兩腳站穩。兩手打開，變成翅膀。身體往這邊斜，再往那邊斜。小鳥飛呀飛！",
-      "imagePrompt": "Front view. The character stands on both feet slightly apart, both arms stretched straight out to the sides like wings, body tilted gently to one side as if gliding, happy face. {character}",
-      "safety": "兩腳都踩地，不做單腳前傾的飛機式；只輕輕左右斜。（未查到來源，自編簡化動作）"
-    },
-    {
-      "id": "snake",
-      "nameZh": "小蛇",
-      "nameEn": "Baby Cobra",
-      "seconds": 10,
-      "image": "yoga/img/snake.png",
-      "cueAudio": "yoga/audio/c_snake.m4a",
-      "cueText": "趴下來，手放在肩膀旁邊。頭和胸口抬起來一點點，眼睛看地板。嘶～嘶～小蛇！",
-      "imagePrompt": "Side view. The character lies on the belly on a soft mat, hands flat beside the shoulders with elbows bent and close to the body, head and upper chest lifted only a little off the mat, eyes looking down at the floor ahead, legs long, hissing playful face. {character}",
-      "safety": "只抬一點點，手肘彎著、不撐直；不要往後仰頭，腰會痛就趴下。（來源：acefitness.org/blog/5672、kidsyogastories.com/kids-yoga-poses、preschoolinspirations.com/animal-yoga-poses-for-kids，2026-10-23 讀取）"
-    },
-    {
-      "id": "turtle",
-      "nameZh": "烏龜",
-      "nameEn": "Turtle Pose (hug knees)",
-      "seconds": 15,
-      "image": "yoga/img/turtle.png",
-      "cueAudio": "yoga/audio/c_turtle.m4a",
-      "cueText": "坐下來，膝蓋彎起來。手抱住膝蓋，頭低低的。小烏龜躲進殼裡，好安靜。",
-      "imagePrompt": "Side view. The character sits on a soft mat with knees bent up to the chest, arms hugging the knees, back gently rounded, head tucked down toward the knees like a turtle in its shell, peaceful closed eyes. {character}",
-      "safety": "抱膝輕輕彎就好，不做手穿腿下的深前彎；大人不要從背後往下壓。（來源：kidsyogastories.com/kids-yoga-poses、preschoolinspirations.com/animal-yoga-poses-for-kids，2026-10-23 讀取）"
-    },
-    {
-      "id": "moon",
-      "nameZh": "月亮",
-      "nameEn": "Crescent Moon Side Bend",
-      "seconds": 20,
-      "image": "yoga/img/moon.png",
-      "cueAudio": "yoga/audio/c_moon.m4a",
-      "cueText": "站好，手舉高，手掌合起來。身體彎向這一邊，變成彎彎的月亮。再彎向另一邊。",
-      "imagePrompt": "Front view. The character stands with feet together, both arms stretched overhead with palms together, body gently bending sideways into a crescent shape, calm smile. {character}",
-      "safety": "只往旁邊彎，不往後仰；兩邊各彎一次，慢慢來。（來源：kidsyogastories.com/kids-yoga-poses，2026-10-23 讀取）"
-    },
-    {
-      "id": "rocket",
-      "nameZh": "火箭",
-      "nameEn": "Rocket Pose",
-      "seconds": 10,
-      "image": "yoga/img/rocket.png",
-      "cueAudio": "yoga/audio/c_rocket.m4a",
-      "cueText": "蹲下來，手合起來。三、二、一，發射！站起來，手舉高高，變成火箭飛上天！",
-      "imagePrompt": "Front view. The character stands tall on tiptoes, palms pressed together straight above the head like a rocket nose, excited smile, a few small cartoon clouds near the feet as decoration. {character}",
-      "safety": "站起來時不用跳；要跳就輕輕跳，落地膝蓋彎彎。（未查到來源，自編簡化動作）"
-    },
-    {
-      "id": "chair",
-      "nameZh": "椅子",
-      "nameEn": "Chair Pose",
-      "seconds": 10,
-      "image": "yoga/img/chair.png",
-      "cueAudio": "yoga/audio/c_chair.m4a",
-      "cueText": "兩腳站好，膝蓋彎下來，像坐在看不見的椅子上。手往前伸直。坐穩囉！",
-      "imagePrompt": "Side view. The character stands with feet together, knees bent and hips pushed back as if sitting on an invisible chair, back straight, both arms stretched forward at shoulder height, determined smile. {character}",
-      "safety": "膝蓋彎一點點就好；腿酸就站起來休息。（來源：kidsyogastories.com/kids-yoga-poses、weareteachers.com/yoga-poses-for-kids，2026-10-23 讀取）"
-    },
-    {
-      "id": "flower",
-      "nameZh": "花朵",
-      "nameEn": "Flower Pose (seated, feet down)",
-      "seconds": 15,
-      "image": "yoga/img/flower.png",
-      "cueAudio": "yoga/audio/c_flower.m4a",
-      "cueText": "坐下來，腳底碰在一起。手腕靠在一起，手指慢慢打開。小花開了，好香喔！",
-      "imagePrompt": "Front view. The character sits upright on a soft mat with soles of the feet together and knees out, feet resting on the mat, wrists touching under the chin with fingers spread open like flower petals, gentle joyful smile, a few small flowers around as decoration. {character}",
-      "safety": "腳放在地上，不做抬腿的坐骨平衡版；身體坐直就好。（來源：kidsyogastories.com/kids-yoga-poses、weareteachers.com/yoga-poses-for-kids，2026-10-23 讀取）"
-    },
-    {
-      "id": "boat",
-      "nameZh": "小船",
-      "nameEn": "Boat Pose (bent knees)",
-      "seconds": 10,
-      "image": "yoga/img/boat.png",
-      "cueAudio": "yoga/audio/c_boat.m4a",
-      "cueText": "坐下來，膝蓋彎彎。手抱住大腿後面，腳抬起來一點點。小船搖呀搖！",
-      "imagePrompt": "Side view. The character sits on a soft mat leaning back slightly, knees bent, hands holding the backs of the thighs, feet lifted a little off the mat, balancing happily like a small boat. {character}",
-      "safety": "腳離地一點點就好，腳尖可以碰地；累了就放下，背不要往後倒。不做雙人拉手版。（來源：kidsyogastories.com/kids-yoga-poses，2026-10-23 讀取）"
-    },
-    {
-      "id": "bee",
-      "nameZh": "小蜜蜂",
-      "nameEn": "Bee Breath",
-      "seconds": 15,
-      "image": "yoga/img/bee.png",
-      "cueAudio": "yoga/audio/c_bee.m4a",
-      "cueText": "坐好，眼睛閉起來。用鼻子吸氣。嘴巴閉著吐氣，嗡～嗡～像小蜜蜂。",
-      "imagePrompt": "Front view. The character sits cross-legged on a soft mat, eyes gently closed, lips closed in a soft hum, hands resting lightly over the ears, a tiny cute bee flying nearby as decoration. {character}",
-      "safety": "手輕輕蓋耳朵或放膝蓋都可以，不要壓耳朵；做 3 次就好。（來源：cosmickids.com/?p=1398，2026-10-23 讀取）"
-    },
-    {
-      "id": "balloon",
-      "nameZh": "氣球呼吸",
-      "nameEn": "Balloon Breathing",
-      "seconds": 15,
-      "image": "yoga/img/balloon.png",
-      "cueAudio": "yoga/audio/c_balloon.m4a",
-      "cueText": "坐好，手放在肚子上。吸氣，肚子變成大氣球。吐氣，氣球慢慢消下去。",
-      "imagePrompt": "Front view. The character sits cross-legged on a soft mat, both hands resting on the belly, eyes gently closed, cheeks slightly puffed, a small pastel balloon floating beside as decoration. {character}",
-      "safety": "用鼻子慢慢吸、嘴巴慢慢吐，不要憋氣；做 3 次就好。（未查到來源，自編簡化動作）"
-    }
-  ],
-  "sets": [
-    {
-      "id": "animal",
-      "nameZh": "動物派對",
-      "intro": {
-        "cueText": "動物派對開始囉！請大人陪在旁邊。脫掉鞋子和襪子，找一塊空地。我們一起變成好多動物！",
-        "cueAudio": "yoga/audio/c_animal_intro.m4a"
-      },
-      "done": {
-        "cueText": "派對結束囉！你變成了青蛙、獅子、小鳥、貓咪、小狗、小蛇、蝴蝶和烏龜。好厲害！給自己拍拍手！",
-        "cueAudio": "yoga/audio/c_animal_done.m4a"
-      },
-      "poseIds": [
-        "mountain",
-        "frog",
-        "lion",
-        "bird",
-        "cat_cow",
-        "dog",
-        "snake",
-        "butterfly",
-        "turtle",
-        "rock",
-        "sleep"
-      ]
-    },
-    {
-      "id": "nature",
-      "nameZh": "大自然冒險",
-      "intro": {
-        "cueText": "我們去大自然冒險囉！請大人陪在旁邊。脫掉鞋子和襪子，找一塊空地。出發！",
-        "cueAudio": "yoga/audio/c_nature_intro.m4a"
-      },
-      "done": {
-        "cueText": "冒險回來囉！你當了高山、星星、月亮、大樹、火箭、小花和小船。你好棒！給自己拍拍手！",
-        "cueAudio": "yoga/audio/c_nature_done.m4a"
-      },
-      "poseIds": [
-        "mountain",
-        "star",
-        "moon",
-        "tree_left",
-        "tree_right",
-        "rocket",
-        "chair",
-        "flower",
-        "boat",
-        "butterfly",
-        "rock",
-        "sleep"
-      ]
-    },
-    {
-      "id": "bedtime",
-      "nameZh": "睡前放鬆",
-      "intro": {
-        "cueText": "要睡覺了，我們做輕輕的瑜伽。請大人陪在旁邊。把燈調暗一點，說話小小聲。",
-        "cueAudio": "yoga/audio/c_bedtime_intro.m4a"
-      },
-      "done": {
-        "cueText": "繼續躺著，慢慢呼吸。身體好軟，好舒服。晚安，做個好夢。",
-        "cueAudio": "yoga/audio/c_bedtime_done.m4a"
-      },
-      "poseIds": [
-        "mountain",
-        "moon",
-        "cat_cow",
-        "butterfly",
-        "flower",
-        "turtle",
-        "balloon",
-        "bee",
-        "rock",
-        "sleep"
-      ]
-    }
-  ]
+ "version": "2026-10-23",
+ "character": "Original character, same in every image: a cheerful 4-year-old child with a short round black bob haircut, rosy cheeks, mint-green short-sleeve top, navy shorts, barefoot. Flat vector children's-book style, thick soft outlines, pastel colors, plain cream background, full body visible, centered. No text, no letters, no numbers, no logos.",
+ "poses": [
+  {
+   "id": "mountain",
+   "nameZh": "高山",
+   "nameEn": "Mountain Pose",
+   "seconds": 15,
+   "image": "yoga/img/mountain.png",
+   "cueAudio": "yoga/audio/c_mountain.m4a",
+   "cueText": "站好，兩腳併攏。手舉高高，變成一座高山。慢慢吸氣，慢慢吐氣。",
+   "imagePrompt": "The character stands tall facing the viewer, feet together, both arms stretched straight up overhead with palms facing each other, calm smile, eyes open. {character}",
+   "safety": "這是暖身，讓孩子手舉高、慢慢呼吸就好，不用憋氣。"
+  },
+  {
+   "id": "star",
+   "nameZh": "星星",
+   "nameEn": "Star Pose",
+   "seconds": 15,
+   "image": "yoga/img/star.png",
+   "cueAudio": "yoga/audio/c_star.m4a",
+   "cueText": "兩腳打開，兩手打開。變成一顆大星星！亮晶晶，閃一閃。",
+   "imagePrompt": "The character stands facing the viewer with legs spread wide apart and arms stretched out diagonally up and to the sides, fingers spread, forming a five-point star shape, big happy smile. {character}",
+   "safety": "兩腳打開到站得穩就好，周圍一臂距離內不要有家具。"
+  },
+  {
+   "id": "tree_left",
+   "nameZh": "大樹（左腳站）",
+   "nameEn": "Tree Pose (standing on left foot)",
+   "seconds": 15,
+   "image": "yoga/img/tree_left.png",
+   "cueAudio": "yoga/audio/c_tree_left.m4a",
+   "cueText": "用左腳站好。右腳腳底貼在左腳上。手合起來，變成一棵大樹！",
+   "imagePrompt": "The character balances on the left leg facing the viewer, the right foot's sole resting against the inside of the left ankle with toes touching the floor, palms pressed together in front of the chest, focused happy face. {character}",
+   "safety": "腳貼在腳踝或小腿就好，不要壓在膝蓋上；搖晃時可以扶牆或扶大人。"
+  },
+  {
+   "id": "tree_right",
+   "nameZh": "大樹（右腳站）",
+   "nameEn": "Tree Pose (standing on right foot)",
+   "seconds": 15,
+   "image": "yoga/img/tree_right.png",
+   "cueAudio": "yoga/audio/c_tree_right.m4a",
+   "cueText": "換右腳站。左腳腳底貼在右腳上。大樹長高高，風吹也不怕！",
+   "imagePrompt": "Mirror image of the tree pose: the character balances on the right leg facing the viewer, the left foot's sole resting against the inside of the right ankle with toes touching the floor, palms pressed together in front of the chest, focused happy face. {character}",
+   "safety": "腳貼在腳踝或小腿就好，不要壓在膝蓋上；搖晃時可以扶牆或扶大人。"
+  },
+  {
+   "id": "cat_cow",
+   "nameZh": "貓咪和小牛",
+   "nameEn": "Cat-Cow Pose",
+   "seconds": 20,
+   "image": "yoga/img/cat_cow.png",
+   "cueAudio": "yoga/audio/c_cat_cow.m4a",
+   "cueText": "趴下來，手和膝蓋放地上。背拱起來，喵～是貓咪！頭抬起來，哞～是小牛！",
+   "imagePrompt": "Side view. The character is on hands and knees on a soft mat, hands under shoulders and knees under hips, back gently rounded up like a stretching cat, chin tucked, playful expression. Only one character in the image. {character}",
+   "safety": "慢慢換動作，抬頭時不要把脖子用力往後仰。"
+  },
+  {
+   "id": "dog",
+   "nameZh": "小狗",
+   "nameEn": "Downward-Facing Dog",
+   "seconds": 10,
+   "image": "yoga/img/dog.png",
+   "cueAudio": "yoga/audio/c_dog.m4a",
+   "cueText": "手撐地，屁股抬高高。變成伸懶腰的小狗！汪汪！",
+   "imagePrompt": "Side view. The character makes an upside-down V shape: hands flat on the mat with fingers spread wide, hips lifted high, knees slightly bent, heels lifted off the floor, head relaxed between the arms, smiling. {character}",
+   "safety": "只撐 10 秒，膝蓋可以彎；手指張開分散重量，孩子說手痛就放下休息。"
+  },
+  {
+   "id": "butterfly",
+   "nameZh": "蝴蝶",
+   "nameEn": "Butterfly Pose",
+   "seconds": 20,
+   "image": "yoga/img/butterfly.png",
+   "cueAudio": "yoga/audio/c_butterfly.m4a",
+   "cueText": "坐下來，兩個腳底碰在一起。腿像翅膀，輕輕拍一拍。蝴蝶飛呀飛！",
+   "imagePrompt": "Front view. The character sits upright on a soft mat, soles of the feet pressed together, knees out to the sides like wings, hands holding the feet, joyful face. {character}",
+   "safety": "腿輕輕上下拍就好，不要幫孩子把膝蓋往下壓。"
+  },
+  {
+   "id": "rock",
+   "nameZh": "小石頭",
+   "nameEn": "Child's Pose",
+   "seconds": 15,
+   "image": "yoga/img/rock.png",
+   "cueAudio": "yoga/audio/c_rock.m4a",
+   "cueText": "跪坐下來，身體往前趴。額頭碰地，變成一顆小石頭。好安靜喔。",
+   "imagePrompt": "Side view. The character kneels on a soft mat and folds forward, sitting back on the heels, forehead resting on the mat, arms resting along the sides of the body, peaceful closed eyes. {character}",
+   "safety": "額頭下要是軟墊；膝蓋不舒服可以在屁股下墊一個小枕頭。"
+  },
+  {
+   "id": "sleep",
+   "nameZh": "睡午覺",
+   "nameEn": "Resting Pose",
+   "seconds": 20,
+   "image": "yoga/img/sleep.png",
+   "cueAudio": "yoga/audio/c_sleep.m4a",
+   "cueText": "躺下來，手腳放鬆。眼睛閉起來，肚子慢慢鼓起來，再慢慢扁下去。",
+   "imagePrompt": "Top-down view. The character lies flat on the back on a soft mat, arms relaxed at the sides with palms up, legs relaxed, eyes gently closed, peaceful smile, a few small soft stars floating nearby as decoration. {character}",
+   "safety": "躺在軟墊上，頭附近不要有桌角；孩子不想閉眼也沒關係。"
+  },
+  {
+   "id": "frog",
+   "nameZh": "青蛙",
+   "nameEn": "Frog Squat",
+   "seconds": 15,
+   "image": "yoga/img/frog.png",
+   "cueAudio": "yoga/audio/c_frog.m4a",
+   "cueText": "蹲下來，兩腳打開。手放在兩腳中間的地上。變成小青蛙！呱呱，呱呱！",
+   "imagePrompt": "Front view. The character squats low with feet flat and apart, knees pointing out, both hands touching the mat between the feet, cheeks puffed, playful frog-like grin. Only one character in the image. {character}",
+   "safety": "腳跟可以離地；要跳的話只輕輕跳，落地時膝蓋彎彎。"
+  },
+  {
+   "id": "lion",
+   "nameZh": "獅子",
+   "nameEn": "Lion's Breath",
+   "seconds": 10,
+   "image": "yoga/img/lion.png",
+   "cueAudio": "yoga/audio/c_lion.m4a",
+   "cueText": "跪坐下來，手放膝蓋上。大口吸氣，嘴巴張大，舌頭伸出來。哈～我是小獅子！",
+   "imagePrompt": "Front view. The character kneels sitting back on the heels on a soft mat, hands on the knees with fingers spread like paws, mouth wide open with tongue out, eyes wide, playful roaring face. {character}",
+   "safety": "吐氣大聲但不要用喉嚨喊；做 2～3 次就好，頭暈就停。"
+  },
+  {
+   "id": "bird",
+   "nameZh": "小鳥",
+   "nameEn": "Little Bird (two-foot airplane)",
+   "seconds": 15,
+   "image": "yoga/img/bird.png",
+   "cueAudio": "yoga/audio/c_bird.m4a",
+   "cueText": "兩腳站穩。兩手打開，變成翅膀。身體往這邊斜，再往那邊斜。小鳥飛呀飛！",
+   "imagePrompt": "Front view. The character stands on both feet slightly apart, both arms stretched straight out to the sides like wings, body tilted gently to one side as if gliding, happy face. {character}",
+   "safety": "兩腳都踩地，不做單腳前傾的飛機式；只輕輕左右斜。"
+  },
+  {
+   "id": "snake",
+   "nameZh": "小蛇",
+   "nameEn": "Baby Cobra",
+   "seconds": 10,
+   "image": "yoga/img/snake.png",
+   "cueAudio": "yoga/audio/c_snake.m4a",
+   "cueText": "趴下來，手放在肩膀旁邊。頭和胸口抬起來一點點，眼睛看地板。嘶～嘶～小蛇！",
+   "imagePrompt": "Side view. The character lies on the belly on a soft mat, hands flat beside the shoulders with elbows bent and close to the body, head and upper chest lifted only a little off the mat, eyes looking down at the floor ahead, legs long, hissing playful face. {character}",
+   "safety": "只抬一點點，手肘彎著、不撐直；不要往後仰頭，腰會痛就趴下。"
+  },
+  {
+   "id": "turtle",
+   "nameZh": "烏龜",
+   "nameEn": "Turtle Pose (hug knees)",
+   "seconds": 15,
+   "image": "yoga/img/turtle.png",
+   "cueAudio": "yoga/audio/c_turtle.m4a",
+   "cueText": "坐下來，膝蓋彎起來。手抱住膝蓋，頭低低的。小烏龜躲進殼裡，好安靜。",
+   "imagePrompt": "Side view. The character sits on a soft mat with knees bent up to the chest, arms hugging the knees, back gently rounded, head tucked down toward the knees like a turtle in its shell, peaceful closed eyes. {character}",
+   "safety": "抱膝輕輕彎就好，不做手穿腿下的深前彎；大人不要從背後往下壓。"
+  },
+  {
+   "id": "moon",
+   "nameZh": "月亮",
+   "nameEn": "Crescent Moon Side Bend",
+   "seconds": 20,
+   "image": "yoga/img/moon.png",
+   "cueAudio": "yoga/audio/c_moon.m4a",
+   "cueText": "站好，手舉高，手掌合起來。身體彎向這一邊，變成彎彎的月亮。再彎向另一邊。",
+   "imagePrompt": "Front view. The character stands with feet together, both arms stretched overhead with palms together, body gently bending sideways into a crescent shape, calm smile. {character}",
+   "safety": "只往旁邊彎，不往後仰；兩邊各彎一次，慢慢來。"
+  },
+  {
+   "id": "rocket",
+   "nameZh": "火箭",
+   "nameEn": "Rocket Pose",
+   "seconds": 10,
+   "image": "yoga/img/rocket.png",
+   "cueAudio": "yoga/audio/c_rocket.m4a",
+   "cueText": "蹲下來，手合起來。三、二、一，發射！站起來，手舉高高，變成火箭飛上天！",
+   "imagePrompt": "Front view. The character stands tall on tiptoes, palms pressed together straight above the head like a rocket nose, excited smile, a few small cartoon clouds near the feet as decoration. {character}",
+   "safety": "站起來時不用跳；要跳就輕輕跳，落地膝蓋彎彎。"
+  },
+  {
+   "id": "chair",
+   "nameZh": "椅子",
+   "nameEn": "Chair Pose",
+   "seconds": 10,
+   "image": "yoga/img/chair.png",
+   "cueAudio": "yoga/audio/c_chair.m4a",
+   "cueText": "兩腳站好，膝蓋彎下來，像坐在看不見的椅子上。手往前伸直。坐穩囉！",
+   "imagePrompt": "Side view. The character stands with feet together, knees bent and hips pushed back as if sitting on an invisible chair, back straight, both arms stretched forward at shoulder height, determined smile. {character}",
+   "safety": "膝蓋彎一點點就好；腿酸就站起來休息。"
+  },
+  {
+   "id": "flower",
+   "nameZh": "花朵",
+   "nameEn": "Flower Pose (seated, feet down)",
+   "seconds": 15,
+   "image": "yoga/img/flower.png",
+   "cueAudio": "yoga/audio/c_flower.m4a",
+   "cueText": "坐下來，腳底碰在一起。手腕靠在一起，手指慢慢打開。小花開了，好香喔！",
+   "imagePrompt": "Front view. The character sits upright on a soft mat with soles of the feet together and knees out, feet resting on the mat, wrists touching under the chin with fingers spread open like flower petals, gentle joyful smile, a few small flowers around as decoration. {character}",
+   "safety": "腳放在地上，不做抬腿的坐骨平衡版；身體坐直就好。"
+  },
+  {
+   "id": "boat",
+   "nameZh": "小船",
+   "nameEn": "Boat Pose (bent knees)",
+   "seconds": 10,
+   "image": "yoga/img/boat.png",
+   "cueAudio": "yoga/audio/c_boat.m4a",
+   "cueText": "坐下來，膝蓋彎彎。手抱住大腿後面，腳抬起來一點點。小船搖呀搖！",
+   "imagePrompt": "Side view. The character sits on a soft mat leaning back slightly, knees bent, hands holding the backs of the thighs, feet lifted a little off the mat, balancing happily like a small boat. {character}",
+   "safety": "腳離地一點點就好，腳尖可以碰地；累了就放下，背不要往後倒。不做雙人拉手版。"
+  },
+  {
+   "id": "bee",
+   "nameZh": "小蜜蜂",
+   "nameEn": "Bee Breath",
+   "seconds": 15,
+   "image": "yoga/img/bee.png",
+   "cueAudio": "yoga/audio/c_bee.m4a",
+   "cueText": "坐好，眼睛閉起來。用鼻子吸氣。嘴巴閉著吐氣，嗡～嗡～像小蜜蜂。",
+   "imagePrompt": "Front view. The character sits cross-legged on a soft mat, eyes gently closed, lips closed in a soft hum, hands resting lightly over the ears, a tiny cute bee flying nearby as decoration. {character}",
+   "safety": "手輕輕蓋耳朵或放膝蓋都可以，不要壓耳朵；做 3 次就好。"
+  },
+  {
+   "id": "balloon",
+   "nameZh": "氣球呼吸",
+   "nameEn": "Balloon Breathing",
+   "seconds": 15,
+   "image": "yoga/img/balloon.png",
+   "cueAudio": "yoga/audio/c_balloon.m4a",
+   "cueText": "坐好，手放在肚子上。吸氣，肚子變成大氣球。吐氣，氣球慢慢消下去。",
+   "imagePrompt": "Front view. The character sits cross-legged on a soft mat, both hands resting on the belly, eyes gently closed, cheeks slightly puffed, a small pastel balloon floating beside as decoration. {character}",
+   "safety": "用鼻子慢慢吸、嘴巴慢慢吐，不要憋氣；做 3 次就好。"
+  }
+ ],
+ "sets": [
+  {
+   "id": "animal",
+   "nameZh": "動物派對",
+   "intro": {
+    "cueText": "動物派對開始囉！請大人陪在旁邊。脫掉鞋子和襪子，找一塊空地。我們一起變成好多動物！",
+    "cueAudio": "yoga/audio/c_animal_intro.m4a"
+   },
+   "done": {
+    "cueText": "派對結束囉！你變成了青蛙、獅子、小鳥、貓咪、小狗、小蛇、蝴蝶和烏龜。好厲害！給自己拍拍手！",
+    "cueAudio": "yoga/audio/c_animal_done.m4a"
+   },
+   "poseIds": [
+    "mountain",
+    "frog",
+    "lion",
+    "bird",
+    "cat_cow",
+    "dog",
+    "snake",
+    "butterfly",
+    "turtle",
+    "rock",
+    "sleep"
+   ]
+  },
+  {
+   "id": "nature",
+   "nameZh": "大自然冒險",
+   "intro": {
+    "cueText": "我們去大自然冒險囉！請大人陪在旁邊。脫掉鞋子和襪子，找一塊空地。出發！",
+    "cueAudio": "yoga/audio/c_nature_intro.m4a"
+   },
+   "done": {
+    "cueText": "冒險回來囉！你當了高山、星星、月亮、大樹、火箭、小花和小船。你好棒！給自己拍拍手！",
+    "cueAudio": "yoga/audio/c_nature_done.m4a"
+   },
+   "poseIds": [
+    "mountain",
+    "star",
+    "moon",
+    "tree_left",
+    "tree_right",
+    "rocket",
+    "chair",
+    "flower",
+    "boat",
+    "butterfly",
+    "rock",
+    "sleep"
+   ]
+  },
+  {
+   "id": "bedtime",
+   "nameZh": "睡前放鬆",
+   "intro": {
+    "cueText": "要睡覺了，我們做輕輕的瑜伽。請大人陪在旁邊。把燈調暗一點，說話小小聲。",
+    "cueAudio": "yoga/audio/c_bedtime_intro.m4a"
+   },
+   "done": {
+    "cueText": "繼續躺著，慢慢呼吸。身體好軟，好舒服。晚安，做個好夢。",
+    "cueAudio": "yoga/audio/c_bedtime_done.m4a"
+   },
+   "poseIds": [
+    "mountain",
+    "moon",
+    "cat_cow",
+    "butterfly",
+    "flower",
+    "turtle",
+    "balloon",
+    "bee",
+    "rock",
+    "sleep"
+   ]
+  }
+ ]
 }

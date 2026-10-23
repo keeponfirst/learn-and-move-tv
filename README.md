@@ -10,7 +10,13 @@
 
 ## 截圖
 
-<!-- TODO：放截圖（首頁、大人陪、自己玩、ABC、瑜伽）。可用 scripts/emulator-screenshots.sh 產生。 -->
+| 首頁 | 注音 |
+|---|---|
+| ![首頁](docs/screenshots/home.png) | ![注音卡](docs/screenshots/zhuyin.png) |
+| **ABC** | **瑜伽：選一套** |
+| ![ABC 卡](docs/screenshots/abc.png) | ![瑜伽選套](docs/screenshots/yoga-sets.png) |
+| **瑜伽：跟著做** | |
+| ![瑜伽動作](docs/screenshots/yoga-pose.png) | |
 
 ## 有哪些玩法
 
