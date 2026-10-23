@@ -9,7 +9,7 @@ This project's source code is licensed under the MIT License (see LICENSE).
 Bundled assets and third-party software keep their own licenses, listed below.
 
 本檔與第三方授權全文也放在 APK 的 assets/licenses/：
-  NOTICE、THIRD_PARTY.md、Apache-2.0.txt、BSD-3-Clause-protobuf.txt
+  NOTICE、THIRD_PARTY.md、Apache-2.0.txt、BSD-3-Clause-protobuf.txt、OFL-1.1.txt
 repo 內的授權全文在 LICENSES/。
 
 ======================================================================
@@ -57,7 +57,8 @@ They are not human recordings. Do not use them to train speech models.
   app/src/main/assets/zhuyin/img/*.png（注音例詞）
   app/src/main/assets/abc/img/*.png（ABC）
   app/src/main/assets/yoga/img/*.png（瑜伽姿勢）
-插圖由本專案以程式繪製向量圖（SVG），再轉成 PNG。
+  app/src/main/assets/theme/**（三套主題的背景、入口插圖、角色、答對回饋零件、設定頁預覽圖）
+插圖由本專案以程式繪製向量圖（SVG），再轉成 PNG／JPEG。
 沒有使用 AI 生圖，也沒有使用第三方圖庫。
 插圖隨本專案以 MIT License 提供。
 
@@ -65,18 +66,16 @@ All illustrations were drawn programmatically by this project (SVG to PNG).
 No AI image generation and no stock art.
 
 ======================================================================
-4. TV banner
+4. App icon 與 TV banner
 ======================================================================
-檔案：app/src/main/res/drawable-xhdpi/banner.png
-由 tools/make_banner.py 產生，圖隨本專案以 MIT License 提供。
-banner 文字用 Noto Sans TC 字型繪製。
-  ・Copyright 2014-2021 Adobe (http://www.adobe.com/),
-    with Reserved Font Name 'Source'.
-  ・授權：SIL Open Font License 1.1（https://openfontlicense.org/）
-  ・OFL 不限制用字型製作的文件或圖片。本專案不收錄字型檔。
+檔案：
+  app/src/main/res/mipmap-*/ic_launcher*.png、mipmap-anydpi-v26/*.xml（App icon）
+  app/src/main/res/drawable-xhdpi/banner.png、drawable-xxxhdpi/banner.png（TV banner）
+  docs/icon-512.png（商店用高解析 icon，不在 APK 內）
+由本專案以程式繪製，圖隨本專案以 MIT License 提供。
+banner 與畫面上的字用 Noto Sans TC 字型（見第 6 節）。
 
-Banner text is rendered with Noto Sans TC (SIL Open Font License 1.1).
-The font file is not included in this project.
+The app icon and TV banner were drawn programmatically by this project (MIT).
 
 ======================================================================
 5. 文字內容
@@ -88,9 +87,19 @@ The font file is not included in this project.
 本 App 的瑜伽內容不是醫療建議。請大人陪同孩子練習。
 
 ======================================================================
-6. 字型
+6. 字型：Noto Sans TC
 ======================================================================
-本 App 不打包字型檔，畫面文字使用裝置的系統字型。
+檔案：app/src/main/res/font/notosanstc_bold.ttf、notosanstc_black.ttf
+  ・Copyright 2014-2021 Adobe (http://www.adobe.com/),
+    with Reserved Font Name 'Source'.
+  ・授權：SIL Open Font License 1.1（https://openfontlicense.org/）
+  ・授權全文：LICENSES/OFL-1.1.txt（APK 內：assets/licenses/OFL-1.1.txt）
+修改情形：從 variable 字型取出 Bold（700）與 Black（900）兩個字重，
+  並只保留 App 用到的字（子集化）。字型名稱未改。
+  App 畫面的文字都用這兩個檔；子集沒有的字會退回裝置的系統字型。
+
+Noto Sans TC (Bold, Black), SIL Open Font License 1.1.
+Modified: static instances at weight 700 and 900, subset to the characters the app uses.
 
 ======================================================================
 7. 第三方軟體（隨 APK 散布）

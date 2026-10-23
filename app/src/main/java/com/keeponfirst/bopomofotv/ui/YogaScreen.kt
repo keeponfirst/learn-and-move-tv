@@ -2,11 +2,15 @@ package com.keeponfirst.bopomofotv.ui
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
@@ -17,6 +21,10 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -26,10 +34,24 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.graphics.Path
+import androidx.compose.ui.graphics.StrokeCap
+import androidx.compose.ui.graphics.StrokeJoin
+import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.TextUnit
+import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LifecycleEventEffect
 import androidx.tv.material3.Text
@@ -56,6 +78,7 @@ fun YogaPickScreen(choices: List<YogaChoice>, onStart: (YogaChoice) -> Unit, onE
     BackHandler { onExit() }
 
     RemoteKeyBox(
+        backdrop = LocalAppTheme.current.bgYoga,
         onKey = { key ->
             when (key) {
                 RemoteKey.LEFT -> index = (index - 1).coerceAtLeast(0)
@@ -69,15 +92,15 @@ fun YogaPickScreen(choices: List<YogaChoice>, onStart: (YogaChoice) -> Unit, onE
             val imageW = minOf(maxWidth * 0.5f, maxHeight * 0.55f * 16f / 9f)
             Column(Modifier.fillMaxSize(), verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally) {
                 if (image != null) {
-                    Image(image, choice.nameZh, Modifier.size(imageW, imageW * 9f / 16f), contentScale = ContentScale.Fit)
-                    Spacer(Modifier.height(Spacing.S))
+                    PoseStage(image, choice.nameZh, imageW)
+                    Spacer(Modifier.height(Spacing.XS))
                 }
                 val left = if (index > 0) "‹  " else "    "
                 val right = if (index < choices.lastIndex) "  ›" else "    "
                 Text("$left${choice.nameZh}$right", fontSize = if (image != null) TextSize.Display else TextSize.Hero, color = SymbolColor)
                 Text("${index + 1} / ${choices.size}", fontSize = TextSize.Info, color = SubtleColor)
             }
-            Text(YOGA_PICK_HINT, Modifier.align(Alignment.BottomEnd), fontSize = TextSize.KeyHint, color = SubtleColor)
+            KeyHint(YOGA_PICK_HINT, Modifier.align(Alignment.BottomEnd))
         }
     }
 }
@@ -130,6 +153,7 @@ fun YogaScreen(
     BackHandler { onExit() }
 
     RemoteKeyBox(
+        backdrop = LocalAppTheme.current.bgYoga,
         onKey = { key ->
             when (key) {
                 RemoteKey.OK -> session = YogaRules.togglePause(session)
@@ -145,29 +169,71 @@ fun YogaScreen(
             if (session.phase == YogaPhase.INTRO) {
                 YogaIntro(choice.nameZh)
             } else {
-                YogaPoseFace(pose)
+                YogaPoseFace(pose, session.phase == YogaPhase.COUNTDOWN, session.remaining)
             }
             // 角落文字都放在安全區內。
             Box(Modifier.fillMaxSize().safeArea()) {
                 if (session.phase != YogaPhase.INTRO) {
-                    val count = "${session.poseIndex + 1} / ${program.poses.size}"
-                    val info = if (choice.rounds > 1) "第 ${session.round} 輪　$count" else count
-                    Text(info, Modifier.align(Alignment.TopStart), fontSize = TextSize.Info, color = SubtleColor)
-                }
-                if (session.phase == YogaPhase.COUNTDOWN) {
-                    // 最後 3 秒換黃色當提示（目前沒有提示音素材）。
-                    val color = if (session.remaining <= 3) SymbolColor else TextColor
-                    Text("${session.remaining}", Modifier.align(Alignment.TopEnd), fontSize = TextSize.Hero, color = color)
+                    Row(Modifier.align(Alignment.TopStart), verticalAlignment = Alignment.CenterVertically) {
+                        val count = "第 ${session.poseIndex + 1} 個／共 ${program.poses.size} 個"
+                        InfoPill { YogaPillText(if (choice.rounds > 1) "第 ${session.round} 輪　$count" else count) }
+                        Spacer(Modifier.width(Spacing.S))
+                        PoseDots(session.poseIndex, program.poses.size, Modifier.weight(1f))
+                    }
                 }
                 // 底部兩行給大人看：安全提醒、按鍵提示。
                 Column(Modifier.align(Alignment.BottomCenter), horizontalAlignment = Alignment.CenterHorizontally) {
                     if (session.phase != YogaPhase.INTRO && pose.safety.isNotEmpty()) {
-                        Text(pose.safety, fontSize = TextSize.Note, color = SubtleColor)
+                        Text(pose.safety, fontSize = TextSize.Note, color = TextColor)
                     }
-                    Text(YOGA_KEY_HINT, fontSize = TextSize.KeyHint, color = SubtleColor)
+                    KeyHint(YOGA_KEY_HINT)
                 }
             }
             PauseOverlay(visible = session.paused)
+        }
+    }
+}
+
+@Composable
+private fun YogaPillText(text: String) {
+    val theme = LocalAppTheme.current
+    Text(text, fontSize = TextSize.Info, color = if (theme.id == ThemeId.B) theme.hudText else theme.textSecondary, fontWeight = FontWeight.Black)
+}
+
+/**
+ * 進度點：做完的打勾、目前這個放大並寫編號、還沒做的空心。點之間用線連起來。
+ * 點的大小隨個數縮，11 個時約 24 dp；一排放得下 [count] 個。
+ */
+@Composable
+private fun PoseDots(index: Int, count: Int, modifier: Modifier) {
+    val theme = LocalAppTheme.current
+    BoxWithConstraints(modifier) {
+        val dot = minOf(24.dp, maxWidth / (count * 1.6f))
+        val big = dot * 1.5f
+        val line = ((maxWidth - big - dot * (count - 1)) / (count - 1).coerceAtLeast(1)).coerceAtLeast(0.dp)
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            repeat(count) { k ->
+                if (k > 0) Box(Modifier.size(line, 3.dp).background(if (k <= index) theme.progressDone else theme.outline.copy(alpha = 0.5f)))
+                when {
+                    k < index -> Canvas(Modifier.size(dot)) {
+                        drawCircle(theme.progressDone)
+                        drawCircle(theme.outline, style = Stroke(1.5.dp.toPx()))
+                        val path = Path().apply {
+                            moveTo(size.width * 0.28f, size.height * 0.52f)
+                            lineTo(size.width * 0.45f, size.height * 0.68f)
+                            lineTo(size.width * 0.74f, size.height * 0.36f)
+                        }
+                        drawPath(path, Color.White, style = Stroke(2.5.dp.toPx(), cap = StrokeCap.Round, join = StrokeJoin.Round))
+                    }
+                    k == index -> Box(
+                        Modifier.size(big).background(theme.progressCurrent, CircleShape).border(2.dp, theme.outline, CircleShape),
+                        contentAlignment = Alignment.Center,
+                    ) {
+                        Text("${k + 1}", fontSize = with(LocalDensity.current) { (big * 0.5f).toSp() }, color = theme.outline.copy(alpha = 1f), fontWeight = FontWeight.Black)
+                    }
+                    else -> Box(Modifier.size(dot).background(theme.progressTodo, CircleShape).border(1.5.dp, theme.outline, CircleShape))
+                }
+            }
         }
     }
 }
@@ -201,37 +267,146 @@ private fun YogaIntro(name: String) {
     }
 }
 
+/** 倒數圓環直徑。 */
+private val RING_SIZE = 160.dp
+
 /**
- * 姿勢：左邊 16:9 大圖（畫面寬 50%），右邊 nameZh 大字＋nameEn。
- * 圖不在或解不開：不留圖位，nameZh 更大字置中，下面 nameEn。
+ * 姿勢：左邊 16:9 大圖站在主題的舞台上（B 黃色圓台、C 紫色圓台、A 白框），右邊大圓環倒數＋動作名＋口令。
+ * [counting]＝倒數中；口令段圓環是滿的，中間寫「聽口令」。
+ * 圖不在或解不開：不留圖位，圓環與名字置中。
  */
 @Composable
-private fun YogaPoseFace(pose: YogaPose) {
+private fun YogaPoseFace(pose: YogaPose, counting: Boolean, remaining: Int) {
     val image = rememberAssetImage(pose.image)
-    BoxWithConstraints(Modifier.fillMaxSize().padding(Spacing.L)) {
-        // 示範圖是 16:9：寬取畫面 50%，高不超過畫面 80%。正方形小框在電視上太小，孩子看不清。
-        val imageW = minOf(maxWidth * 0.5f, maxHeight * 0.8f * 16f / 9f)
+    // 上面留給進度列，下面留給安全提醒與按鍵提示兩行。
+    Box(Modifier.fillMaxSize().safeArea().padding(top = 44.dp, bottom = 64.dp)) {
         if (image != null) {
             Row(
                 Modifier.fillMaxSize(),
-                horizontalArrangement = Arrangement.spacedBy(Spacing.L, Alignment.CenterHorizontally),
+                horizontalArrangement = Arrangement.spacedBy(Spacing.M, Alignment.CenterHorizontally),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
-                Image(image, pose.nameZh, Modifier.size(imageW, imageW * 9f / 16f), contentScale = ContentScale.Fit)
-                // 52 sp：最長「大樹（左腳站）」7 字約 364 dp，加圖 432 dp、間距 48 dp，放得進 864 dp 寬。
-                PoseName(pose, zhSize = TextSize.PoseName)
+                PoseStage(image, pose.nameZh, 480.dp)
+                CountdownColumn(pose, counting, remaining)
             }
         } else {
-            val zhSize = with(LocalDensity.current) { (maxHeight * 0.2f).toSp() }
-            Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) { PoseName(pose, zhSize) }
+            Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) { CountdownColumn(pose, counting, remaining) }
         }
     }
 }
 
+/** 示範圖＋舞台。示範圖是 16:9，寬 480 dp（畫面一半）；正方形小框在電視上太小，孩子看不清。 */
 @Composable
-private fun PoseName(pose: YogaPose, zhSize: TextUnit) {
-    Column(horizontalAlignment = Alignment.CenterHorizontally) {
-        Text(pose.nameZh, fontSize = zhSize, color = SymbolColor, textAlign = TextAlign.Center)
-        Text(pose.nameEn, fontSize = TextSize.Caption, lineHeight = TextSize.CaptionLine, color = TextColor, textAlign = TextAlign.Center)
+private fun PoseStage(image: ImageBitmap, description: String, width: Dp) {
+    val theme = LocalAppTheme.current
+    val height = width * 9f / 16f
+    Box(Modifier.size(width, height + 24.dp)) {
+        when (theme.id) {
+            ThemeId.A -> Box(
+                Modifier
+                    .size(width, height)
+                    .graphicsLayer { rotationZ = -1.2f }
+                    .background(Color.White, RoundedCornerShape(11.dp))
+                    .border(theme.borderNormal, theme.outline, RoundedCornerShape(11.dp))
+                    .padding(8.dp),
+            ) { Image(image, description, Modifier.fillMaxSize(), contentScale = ContentScale.Fit) }
+            // 示範圖是米白底的方圖：放進圓角框，框底下露出舞台（B 黃色圓台、C 紫色圓台）。
+            else -> {
+                val (stage, shade) = if (theme.id == ThemeId.B) Color(0xFFFFB61E) to Color(0xFFC98400) else Color(0xFF3C3D8A) to Color(0xFF26275E)
+                val frame = if (theme.id == ThemeId.B) theme.outline else Color(0xFF5CE1E6)
+                Canvas(Modifier.align(Alignment.BottomCenter).size(width * 0.86f, 56.dp)) {
+                    val h = size.height - 8.dp.toPx()
+                    drawOval(shade, topLeft = Offset(0f, 8.dp.toPx()), size = Size(size.width, h))
+                    drawOval(stage, size = Size(size.width, h))
+                    drawOval(theme.outline.copy(alpha = 1f), size = Size(size.width, h), style = Stroke(2.5.dp.toPx()))
+                }
+                val shape = RoundedCornerShape(theme.cardRadius)
+                Image(
+                    image,
+                    description,
+                    Modifier
+                        .size(width * 0.94f, height * 0.94f)
+                        .align(Alignment.TopCenter)
+                        .clip(shape)
+                        .border(3.dp, frame, shape),
+                    contentScale = ContentScale.Crop,
+                )
+            }
+        }
+    }
+}
+
+/** 右欄：倒數圓環（剩餘秒數在中間）、動作名、口令文字。最後 3 秒數字換強調色（沒有提示音素材）。 */
+@Composable
+private fun CountdownColumn(pose: YogaPose, counting: Boolean, remaining: Int) {
+    val theme = LocalAppTheme.current
+    val fraction = if (counting && pose.seconds > 0) remaining.toFloat() / pose.seconds else 1f
+    // 每秒跳一次的數值用 1 秒線性動畫接起來，圓環連續縮短。
+    val sweep by animateFloatAsState(fraction, tween(if (counting) 1000 else Motion.SHORT_MS, easing = LinearEasing), label = "ring")
+    val ringColor = when (theme.id) {
+        ThemeId.A -> theme.progressDone
+        ThemeId.B -> Color(0xFFFF9F1C)
+        ThemeId.C -> Color(0xFF5CE1E6)
+    }
+    Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.width(330.dp)) {
+        Box(Modifier.size(RING_SIZE), contentAlignment = Alignment.Center) {
+            Canvas(Modifier.fillMaxSize()) {
+                val w = 18.dp.toPx()
+                val arc = Size(size.width - w, size.height - w)
+                val tl = Offset(w / 2, w / 2)
+                drawArc(theme.outline.copy(alpha = 0.18f), 0f, 360f, false, tl, arc, style = Stroke(w))
+                drawArc(ringColor, -90f, 360f * sweep, false, tl, arc, style = Stroke(w, cap = StrokeCap.Round))
+            }
+            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                if (counting) {
+                    val color = if (remaining <= 3) theme.symbol else theme.textPrimary
+                    DecoratedText(
+                        "$remaining",
+                        fontSize = 64.sp,
+                        color = color,
+                        textModifier = Modifier.wrapContentHeight(unbounded = true),
+                        stroke = if (theme.id == ThemeId.B) theme.outline else null,
+                        strokeWidth = 3.dp,
+                        modifier = Modifier.height(70.dp),
+                    )
+                    Text("秒", fontSize = TextSize.Info, color = theme.textPrimary, fontWeight = FontWeight.Black)
+                } else {
+                    Text("聽口令", fontSize = TextSize.Heading, color = theme.textPrimary, fontWeight = FontWeight.Black)
+                }
+            }
+        }
+        Spacer(Modifier.height(Spacing.XS))
+        PoseLabel(pose.nameZh)
+        Text(pose.nameEn, fontSize = 20.sp, color = SubtleColor, textAlign = TextAlign.Center)
+        if (pose.cueText.isNotEmpty()) {
+            Spacer(Modifier.height(Spacing.XS))
+            InfoPill {
+                Text(
+                    pose.cueText,
+                    fontSize = 16.sp,
+                    color = if (theme.id == ThemeId.B) theme.hudText else theme.textPrimary,
+                    textAlign = TextAlign.Center,
+                    maxLines = 2,
+                    overflow = TextOverflow.Ellipsis,
+                )
+            }
+        }
+    }
+}
+
+/** 動作名：B 紅色貼紙白字、C 金字發光、A 深棕字。最長「大樹（左腳站）」7 字，40 sp 約 280 dp。 */
+@Composable
+private fun PoseLabel(name: String) {
+    val theme = LocalAppTheme.current
+    when (theme.id) {
+        ThemeId.B -> Box(
+            Modifier
+                .graphicsLayer { rotationZ = -2f }
+                .background(Color(0xFFFF6B5B), RoundedCornerShape(12.dp))
+                .border(3.dp, theme.outline, RoundedCornerShape(12.dp))
+                .padding(horizontal = Spacing.S),
+        ) { Text(name, fontSize = 40.sp, color = Color.White, fontWeight = FontWeight.Black) }
+        ThemeId.C -> DecoratedText(name, fontSize = 40.sp, color = theme.symbol, glow = Color(0xB2FFD65A), glowRadius = 3.dp)
+        ThemeId.A -> DecoratedText(name, fontSize = 40.sp, color = theme.textPrimary)
     }
 }

@@ -2,6 +2,8 @@ package com.keeponfirst.bopomofotv.ui
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
@@ -12,11 +14,15 @@ import androidx.compose.ui.unit.sp
  * 換視覺風格時先改這裡，畫面檔不寫死數值。
  */
 
-// 顏色
-val Background = Color(0xFF1B2F38)
-val SymbolColor = Color(0xFFFFD666)
-val TextColor = Color(0xFFFFFFFF)
-val SubtleColor = Color(0xFFB0BEC5)
+// 顏色：跟著目前的主題（AppTheme.kt）。畫面檔照舊用這幾個名字。
+val Background: Color
+    @Composable @ReadOnlyComposable get() = LocalAppTheme.current.background
+val SymbolColor: Color
+    @Composable @ReadOnlyComposable get() = LocalAppTheme.current.symbol
+val TextColor: Color
+    @Composable @ReadOnlyComposable get() = LocalAppTheme.current.textPrimary
+val SubtleColor: Color
+    @Composable @ReadOnlyComposable get() = LocalAppTheme.current.textSecondary
 
 /** 暫停遮罩：60% 黑。 */
 val ScrimColor = Color(0x99000000)
@@ -68,4 +74,13 @@ fun Modifier.safeArea(): Modifier = padding(horizontal = SafeArea.Horizontal, ve
 /** 動畫時長（毫秒）。 */
 object Motion {
     const val SHORT_MS = 200
+
+    /** 首頁焦點移動的放大／框線過渡。 */
+    const val FOCUS_MS = 180
+
+    /** 換卡滑入。 */
+    const val CARD_SLIDE_MS = 200
+
+    /** 答對回饋總長。 */
+    const val FEEDBACK_MS = 800
 }

@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -24,6 +25,10 @@ import com.keeponfirst.bopomofotv.data.YogaRepository
 import com.keeponfirst.bopomofotv.data.ZhuyinWord
 import com.keeponfirst.bopomofotv.record.PracticeStore
 import com.keeponfirst.bopomofotv.record.PracticeStore.Deck
+import com.keeponfirst.bopomofotv.record.ThemeStore
+import com.keeponfirst.bopomofotv.ui.SettingsScreen
+import com.keeponfirst.bopomofotv.ui.ThemeId
+import com.keeponfirst.bopomofotv.ui.Themes
 import com.keeponfirst.bopomofotv.session.ParentProgress
 import com.keeponfirst.bopomofotv.ui.AbcCardScreen
 import com.keeponfirst.bopomofotv.ui.BopomofoTheme
@@ -49,8 +54,20 @@ class MainActivity : ComponentActivity() {
         val resolver = AudioResolver(AudioPlayer.listAvailable(assets))
         player = AudioPlayer(assets)
         val store = PracticeStore(this)
+        val themeStore = ThemeStore(this)
         setContent {
-            BopomofoTheme { BopomofoApp(cards, words, abcDeck, yoga, resolver, player, store) }
+            // 主題設定從 DataStore 讀，讀到之前先畫空白，避免先閃一下預設主題再換。
+            var themeId by remember { mutableStateOf<ThemeId?>(null) }
+            LaunchedEffect(Unit) { themeId = themeStore.theme() }
+            val scope = rememberCoroutineScope()
+            themeId?.let { id ->
+                BopomofoTheme(Themes.of(id)) {
+                    BopomofoApp(cards, words, abcDeck, yoga, resolver, player, store, themeId = id) { picked ->
+                        themeId = picked
+                        scope.launch { themeStore.save(picked) }
+                    }
+                }
+            }
         }
     }
 
@@ -75,6 +92,7 @@ private sealed interface Screen {
     data class Yoga(val choice: YogaChoice) : Screen
     data class Done(val locked: Boolean, val phrase: Phrase) : Screen
     data class YogaDone(val choice: YogaChoice) : Screen
+    data object Settings : Screen
 }
 
 @Composable
@@ -86,6 +104,8 @@ private fun BopomofoApp(
     resolver: AudioResolver,
     player: AudioPlayer,
     store: PracticeStore,
+    themeId: ThemeId,
+    onTheme: (ThemeId) -> Unit,
 ) {
     var screen by remember { mutableStateOf<Screen>(Screen.Home) }
     // 首頁最後聚焦的入口。回首頁時焦點回到這顆，不跳回第一顆。
@@ -113,7 +133,9 @@ private fun BopomofoApp(
                 }
             },
             onYoga = { if (yoga.isNotEmpty()) screen = Screen.YogaPick },
+            onSettings = { screen = Screen.Settings },
         )
+        Screen.Settings -> SettingsScreen(current = themeId, onApply = onTheme, onExit = goHome)
         is Screen.ParentStart -> ParentStartScreen(
             cards = cards,
             progress = s.progress,

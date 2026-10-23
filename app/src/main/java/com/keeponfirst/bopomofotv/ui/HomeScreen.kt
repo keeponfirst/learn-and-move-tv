@@ -1,25 +1,53 @@
 package com.keeponfirst.bopomofotv.ui
 
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.focusable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusProperties
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
+import androidx.compose.ui.geometry.CornerRadius
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.graphics.lerp
+import androidx.compose.ui.input.key.KeyEventType
+import androidx.compose.ui.input.key.onPreviewKeyEvent
+import androidx.compose.ui.input.key.type
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import androidx.tv.material3.Button
-import androidx.tv.material3.ButtonDefaults
+import androidx.compose.ui.unit.lerp
+import androidx.compose.ui.unit.sp
+import androidx.compose.ui.util.lerp
 import androidx.tv.material3.Text
 
 /** CC BY 4.0 要求的標示（教育部手冊開放部件 license.txt）。 */
@@ -31,21 +59,34 @@ const val LICENSES_HINT = "完整授權見 assets/licenses"
 /** 首頁的四個入口，順序同畫面由左到右。 */
 enum class HomeEntry { PARENT, SELF, ABC, YOGA }
 
+/** 首頁入口的大字與小字，順序同 [HomeEntry]。 */
+private val ENTRY_LABELS = listOf(
+    "大人陪" to "陪孩子學注音",
+    "自己玩" to "自己翻注音卡",
+    "ABC" to "英文字母",
+    "瑜伽" to "跟著做動作",
+)
+
 /**
- * 首頁按鈕尺寸。四顆 184 dp ＋ 三個 32 dp 間距 ＝ 832 dp。
- * 聚焦放大 1.1 倍後最外緣離畫面邊約 55 dp，仍在 48 dp 安全邊距內。
- * 48 sp「大人陪」3 字約 144 dp，扣掉按鈕左右內距 16 dp 仍放得進 184 dp。
+ * 入口卡尺寸與位置。[left] 是第一張卡離安全區左緣的距離；null＝整排置中。
+ * B 左邊留給導遊角色，卡片窄一點：4 張 158 dp ＋ 3 個 14 dp ＝ 674 dp，從 x=226 dp 排到 900 dp。
+ * A、C 4 張 192 dp ＋ 3 個 20 dp ＝ 828 dp，置中後兩側各 66 dp。
+ * 聚焦放大、傾斜後外框仍在安全區內（SafeAreaTest 驗）。
  */
-internal val HOME_BUTTON_WIDTH = 184.dp
-internal val HOME_BUTTON_HEIGHT = 150.dp
-internal val HOME_BUTTON_GAP = Spacing.M
+internal data class CardSize(val width: Dp, val height: Dp, val gap: Dp, val left: Dp?)
 
-/** tv-material Button 的預設聚焦放大倍率。 */
-internal const val HOME_FOCUS_SCALE = 1.1f
+internal fun cardSize(theme: AppTheme) = when (theme.id) {
+    ThemeId.B -> CardSize(158.dp, 250.dp, 14.dp, left = 178.dp)
+    else -> CardSize(192.dp, 268.dp, 20.dp, left = null)
+}
+
+/** 焦點卡下方標籤的高度。 */
+private val TAG_HEIGHT = 40.dp
 
 /**
- * 首頁。進來時焦點放在 [focus]；焦點移動時呼叫 [onFocus]。
+ * 首頁：主題字樣的標題＋單排 4 張大卡。進來時焦點放在 [focus]；焦點移動時呼叫 [onFocus]。
  * App 層記住最後一次的入口，從任何模式回來焦點都回到同一顆。
+ * 右上角齒輪是大人設定：只有從卡片按「上」才到得了，左右鍵不會經過它；長按 OK 2 秒才呼叫 [onSettings]。
  */
 @Composable
 fun HomeScreen(
@@ -55,54 +96,321 @@ fun HomeScreen(
     onSelf: () -> Unit,
     onAbc: () -> Unit,
     onYoga: () -> Unit,
+    onSettings: () -> Unit,
 ) {
+    val theme = LocalAppTheme.current
     val requesters = remember { HomeEntry.entries.associateWith { FocusRequester() } }
+    val gear = remember { FocusRequester() }
+    var last by remember { mutableStateOf(focus) }
     LaunchedEffect(Unit) { requesters.getValue(focus).requestFocus() }
+    val actions = listOf(onParent, onSelf, onAbc, onYoga)
+    val size = cardSize(theme)
 
-    @Composable
-    fun Entry(entry: HomeEntry, label: String, onClick: () -> Unit) {
-        BigButton(
-            label,
-            onClick,
-            Modifier
-                .focusRequester(requesters.getValue(entry))
-                .onFocusChanged { if (it.isFocused) onFocus(entry) },
-        )
+    Box(Modifier.fillMaxSize()) {
+        ThemeBackdrop(theme.bgHome)
+        when (theme.id) {
+            ThemeId.B -> GuideGirl()
+            ThemeId.C -> RocketGirl()
+            ThemeId.A -> Unit
+        }
+        Box(Modifier.fillMaxSize().safeArea()) {
+            HomeTitle(Modifier.align(Alignment.TopCenter))
+            Row(
+                Modifier
+                    .align(if (size.left != null) Alignment.TopStart else Alignment.TopCenter)
+                    .padding(start = size.left ?: 0.dp, top = when (theme.id) {
+                        ThemeId.A -> 104.dp
+                        ThemeId.B -> 126.dp
+                        ThemeId.C -> 114.dp
+                    }),
+                horizontalArrangement = Arrangement.spacedBy(size.gap),
+            ) {
+                HomeEntry.entries.forEach { entry ->
+                    EntryCard(
+                        entry = entry,
+                        size = size,
+                        onClick = actions[entry.ordinal],
+                        modifier = Modifier
+                            .focusRequester(requesters.getValue(entry))
+                            .focusProperties {
+                                up = gear
+                                down = FocusRequester.Cancel
+                                if (entry == HomeEntry.entries.first()) left = FocusRequester.Cancel
+                                if (entry == HomeEntry.entries.last()) right = FocusRequester.Cancel
+                            },
+                        onFocused = {
+                            last = entry
+                            onFocus(entry)
+                        },
+                    )
+                }
+            }
+            AdultGear(
+                onOpen = onSettings,
+                modifier = Modifier
+                    .align(Alignment.TopEnd)
+                    .focusRequester(gear)
+                    .focusProperties {
+                        left = FocusRequester.Cancel
+                        right = FocusRequester.Cancel
+                        up = FocusRequester.Cancel
+                        down = requesters.getValue(last)
+                    },
+            )
+            KeyHint("← → 選擇　OK 進入", Modifier.align(Alignment.BottomEnd))
+            Text(
+                "$MOE_ATTRIBUTION　｜　$LICENSES_HINT",
+                modifier = Modifier.align(Alignment.BottomStart).padding(bottom = Spacing.XS),
+                fontSize = TextSize.Legal,
+                color = TextColor,
+            )
+        }
     }
+}
 
-    Box(Modifier.fillMaxSize().background(Background).safeArea()) {
-        Column(
-            modifier = Modifier.align(Alignment.Center),
-            horizontalAlignment = Alignment.CenterHorizontally,
-        ) {
-            Text("動動學學", fontSize = TextSize.Title, color = TextColor)
-            Spacer(Modifier.height(Spacing.L))
-            Row(horizontalArrangement = Arrangement.spacedBy(HOME_BUTTON_GAP)) {
-                Entry(HomeEntry.PARENT, "大人陪", onParent)
-                Entry(HomeEntry.SELF, "自己玩", onSelf)
-                Entry(HomeEntry.ABC, "ABC", onAbc)
-                Entry(HomeEntry.YOGA, "瑜伽", onYoga)
+/** 標題「動動學學」：B 四色描邊字、A 深棕字＋頭像＋手繪底線、C 白字發光＋副標。 */
+@Composable
+private fun HomeTitle(modifier: Modifier) {
+    val theme = LocalAppTheme.current
+    when (theme.id) {
+        ThemeId.B -> Row(modifier.padding(top = 2.dp)) {
+            "動動學學".forEachIndexed { i, ch ->
+                DecoratedText(
+                    ch.toString(),
+                    fontSize = 54.sp,
+                    color = theme.entryColors[i],
+                    stroke = theme.outline,
+                    strokeWidth = 4.dp,
+                    modifier = Modifier.graphicsLayer { rotationZ = if (i % 2 == 0) -4f else 3f },
+                )
             }
         }
-        Text(
-            "$MOE_ATTRIBUTION　｜　$LICENSES_HINT",
-            modifier = Modifier.align(Alignment.BottomCenter),
-            fontSize = TextSize.Legal,
-            color = SubtleColor,
-        )
+        ThemeId.A -> Column(modifier, horizontalAlignment = Alignment.CenterHorizontally) {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                rememberThemeImage("theme/a/guide/avatar_head.png")?.let { Image(it, null, Modifier.size(46.dp, 42.dp)) }
+                Spacer(Modifier.width(Spacing.S))
+                DecoratedText("動動學學", fontSize = 50.sp, color = theme.textPrimary)
+            }
+            rememberThemeImage("theme/a/guide/title_underline.png")?.let {
+                Image(it, null, Modifier.size(170.dp, 8.dp).offset(x = 30.dp))
+            }
+        }
+        ThemeId.C -> Column(modifier, horizontalAlignment = Alignment.CenterHorizontally) {
+            DecoratedText("動動學學", fontSize = 46.sp, color = theme.textPrimary, glow = Color(0xA6FFE27A), glowRadius = 2.dp)
+            Text("選一顆星球出發！", fontSize = TextSize.Hint, color = theme.textSecondary)
+        }
+    }
+}
+
+/** B：左邊的導遊小女孩與「今天玩什麼？」對話框。位置照設計稿（1 dp ＝ 設計稿 2 px）。 */
+@Composable
+private fun GuideGirl() {
+    Box(Modifier.fillMaxSize()) {
+        rememberThemeImage("theme/b/guide/guide_girl.png")?.let {
+            Image(it, null, Modifier.offset(x = 24.dp, y = 214.dp).size(214.dp, 260.dp))
+        }
+        rememberThemeImage("theme/b/guide/guide_bubble_today.png")?.let {
+            Image(it, null, Modifier.offset(x = 48.dp, y = 122.dp).size(186.dp, 75.dp))
+        }
+    }
+}
+
+/** C：左上角的火箭小女孩。 */
+@Composable
+private fun RocketGirl() {
+    rememberThemeImage("theme/c/guide/rocket_girl.png")?.let {
+        Image(it, null, Modifier.offset(x = 150.dp, y = 24.dp).size(79.dp, 96.dp))
+    }
+}
+
+/**
+ * 一張入口卡＋下方焦點標籤。焦點時放大、加粗框／發光，過渡 [Motion.FOCUS_MS]。
+ * 卡的樣子照主題：A 米白紙卡＋紙膠帶、B 彩色卡＋白圈深框＋閃光、C 半透明玻璃＋金框＋角落星。
+ */
+@Composable
+private fun EntryCard(entry: HomeEntry, size: CardSize, onClick: () -> Unit, onFocused: () -> Unit, modifier: Modifier) {
+    val theme = LocalAppTheme.current
+    var focused by remember { mutableStateOf(false) }
+    var pressed by remember { mutableStateOf(false) }
+    val f by animateFloatAsState(if (focused) 1f else 0f, tween(Motion.FOCUS_MS), label = "focus")
+    val i = entry.ordinal
+    val shape = RoundedCornerShape(theme.cardRadius)
+    val (label, sub) = ENTRY_LABELS[i]
+
+    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+        Box(
+            modifier
+                .size(size.width, size.height)
+                .graphicsLayer {
+                    val s = lerp(1f, theme.focusScale, f)
+                    scaleX = s
+                    scaleY = s
+                    rotationZ = theme.focusRotateDeg * f
+                    translationY = theme.focusTranslateY.toPx() * f
+                }
+                .drawBehind { drawCardBack(theme, i, f) }
+                .onFocusChanged {
+                    focused = it.isFocused
+                    if (it.isFocused) onFocused()
+                }
+                .onPreviewKeyEvent { event ->
+                    if (event.remoteKey() != RemoteKey.OK) return@onPreviewKeyEvent false
+                    // 放開才進入（同 tv-material 按鈕）。要先在這張卡上按下：上一頁按 OK 的放開不算。
+                    when (event.type) {
+                        KeyEventType.KeyDown -> pressed = true
+                        KeyEventType.KeyUp -> if (pressed) {
+                            pressed = false
+                            onClick()
+                        }
+                    }
+                    true
+                }
+                .focusable(),
+        ) {
+            Column(
+                Modifier
+                    .fillMaxSize()
+                    .background(cardFill(theme, i), shape)
+                    .border(lerp(theme.borderNormal, theme.borderFocused, f), cardBorder(theme, f), shape)
+                    .padding(12.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+            ) {
+                rememberThemeImage(theme.entryArt[i])?.let { Image(it, label, Modifier.fillMaxWidth(0.92f).aspectRatio(1f)) }
+                Spacer(Modifier.height(Spacing.XS))
+                EntryLabel(label, sub)
+            }
+            CardDecoration(theme, f)
+        }
+        Spacer(Modifier.height(Spacing.XS))
+        Box(Modifier.height(TAG_HEIGHT).graphicsLayer { alpha = f }, contentAlignment = Alignment.Center) {
+            FocusTag(theme)
+        }
     }
 }
 
 @Composable
-private fun BigButton(label: String, onClick: () -> Unit, modifier: Modifier = Modifier) {
-    Button(
-        onClick = onClick,
-        modifier = modifier.size(width = HOME_BUTTON_WIDTH, height = HOME_BUTTON_HEIGHT),
-        shape = ButtonDefaults.shape(ButtonShape),
-        scale = ButtonDefaults.scale(focusedScale = HOME_FOCUS_SCALE),
-    ) {
-        Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-            Text(label, fontSize = TextSize.Title)
+private fun EntryLabel(label: String, sub: String) {
+    val theme = LocalAppTheme.current
+    when (theme.id) {
+        ThemeId.B -> {
+            DecoratedText(label, fontSize = 36.sp, color = theme.textOnEntry, stroke = theme.outline, strokeWidth = 3.dp)
+            DecoratedText(sub, fontSize = 15.sp, color = theme.textOnEntry, stroke = theme.outline, strokeWidth = 1.5.dp)
         }
+        ThemeId.C -> {
+            DecoratedText(label, fontSize = 36.sp, color = theme.textOnEntry)
+            Text(sub, fontSize = 15.sp, color = theme.textSecondary)
+        }
+        ThemeId.A -> {
+            DecoratedText(label, fontSize = 36.sp, color = theme.textPrimary)
+            Text(sub, fontSize = 15.sp, color = theme.textSecondary)
+        }
+    }
+}
+
+/** 卡片底色：A 紙卡、B 該入口顏色、C 半透明玻璃。 */
+private fun cardFill(theme: AppTheme, i: Int): Color = when (theme.id) {
+    ThemeId.B -> theme.entryColors[i]
+    else -> theme.surface
+}
+
+private fun cardBorder(theme: AppTheme, f: Float): Color = when (theme.id) {
+    ThemeId.A -> lerp(theme.outline, theme.focusFrame, f)
+    ThemeId.B -> theme.outline
+    ThemeId.C -> lerp(theme.outline, theme.focusFrame, f)
+}
+
+/**
+ * 卡片後面的厚度、投影、發光。Compose 的 shadow() 沒有 spread，所以發光用幾層漸淡的圓角框疊出來。
+ * B 焦點：白圈＋深色圈＋黃色光暈（tokens 的 cardFocused）。
+ */
+private fun androidx.compose.ui.graphics.drawscope.DrawScope.drawCardBack(theme: AppTheme, i: Int, f: Float) {
+    val r = theme.cardRadius.toPx()
+    fun ring(spread: Float, color: Color, dy: Float = 0f) = drawRoundRect(
+        color,
+        topLeft = Offset(-spread, -spread + dy),
+        size = Size(size.width + spread * 2, size.height + spread * 2),
+        cornerRadius = CornerRadius(r + spread),
+    )
+    when (theme.id) {
+        ThemeId.B -> {
+            if (f > 0f) {
+                drawGlow(r, 9.5.dp.toPx(), 30.dp.toPx(), theme.focusGlow, 0.55f * f)
+                ring(9.5.dp.toPx(), theme.entryShade[i].copy(alpha = f), 8.dp.toPx())
+                ring(9.5.dp.toPx(), theme.outline.copy(alpha = f))
+                ring(6.dp.toPx(), theme.focusFrame.copy(alpha = f))
+            }
+            ring(0f, theme.entryShade[i], 7.dp.toPx())
+        }
+        ThemeId.A -> {
+            ring(0f, Color(0x1F785A3C), 5.dp.toPx())
+            if (f > 0f) for (k in 1..4) ring(k * 3.dp.toPx(), theme.focusGlow.copy(alpha = 0.10f * f), 12.dp.toPx())
+        }
+        // C 的卡是半透明玻璃，光暈只能畫在卡外，不然會透進卡裡。
+        ThemeId.C -> if (f > 0f) drawGlow(r, 2.dp.toPx(), 26.dp.toPx(), theme.focusGlow, 0.9f * f)
+    }
+}
+
+/**
+ * 卡片外的光暈：從 [inner] 往外到 [inner]＋[width]，一圈圈細框、越外越淡。只畫在卡外。
+ * Compose 的 shadow() 沒有 spread，也不能指定顏色漸層，所以用細框疊。
+ */
+internal fun androidx.compose.ui.graphics.drawscope.DrawScope.drawGlow(radius: Float, inner: Float, width: Float, color: Color, alpha: Float) {
+    val steps = 14
+    val step = width / steps
+    for (k in 0 until steps) {
+        val spread = inner + step * (k + 0.5f)
+        val a = alpha * (1f - k / steps.toFloat()) * (1f - k / steps.toFloat()) * 0.35f
+        drawRoundRect(
+            color.copy(alpha = color.alpha * a),
+            topLeft = Offset(-spread, -spread),
+            size = Size(size.width + spread * 2, size.height + spread * 2),
+            cornerRadius = CornerRadius(radius + spread),
+            style = androidx.compose.ui.graphics.drawscope.Stroke(step * 1.05f),
+        )
+    }
+}
+
+/** 焦點裝飾：A 兩條紙膠帶、B 三顆閃光、C 右上角星星。跟著焦點淡入。 */
+@Composable
+private fun CardDecoration(theme: AppTheme, f: Float) {
+    if (f <= 0f) return
+    Box(Modifier.fillMaxSize().graphicsLayer { alpha = f }) {
+        when (theme.id) {
+            ThemeId.A -> rememberThemeImage("theme/a/guide/tape.png")?.let {
+                Image(it, null, Modifier.offset(x = (-14).dp, y = (-10).dp).size(75.dp, 22.dp).graphicsLayer { rotationZ = -6f })
+                Image(it, null, Modifier.align(Alignment.TopEnd).offset(x = 14.dp, y = (-10).dp).size(75.dp, 22.dp).graphicsLayer { rotationZ = 8f })
+            }
+            ThemeId.B -> {
+                rememberThemeImage("theme/b/guide/sparkle_yellow.png")?.let {
+                    Image(it, null, Modifier.offset(x = (-22).dp, y = (-26).dp).size(40.dp))
+                    Image(it, null, Modifier.align(Alignment.TopEnd).offset(x = 22.dp, y = (-20).dp).size(34.dp))
+                }
+                rememberThemeImage("theme/b/guide/sparkle_white.png")?.let {
+                    Image(it, null, Modifier.align(Alignment.BottomStart).offset(x = (-18).dp, y = 10.dp).size(28.dp))
+                }
+            }
+            ThemeId.C -> rememberThemeImage("theme/c/guide/focus_star.png")?.let {
+                Image(it, null, Modifier.align(Alignment.TopEnd).offset(x = 20.dp, y = (-20).dp).size(50.dp))
+            }
+        }
+    }
+}
+
+/** 焦點卡下方標籤：B 黃色貼紙「OK 出發！」、A 橘色「按 OK 開始 ▶」、C 金色「OK 出發 ▶」。 */
+@Composable
+private fun FocusTag(theme: AppTheme) {
+    val (bg, fg) = when (theme.id) {
+        ThemeId.A -> theme.focusFrame to Color.White
+        ThemeId.B -> Color(0xFFFFE14D) to theme.outline
+        ThemeId.C -> theme.focusFrame to Color(0xFF2A1F55)
+    }
+    Box(
+        Modifier
+            .graphicsLayer { rotationZ = if (theme.id == ThemeId.B) -3f else 0f }
+            .background(bg, RoundedCornerShape(50))
+            .border(if (theme.id == ThemeId.B) 2.5.dp else 0.dp, theme.outline, RoundedCornerShape(50))
+            .padding(horizontal = Spacing.S, vertical = 2.dp),
+    ) {
+        Text(theme.focusTag, fontSize = 18.sp, color = fg, fontWeight = FontWeight.Black)
     }
 }

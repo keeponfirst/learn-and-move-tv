@@ -35,7 +35,8 @@ fun DoneScreen(locked: Boolean, onEnter: () -> Unit, onHome: () -> Unit) {
             Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) { DoneContent(locked = true, onHome = onHome) }
         }
     } else {
-        Box(Modifier.fillMaxSize().background(Background), contentAlignment = Alignment.Center) {
+        Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+            ThemeBackdrop(LocalAppTheme.current.bgCard)
             DoneContent(locked = false, onHome = onHome)
         }
     }

@@ -20,6 +20,8 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.input.key.onPreviewKeyEvent
@@ -46,12 +48,16 @@ import kotlinx.coroutines.launch
 /** 自己玩單次上限 10 分鐘。 */
 const val SELF_PLAY_MILLIS = 10 * 60 * 1000L
 
-/** 大人陪右下角的按鍵提示，給大人看。自己玩不顯示。 */
-private const val PARENT_KEY_HINT = "↑ 答對　↓ 再練　← → 換卡　OK 播音"
+/** 大人陪換卡的提示，放在三顆提示按鈕旁。 */
+private const val PARENT_KEY_HINT = "← → 換卡"
+
+/** 大人陪卡片頁要畫的一張卡。[phase]、[pos] 一變就算換卡，播滑入轉場。 */
+private data class ParentFace(val phase: Phase, val pos: Int, val card: Card, val word: ZhuyinWord)
 
 /**
  * 大人陪：一次一個單元，新卡段 → 複習段（規則在 [ParentRules]）。
- * 左右換卡、確定播音、上鍵記答對、下鍵記再練。右上角顯示段落與進度。
+ * 左右換卡、確定播音、上鍵記答對、下鍵記再練。下方畫出三顆對應的提示，按到的那顆會亮。
+ * 右上角顯示段落、第幾張與星星列；按答對播回饋動畫（[FeedbackOverlay]）。
  *
  * [onEnd] 帶下次要存的進度與結束頁要播的語句：
  * 做完 → `p_done`；10 分鐘到 → `p_rest`；返回鍵 → `p_done`。後兩者記住沒做完的卡。
@@ -80,8 +86,20 @@ fun ParentCardScreen(
         n
     }
     val word = Decks.rotate(Decks.zhuyinWords(card, words), appearance + progress.attempts)
+    var forward by remember { mutableStateOf(true) }
+    var celebrate by remember { mutableIntStateOf(0) }
+    var listenFlash by remember { mutableIntStateOf(0) }
+    var listenActive by remember { mutableStateOf(false) }
+    var starTarget by remember { mutableStateOf<Offset?>(null) }
 
     LaunchedEffect(session.phase, session.pos) { lastMark = null }
+    // 「再聽一次」沒有要記錄的結果，按了只亮一下。
+    LaunchedEffect(listenFlash) {
+        if (listenFlash == 0) return@LaunchedEffect
+        listenActive = true
+        delay(400)
+        listenActive = false
+    }
     LaunchedEffect(Unit) {
         delay((startedAt + PARENT_MILLIS - SystemClock.elapsedRealtime()).coerceAtLeast(0))
         onEnd(ParentRules.paused(progress, session), Phrase.REST)
@@ -99,11 +117,12 @@ fun ParentCardScreen(
     }
 
     val phaseLabel = if (session.phase == Phase.NEW) "新卡" else "複習"
-    val info = "第 ${session.unit} 單元　$phaseLabel ${session.pos + 1} / ${session.queue.size}"
-    val mark = when (lastMark) {
-        PracticeResult.CORRECT -> "已記：答對"
-        PracticeResult.AGAIN -> "已記：再練"
-        null -> null
+    // 按到的提示：已記錄的結果一直亮到換卡；再聽一次只亮一下。
+    val active = when {
+        listenActive -> ParentButton.LISTEN
+        lastMark == PracticeResult.CORRECT -> ParentButton.CORRECT
+        lastMark == PracticeResult.AGAIN -> ParentButton.AGAIN
+        else -> null
     }
 
     RemoteKeyBox(
@@ -111,25 +130,48 @@ fun ParentCardScreen(
             when (key) {
                 RemoteKey.LEFT -> {
                     player.stop()
+                    forward = false
                     session = ParentRules.previous(session)
                 }
-                RemoteKey.RIGHT -> apply(ParentRules.next(session))
-                RemoteKey.OK -> player.play(resolver.cardPaths(card, word))
+                RemoteKey.RIGHT -> {
+                    forward = true
+                    apply(ParentRules.next(session))
+                }
+                RemoteKey.OK -> {
+                    listenFlash++
+                    player.play(resolver.cardPaths(card, word))
+                }
                 RemoteKey.UP -> {
                     scope.launch { store.record(card.symbol, PracticeResult.CORRECT) }
                     session = ParentRules.markCorrect(session)
                     lastMark = PracticeResult.CORRECT
+                    celebrate++
                     player.play(resolver.phrasePaths(Phrase.CORRECT))
                 }
                 RemoteKey.DOWN -> {
                     scope.launch { store.record(card.symbol, PracticeResult.AGAIN) }
+                    forward = true
                     apply(ParentRules.markAgain(session))
                     lastMark = PracticeResult.AGAIN
                 }
             }
         },
     ) {
-        CardFace(card, word, topLeft = mark, topRight = info, bottomRight = PARENT_KEY_HINT)
+        CardPage(
+            mode = "大人陪・第 ${session.unit} 單元",
+            counter = "$phaseLabel　${cardCounter(session.pos, session.queue.size)}",
+            stars = StarRow(session.pos, session.queue.size, currentDone = lastMark == PracticeResult.CORRECT),
+            celebrate = celebrate,
+            onStarTarget = { starTarget = it },
+            buttons = active,
+            showButtons = true,
+        ) {
+            CardSlide(ParentFace(session.phase, session.pos, card, word), forward) { CardFace(it.card, it.word) }
+        }
+        Box(Modifier.fillMaxSize().safeArea()) {
+            KeyHint(PARENT_KEY_HINT, Modifier.align(Alignment.BottomEnd).padding(bottom = 18.dp))
+        }
+        FeedbackOverlay(celebrate, card.symbol, starTarget)
     }
 }
 
@@ -175,7 +217,7 @@ fun ParentStartScreen(
             Text(if (resume) "接著上次沒做完的卡" else " ", fontSize = TextSize.Info, color = SubtleColor)
         }
         Box(Modifier.fillMaxSize().safeArea()) {
-            Text(PARENT_START_HINT, Modifier.align(Alignment.BottomEnd), fontSize = TextSize.Hint, color = SubtleColor)
+            KeyHint(PARENT_START_HINT, Modifier.align(Alignment.BottomEnd))
         }
     }
 }
@@ -211,7 +253,9 @@ fun SelfPlayCardScreen(
     BackHandler { onExit() }
 
     RemoteKeyBox(onKey = { step++ }) {
-        CardFace(item.card, item.word)
+        CardPage(mode = "自己玩", counter = cardCounter(step % deck.size, deck.size)) {
+            CardSlide(item, forward = true) { CardFace(it.card, it.word) }
+        }
     }
 }
 
@@ -249,22 +293,23 @@ fun AbcCardScreen(
             if (key == RemoteKey.OK) player.play(resolver.letterWordPaths(item.card, item.word)) else step++
         },
     ) {
-        AbcCardFace(item.card, item.word)
+        CardPage(mode = "ABC", counter = cardCounter(step % deck.size, deck.size)) {
+            CardSlide(item, forward = true) { AbcCardFace(it.card, it.word) }
+        }
     }
 }
 
 /**
- * 取得焦點並接收遙控器按鍵的全螢幕容器。
+ * 取得焦點並接收遙控器按鍵的全螢幕容器。背景是主題的 [backdrop]（預設卡片頁背景）。
  * 只吃方向鍵與確定鍵；返回鍵交給 BackHandler，音量等其他鍵交給系統。
  */
 @Composable
-fun RemoteKeyBox(onKey: (RemoteKey) -> Unit, content: @Composable () -> Unit) {
+fun RemoteKeyBox(onKey: (RemoteKey) -> Unit, backdrop: String = LocalAppTheme.current.bgCard, content: @Composable () -> Unit) {
     val focus = remember { FocusRequester() }
     LaunchedEffect(Unit) { focus.requestFocus() }
     Box(
         Modifier
             .fillMaxSize()
-            .background(Background)
             .focusRequester(focus)
             .onPreviewKeyEvent { event ->
                 val key = event.remoteKey() ?: return@onPreviewKeyEvent false
@@ -273,6 +318,7 @@ fun RemoteKeyBox(onKey: (RemoteKey) -> Unit, content: @Composable () -> Unit) {
             }
             .focusable(),
     ) {
+        ThemeBackdrop(backdrop)
         content()
     }
 }
