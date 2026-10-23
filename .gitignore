@@ -10,6 +10,7 @@ captures/
 
 # 簽章：金鑰與密碼只留在自己電腦，不進 repo。
 keystore.properties
+.env
 *.jks
 *.keystore
 
