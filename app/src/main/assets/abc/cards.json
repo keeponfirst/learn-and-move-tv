@@ -1,0 +1,262 @@
+[
+ {
+  "order": 1,
+  "upper": "A",
+  "lower": "a",
+  "word": "apple",
+  "zh": "蘋果",
+  "image": "abc/img/a_apple.png",
+  "audioLetter": "abc/audio/l_a.m4a",
+  "audioWord": "abc/audio/w_apple.m4a"
+ },
+ {
+  "order": 2,
+  "upper": "B",
+  "lower": "b",
+  "word": "ball",
+  "zh": "球",
+  "image": "abc/img/b_ball.png",
+  "audioLetter": "abc/audio/l_b.m4a",
+  "audioWord": "abc/audio/w_ball.m4a"
+ },
+ {
+  "order": 3,
+  "upper": "C",
+  "lower": "c",
+  "word": "cat",
+  "zh": "貓",
+  "image": "abc/img/c_cat.png",
+  "audioLetter": "abc/audio/l_c.m4a",
+  "audioWord": "abc/audio/w_cat.m4a"
+ },
+ {
+  "order": 4,
+  "upper": "D",
+  "lower": "d",
+  "word": "dog",
+  "zh": "狗",
+  "image": "abc/img/d_dog.png",
+  "audioLetter": "abc/audio/l_d.m4a",
+  "audioWord": "abc/audio/w_dog.m4a"
+ },
+ {
+  "order": 5,
+  "upper": "E",
+  "lower": "e",
+  "word": "egg",
+  "zh": "蛋",
+  "image": "abc/img/e_egg.png",
+  "audioLetter": "abc/audio/l_e.m4a",
+  "audioWord": "abc/audio/w_egg.m4a"
+ },
+ {
+  "order": 6,
+  "upper": "F",
+  "lower": "f",
+  "word": "fish",
+  "zh": "魚",
+  "image": "abc/img/f_fish.png",
+  "audioLetter": "abc/audio/l_f.m4a",
+  "audioWord": "abc/audio/w_fish.m4a"
+ },
+ {
+  "order": 7,
+  "upper": "G",
+  "lower": "g",
+  "word": "grapes",
+  "zh": "葡萄",
+  "image": "abc/img/g_grapes.png",
+  "audioLetter": "abc/audio/l_g.m4a",
+  "audioWord": "abc/audio/w_grapes.m4a"
+ },
+ {
+  "order": 8,
+  "upper": "H",
+  "lower": "h",
+  "word": "hat",
+  "zh": "帽子",
+  "image": "abc/img/h_hat.png",
+  "audioLetter": "abc/audio/l_h.m4a",
+  "audioWord": "abc/audio/w_hat.m4a"
+ },
+ {
+  "order": 9,
+  "upper": "I",
+  "lower": "i",
+  "word": "ice cream",
+  "zh": "冰淇淋",
+  "image": "abc/img/i_icecream.png",
+  "audioLetter": "abc/audio/l_i.m4a",
+  "audioWord": "abc/audio/w_icecream.m4a"
+ },
+ {
+  "order": 10,
+  "upper": "J",
+  "lower": "j",
+  "word": "juice",
+  "zh": "果汁",
+  "image": "abc/img/j_juice.png",
+  "audioLetter": "abc/audio/l_j.m4a",
+  "audioWord": "abc/audio/w_juice.m4a"
+ },
+ {
+  "order": 11,
+  "upper": "K",
+  "lower": "k",
+  "word": "kite",
+  "zh": "風箏",
+  "image": "abc/img/k_kite.png",
+  "audioLetter": "abc/audio/l_k.m4a",
+  "audioWord": "abc/audio/w_kite.m4a"
+ },
+ {
+  "order": 12,
+  "upper": "L",
+  "lower": "l",
+  "word": "lion",
+  "zh": "獅子",
+  "image": "abc/img/l_lion.png",
+  "audioLetter": "abc/audio/l_l.m4a",
+  "audioWord": "abc/audio/w_lion.m4a"
+ },
+ {
+  "order": 13,
+  "upper": "M",
+  "lower": "m",
+  "word": "moon",
+  "zh": "月亮",
+  "image": "abc/img/m_moon.png",
+  "audioLetter": "abc/audio/l_m.m4a",
+  "audioWord": "abc/audio/w_moon.m4a"
+ },
+ {
+  "order": 14,
+  "upper": "N",
+  "lower": "n",
+  "word": "nose",
+  "zh": "鼻子",
+  "image": "abc/img/n_nose.png",
+  "audioLetter": "abc/audio/l_n.m4a",
+  "audioWord": "abc/audio/w_nose.m4a"
+ },
+ {
+  "order": 15,
+  "upper": "O",
+  "lower": "o",
+  "word": "orange",
+  "zh": "柳橙",
+  "image": "abc/img/o_orange.png",
+  "audioLetter": "abc/audio/l_o.m4a",
+  "audioWord": "abc/audio/w_orange.m4a"
+ },
+ {
+  "order": 16,
+  "upper": "P",
+  "lower": "p",
+  "word": "pig",
+  "zh": "豬",
+  "image": "abc/img/p_pig.png",
+  "audioLetter": "abc/audio/l_p.m4a",
+  "audioWord": "abc/audio/w_pig.m4a"
+ },
+ {
+  "order": 17,
+  "upper": "Q",
+  "lower": "q",
+  "word": "queen",
+  "zh": "皇后",
+  "image": "abc/img/q_queen.png",
+  "audioLetter": "abc/audio/l_q.m4a",
+  "audioWord": "abc/audio/w_queen.m4a"
+ },
+ {
+  "order": 18,
+  "upper": "R",
+  "lower": "r",
+  "word": "rabbit",
+  "zh": "兔子",
+  "image": "abc/img/r_rabbit.png",
+  "audioLetter": "abc/audio/l_r.m4a",
+  "audioWord": "abc/audio/w_rabbit.m4a"
+ },
+ {
+  "order": 19,
+  "upper": "S",
+  "lower": "s",
+  "word": "sun",
+  "zh": "太陽",
+  "image": "abc/img/s_sun.png",
+  "audioLetter": "abc/audio/l_s.m4a",
+  "audioWord": "abc/audio/w_sun.m4a"
+ },
+ {
+  "order": 20,
+  "upper": "T",
+  "lower": "t",
+  "word": "tree",
+  "zh": "樹",
+  "image": "abc/img/t_tree.png",
+  "audioLetter": "abc/audio/l_t.m4a",
+  "audioWord": "abc/audio/w_tree.m4a"
+ },
+ {
+  "order": 21,
+  "upper": "U",
+  "lower": "u",
+  "word": "umbrella",
+  "zh": "雨傘",
+  "image": "abc/img/u_umbrella.png",
+  "audioLetter": "abc/audio/l_u.m4a",
+  "audioWord": "abc/audio/w_umbrella.m4a"
+ },
+ {
+  "order": 22,
+  "upper": "V",
+  "lower": "v",
+  "word": "violin",
+  "zh": "小提琴",
+  "image": "abc/img/v_violin.png",
+  "audioLetter": "abc/audio/l_v.m4a",
+  "audioWord": "abc/audio/w_violin.m4a"
+ },
+ {
+  "order": 23,
+  "upper": "W",
+  "lower": "w",
+  "word": "watermelon",
+  "zh": "西瓜",
+  "image": "abc/img/w_watermelon.png",
+  "audioLetter": "abc/audio/l_w.m4a",
+  "audioWord": "abc/audio/w_watermelon.m4a"
+ },
+ {
+  "order": 24,
+  "upper": "X",
+  "lower": "x",
+  "word": "xylophone",
+  "zh": "木琴",
+  "image": "abc/img/x_xylophone.png",
+  "audioLetter": "abc/audio/l_x.m4a",
+  "audioWord": "abc/audio/w_xylophone.m4a"
+ },
+ {
+  "order": 25,
+  "upper": "Y",
+  "lower": "y",
+  "word": "yo-yo",
+  "zh": "溜溜球",
+  "image": "abc/img/y_yoyo.png",
+  "audioLetter": "abc/audio/l_y.m4a",
+  "audioWord": "abc/audio/w_yoyo.m4a"
+ },
+ {
+  "order": 26,
+  "upper": "Z",
+  "lower": "z",
+  "word": "zebra",
+  "zh": "斑馬",
+  "image": "abc/img/z_zebra.png",
+  "audioLetter": "abc/audio/l_z.m4a",
+  "audioWord": "abc/audio/w_zebra.m4a"
+ }
+]

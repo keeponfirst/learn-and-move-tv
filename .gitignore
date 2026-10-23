@@ -1,0 +1,18 @@
+.gradle/
+build/
+/app/build/
+local.properties
+.idea/
+*.iml
+.DS_Store
+.kotlin/
+captures/
+
+# 簽章：金鑰與密碼只留在自己電腦，不進 repo。
+keystore.properties
+*.jks
+*.keystore
+
+# 建置產物
+*.apk
+*.aab

@@ -1,0 +1,964 @@
+[
+ {
+  "symbol": "ㄅ",
+  "words": [
+   {
+    "word": "爸爸",
+    "zhuyin": "ㄅㄚˋ ˙ㄅㄚ",
+    "image": "zhuyin/img/01_baba.png",
+    "audio": "audio/k_01_baba.m4a",
+    "imagePrompt": "A smiling young dad waving, cute flat illustration, single subject, centered, plain light background, no text"
+   },
+   {
+    "word": "杯子",
+    "zhuyin": "ㄅㄟ ˙ㄗ",
+    "image": "zhuyin/img/01_beizi.png",
+    "audio": "zhuyin/audio/w_01_beizi.m4a",
+    "imagePrompt": "A simple blue drinking cup, cute flat illustration, single subject, centered, plain light background, no text"
+   },
+   {
+    "word": "包子",
+    "zhuyin": "ㄅㄠ ˙ㄗ",
+    "image": "zhuyin/img/01_baozi.png",
+    "audio": "zhuyin/audio/w_01_baozi.m4a",
+    "imagePrompt": "A white steamed bun with pleats on top, cute flat illustration, single subject, centered, plain light background, no text"
+   }
+  ]
+ },
+ {
+  "symbol": "ㄆ",
+  "words": [
+   {
+    "word": "葡萄",
+    "zhuyin": "ㄆㄨˊ ㄊㄠˊ",
+    "image": "zhuyin/img/02_putao.png",
+    "audio": "audio/k_02_putao.m4a",
+    "imagePrompt": "A bunch of purple grapes with a green leaf, cute flat illustration, single subject, centered, plain light background, no text"
+   },
+   {
+    "word": "蘋果",
+    "zhuyin": "ㄆㄧㄥˊ ㄍㄨㄛˇ",
+    "image": "zhuyin/img/02_pingguo.png",
+    "audio": "zhuyin/audio/w_02_pingguo.m4a",
+    "imagePrompt": "A shiny red apple with one leaf, cute flat illustration, single subject, centered, plain light background, no text"
+   },
+   {
+    "word": "螃蟹",
+    "zhuyin": "ㄆㄤˊ ㄒㄧㄝˋ",
+    "image": "zhuyin/img/02_pangxie.png",
+    "audio": "zhuyin/audio/w_02_pangxie.m4a",
+    "imagePrompt": "A friendly orange crab smiling, cute flat illustration, single subject, centered, plain light background, no text"
+   }
+  ]
+ },
+ {
+  "symbol": "ㄇ",
+  "words": [
+   {
+    "word": "媽媽",
+    "zhuyin": "ㄇㄚ ˙ㄇㄚ",
+    "image": "zhuyin/img/03_mama.png",
+    "audio": "audio/k_03_mama.m4a",
+    "imagePrompt": "A smiling young mom waving, cute flat illustration, single subject, centered, plain light background, no text"
+   },
+   {
+    "word": "馬",
+    "zhuyin": "ㄇㄚˇ",
+    "image": "zhuyin/img/03_ma.png",
+    "audio": "zhuyin/audio/w_03_ma.m4a",
+    "imagePrompt": "A brown horse standing, cute flat illustration, single subject, centered, plain light background, no text"
+   },
+   {
+    "word": "帽子",
+    "zhuyin": "ㄇㄠˋ ˙ㄗ",
+    "image": "zhuyin/img/03_maozi.png",
+    "audio": "zhuyin/audio/w_03_maozi.m4a",
+    "imagePrompt": "A yellow sun hat with a ribbon, cute flat illustration, single subject, centered, plain light background, no text"
+   }
+  ]
+ },
+ {
+  "symbol": "ㄈ",
+  "words": [
+   {
+    "word": "飯",
+    "zhuyin": "ㄈㄢˋ",
+    "image": "zhuyin/img/04_fan.png",
+    "audio": "audio/k_04_fan.m4a",
+    "imagePrompt": "A bowl of white rice, cute flat illustration, single subject, centered, plain light background, no text"
+   },
+   {
+    "word": "飛機",
+    "zhuyin": "ㄈㄟ ㄐㄧ",
+    "image": "zhuyin/img/04_feiji.png",
+    "audio": "zhuyin/audio/w_04_feiji.m4a",
+    "imagePrompt": "A small airplane flying, side view, cute flat illustration, single subject, centered, plain light background, no text"
+   },
+   {
+    "word": "房子",
+    "zhuyin": "ㄈㄤˊ ˙ㄗ",
+    "image": "zhuyin/img/04_fangzi.png",
+    "audio": "zhuyin/audio/w_04_fangzi.m4a",
+    "imagePrompt": "A small house with a red roof and a door, cute flat illustration, single subject, centered, plain light background, no text"
+   }
+  ]
+ },
+ {
+  "symbol": "ㄉ",
+  "words": [
+   {
+    "word": "大象",
+    "zhuyin": "ㄉㄚˋ ㄒㄧㄤˋ",
+    "image": "zhuyin/img/05_daxiang.png",
+    "audio": "audio/k_05_daxiang.m4a",
+    "imagePrompt": "A gray elephant with its trunk up, cute flat illustration, single subject, centered, plain light background, no text"
+   },
+   {
+    "word": "袋鼠",
+    "zhuyin": "ㄉㄞˋ ㄕㄨˇ",
+    "image": "zhuyin/img/05_daishu.png",
+    "audio": "zhuyin/audio/w_05_daishu.m4a",
+    "imagePrompt": "A kangaroo with a baby in its pouch, cute flat illustration, single subject, centered, plain light background, no text"
+   },
+   {
+    "word": "電視",
+    "zhuyin": "ㄉㄧㄢˋ ㄕˋ",
+    "image": "zhuyin/img/05_dianshi.png",
+    "audio": "zhuyin/audio/w_05_dianshi.m4a",
+    "imagePrompt": "A small TV set with a blank colorful screen, cute flat illustration, single subject, centered, plain light background, no text"
+   }
+  ]
+ },
+ {
+  "symbol": "ㄊ",
+  "words": [
+   {
+    "word": "兔子",
+    "zhuyin": "ㄊㄨˋ ˙ㄗ",
+    "image": "zhuyin/img/06_tuzi.png",
+    "audio": "audio/k_06_tuzi.m4a",
+    "imagePrompt": "A white rabbit with long ears, cute flat illustration, single subject, centered, plain light background, no text"
+   },
+   {
+    "word": "太陽",
+    "zhuyin": "ㄊㄞˋ ㄧㄤˊ",
+    "image": "zhuyin/img/06_taiyang.png",
+    "audio": "zhuyin/audio/w_06_taiyang.m4a",
+    "imagePrompt": "A bright yellow sun with a smiling face, cute flat illustration, single subject, centered, plain light background, no text"
+   },
+   {
+    "word": "拖鞋",
+    "zhuyin": "ㄊㄨㄛ ㄒㄧㄝˊ",
+    "image": "zhuyin/img/06_tuoxie.png",
+    "audio": "zhuyin/audio/w_06_tuoxie.m4a",
+    "imagePrompt": "A pair of blue flip-flop slippers, cute flat illustration, single subject, centered, plain light background, no text"
+   }
+  ]
+ },
+ {
+  "symbol": "ㄋ",
+  "words": [
+   {
+    "word": "牛奶",
+    "zhuyin": "ㄋㄧㄡˊ ㄋㄞˇ",
+    "image": "zhuyin/img/07_niunai.png",
+    "audio": "audio/k_07_niunai.m4a",
+    "imagePrompt": "A glass of white milk, cute flat illustration, single subject, centered, plain light background, no text"
+   },
+   {
+    "word": "鬧鐘",
+    "zhuyin": "ㄋㄠˋ ㄓㄨㄥ",
+    "image": "zhuyin/img/07_naozhong.png",
+    "audio": "zhuyin/audio/w_07_naozhong.m4a",
+    "imagePrompt": "A red twin-bell alarm clock with a blank face and no numbers, cute flat illustration, single subject, centered, plain light background, no text"
+   },
+   {
+    "word": "檸檬",
+    "zhuyin": "ㄋㄧㄥˊ ㄇㄥˊ",
+    "image": "zhuyin/img/07_ningmeng.png",
+    "audio": "zhuyin/audio/w_07_ningmeng.m4a",
+    "imagePrompt": "A yellow lemon with one leaf, cute flat illustration, single subject, centered, plain light background, no text"
+   }
+  ]
+ },
+ {
+  "symbol": "ㄌ",
+  "words": [
+   {
+    "word": "老虎",
+    "zhuyin": "ㄌㄠˇ ㄏㄨˇ",
+    "image": "zhuyin/img/08_laohu.png",
+    "audio": "audio/k_08_laohu.m4a",
+    "imagePrompt": "A friendly baby tiger sitting, cute flat illustration, single subject, centered, plain light background, no text"
+   },
+   {
+    "word": "蠟燭",
+    "zhuyin": "ㄌㄚˋ ㄓㄨˊ",
+    "image": "zhuyin/img/08_lazhu.png",
+    "audio": "zhuyin/audio/w_08_lazhu.m4a",
+    "imagePrompt": "A single lit candle with a small flame, cute flat illustration, single subject, centered, plain light background, no text"
+   },
+   {
+    "word": "籃球",
+    "zhuyin": "ㄌㄢˊ ㄑㄧㄡˊ",
+    "image": "zhuyin/img/08_lanqiu.png",
+    "audio": "zhuyin/audio/w_08_lanqiu.m4a",
+    "imagePrompt": "An orange basketball, cute flat illustration, single subject, centered, plain light background, no text"
+   }
+  ]
+ },
+ {
+  "symbol": "ㄍ",
+  "words": [
+   {
+    "word": "狗",
+    "zhuyin": "ㄍㄡˇ",
+    "image": "zhuyin/img/09_gou.png",
+    "audio": "audio/k_09_gou.m4a",
+    "imagePrompt": "A brown puppy wagging its tail, cute flat illustration, single subject, centered, plain light background, no text"
+   },
+   {
+    "word": "鼓",
+    "zhuyin": "ㄍㄨˇ",
+    "image": "zhuyin/img/09_gu.png",
+    "audio": "zhuyin/audio/w_09_gu.m4a",
+    "imagePrompt": "A red toy drum with two drumsticks, cute flat illustration, single subject, centered, plain light background, no text"
+   },
+   {
+    "word": "鍋子",
+    "zhuyin": "ㄍㄨㄛ ˙ㄗ",
+    "image": "zhuyin/img/09_guozi.png",
+    "audio": "zhuyin/audio/w_09_guozi.m4a",
+    "imagePrompt": "A cooking pot with a lid and two handles, cute flat illustration, single subject, centered, plain light background, no text"
+   }
+  ]
+ },
+ {
+  "symbol": "ㄎ",
+  "words": [
+   {
+    "word": "筷子",
+    "zhuyin": "ㄎㄨㄞˋ ˙ㄗ",
+    "image": "zhuyin/img/10_kuaizi.png",
+    "audio": "audio/k_10_kuaizi.m4a",
+    "imagePrompt": "A pair of wooden chopsticks, cute flat illustration, single subject, centered, plain light background, no text"
+   },
+   {
+    "word": "口罩",
+    "zhuyin": "ㄎㄡˇ ㄓㄠˋ",
+    "image": "zhuyin/img/10_kouzhao.png",
+    "audio": "zhuyin/audio/w_10_kouzhao.m4a",
+    "imagePrompt": "A light blue face mask with ear loops, cute flat illustration, single subject, centered, plain light background, no text"
+   },
+   {
+    "word": "恐龍",
+    "zhuyin": "ㄎㄨㄥˇ ㄌㄨㄥˊ",
+    "image": "zhuyin/img/10_konglong.png",
+    "audio": "zhuyin/audio/w_10_konglong.m4a",
+    "imagePrompt": "A friendly green baby dinosaur smiling, cute flat illustration, single subject, centered, plain light background, no text"
+   }
+  ]
+ },
+ {
+  "symbol": "ㄏ",
+  "words": [
+   {
+    "word": "猴子",
+    "zhuyin": "ㄏㄡˊ ˙ㄗ",
+    "image": "zhuyin/img/11_houzi.png",
+    "audio": "audio/k_11_houzi.m4a",
+    "imagePrompt": "A brown monkey holding a banana, cute flat illustration, single subject, centered, plain light background, no text"
+   },
+   {
+    "word": "花",
+    "zhuyin": "ㄏㄨㄚ",
+    "image": "zhuyin/img/11_hua.png",
+    "audio": "zhuyin/audio/w_11_hua.m4a",
+    "imagePrompt": "A pink flower with a green stem, cute flat illustration, single subject, centered, plain light background, no text"
+   },
+   {
+    "word": "蝴蝶",
+    "zhuyin": "ㄏㄨˊ ㄉㄧㄝˊ",
+    "image": "zhuyin/img/11_hudie.png",
+    "audio": "zhuyin/audio/w_11_hudie.m4a",
+    "imagePrompt": "A colorful butterfly with open wings, cute flat illustration, single subject, centered, plain light background, no text"
+   }
+  ]
+ },
+ {
+  "symbol": "ㄐ",
+  "words": [
+   {
+    "word": "雞",
+    "zhuyin": "ㄐㄧ",
+    "image": "zhuyin/img/12_ji.png",
+    "audio": "audio/k_12_ji.m4a",
+    "imagePrompt": "A fluffy yellow chick, cute flat illustration, single subject, centered, plain light background, no text"
+   },
+   {
+    "word": "橘子",
+    "zhuyin": "ㄐㄩˊ ˙ㄗ",
+    "image": "zhuyin/img/12_juzi.png",
+    "audio": "zhuyin/audio/w_12_juzi.m4a",
+    "imagePrompt": "A round orange tangerine with a leaf, cute flat illustration, single subject, centered, plain light background, no text"
+   },
+   {
+    "word": "餃子",
+    "zhuyin": "ㄐㄧㄠˇ ˙ㄗ",
+    "image": "zhuyin/img/12_jiaozi.png",
+    "audio": "zhuyin/audio/w_12_jiaozi.m4a",
+    "imagePrompt": "A plump white dumpling with pleats, cute flat illustration, single subject, centered, plain light background, no text"
+   }
+  ]
+ },
+ {
+  "symbol": "ㄑ",
+  "words": [
+   {
+    "word": "球",
+    "zhuyin": "ㄑㄧㄡˊ",
+    "image": "zhuyin/img/13_qiu.png",
+    "audio": "audio/k_13_qiu.m4a",
+    "imagePrompt": "A colorful striped beach ball, cute flat illustration, single subject, centered, plain light background, no text"
+   },
+   {
+    "word": "汽車",
+    "zhuyin": "ㄑㄧˋ ㄔㄜ",
+    "image": "zhuyin/img/13_qiche.png",
+    "audio": "zhuyin/audio/w_13_qiche.m4a",
+    "imagePrompt": "A small red car, side view, cute flat illustration, single subject, centered, plain light background, no text"
+   },
+   {
+    "word": "鉛筆",
+    "zhuyin": "ㄑㄧㄢ ㄅㄧˇ",
+    "image": "zhuyin/img/13_qianbi.png",
+    "audio": "zhuyin/audio/w_13_qianbi.m4a",
+    "imagePrompt": "A yellow pencil with a pink eraser, cute flat illustration, single subject, centered, plain light background, no text"
+   }
+  ]
+ },
+ {
+  "symbol": "ㄒ",
+  "words": [
+   {
+    "word": "西瓜",
+    "zhuyin": "ㄒㄧ ㄍㄨㄚ",
+    "image": "zhuyin/img/14_xigua.png",
+    "audio": "audio/k_14_xigua.m4a",
+    "imagePrompt": "A slice of red watermelon with black seeds, cute flat illustration, single subject, centered, plain light background, no text"
+   },
+   {
+    "word": "香蕉",
+    "zhuyin": "ㄒㄧㄤ ㄐㄧㄠ",
+    "image": "zhuyin/img/14_xiangjiao.png",
+    "audio": "zhuyin/audio/w_14_xiangjiao.m4a",
+    "imagePrompt": "A yellow banana, cute flat illustration, single subject, centered, plain light background, no text"
+   },
+   {
+    "word": "熊",
+    "zhuyin": "ㄒㄩㄥˊ",
+    "image": "zhuyin/img/14_xiong.png",
+    "audio": "zhuyin/audio/w_14_xiong.m4a",
+    "imagePrompt": "A friendly brown bear sitting, cute flat illustration, single subject, centered, plain light background, no text"
+   }
+  ]
+ },
+ {
+  "symbol": "ㄖ",
+  "words": [
+   {
+    "word": "肉",
+    "zhuyin": "ㄖㄡˋ",
+    "image": "zhuyin/img/15_rou.png",
+    "audio": "audio/k_15_rou.m4a",
+    "imagePrompt": "A piece of cooked meat on a bone, cute flat illustration, single subject, centered, plain light background, no text"
+   },
+   {
+    "word": "乳牛",
+    "zhuyin": "ㄖㄨˇ ㄋㄧㄡˊ",
+    "image": "zhuyin/img/15_runiu.png",
+    "audio": "zhuyin/audio/w_15_runiu.m4a",
+    "imagePrompt": "A black and white dairy cow, cute flat illustration, single subject, centered, plain light background, no text"
+   },
+   {
+    "word": "熱狗",
+    "zhuyin": "ㄖㄜˋ ㄍㄡˇ",
+    "image": "zhuyin/img/15_regou.png",
+    "audio": "zhuyin/audio/w_15_regou.m4a",
+    "imagePrompt": "A hot dog in a bun with ketchup, cute flat illustration, single subject, centered, plain light background, no text"
+   }
+  ]
+ },
+ {
+  "symbol": "ㄕ",
+  "words": [
+   {
+    "word": "獅子",
+    "zhuyin": "ㄕ ˙ㄗ",
+    "image": "zhuyin/img/16_shizi.png",
+    "audio": "audio/k_16_shizi.m4a",
+    "imagePrompt": "A friendly lion with a fluffy mane, cute flat illustration, single subject, centered, plain light background, no text"
+   },
+   {
+    "word": "樹",
+    "zhuyin": "ㄕㄨˋ",
+    "image": "zhuyin/img/16_shu4.png",
+    "audio": "zhuyin/audio/w_16_shu4.m4a",
+    "imagePrompt": "A green round tree with a brown trunk, cute flat illustration, single subject, centered, plain light background, no text"
+   },
+   {
+    "word": "書",
+    "zhuyin": "ㄕㄨ",
+    "image": "zhuyin/img/16_shu1.png",
+    "audio": "zhuyin/audio/w_16_shu1.m4a",
+    "imagePrompt": "An open picture book with blank colorful pages, cute flat illustration, single subject, centered, plain light background, no text"
+   }
+  ]
+ },
+ {
+  "symbol": "ㄔ",
+  "words": [
+   {
+    "word": "吃",
+    "zhuyin": "ㄔ",
+    "image": "zhuyin/img/17_chi.png",
+    "audio": "audio/k_17_chi.m4a",
+    "imagePrompt": "A happy child eating with a spoon, cute flat illustration, single subject, centered, plain light background, no text"
+   },
+   {
+    "word": "船",
+    "zhuyin": "ㄔㄨㄢˊ",
+    "image": "zhuyin/img/17_chuan.png",
+    "audio": "zhuyin/audio/w_17_chuan.m4a",
+    "imagePrompt": "A small sailboat on blue water, cute flat illustration, single subject, centered, plain light background, no text"
+   },
+   {
+    "word": "床",
+    "zhuyin": "ㄔㄨㄤˊ",
+    "image": "zhuyin/img/17_chuang.png",
+    "audio": "zhuyin/audio/w_17_chuang.m4a",
+    "imagePrompt": "A cozy bed with a pillow and blanket, cute flat illustration, single subject, centered, plain light background, no text"
+   }
+  ]
+ },
+ {
+  "symbol": "ㄓ",
+  "words": [
+   {
+    "word": "豬",
+    "zhuyin": "ㄓㄨ",
+    "image": "zhuyin/img/18_zhu.png",
+    "audio": "audio/k_18_zhu.m4a",
+    "imagePrompt": "A pink pig smiling, cute flat illustration, single subject, centered, plain light background, no text"
+   },
+   {
+    "word": "桌子",
+    "zhuyin": "ㄓㄨㄛ ˙ㄗ",
+    "image": "zhuyin/img/18_zhuozi.png",
+    "audio": "zhuyin/audio/w_18_zhuozi.m4a",
+    "imagePrompt": "A wooden table with four legs, cute flat illustration, single subject, centered, plain light background, no text"
+   },
+   {
+    "word": "章魚",
+    "zhuyin": "ㄓㄤ ㄩˊ",
+    "image": "zhuyin/img/18_zhangyu.png",
+    "audio": "zhuyin/audio/w_18_zhangyu.m4a",
+    "imagePrompt": "A friendly purple octopus smiling, cute flat illustration, single subject, centered, plain light background, no text"
+   }
+  ]
+ },
+ {
+  "symbol": "ㄗ",
+  "words": [
+   {
+    "word": "嘴巴",
+    "zhuyin": "ㄗㄨㄟˇ ˙ㄅㄚ",
+    "image": "zhuyin/img/19_zuiba.png",
+    "audio": "audio/k_19_zuiba.m4a",
+    "imagePrompt": "A smiling mouth with red lips, cute flat illustration, single subject, centered, plain light background, no text"
+   },
+   {
+    "word": "粽子",
+    "zhuyin": "ㄗㄨㄥˋ ˙ㄗ",
+    "image": "zhuyin/img/19_zongzi.png",
+    "audio": "zhuyin/audio/w_19_zongzi.m4a",
+    "imagePrompt": "A triangle rice dumpling wrapped in green leaves and tied with string, cute flat illustration, single subject, centered, plain light background, no text"
+   },
+   {
+    "word": "足球",
+    "zhuyin": "ㄗㄨˊ ㄑㄧㄡˊ",
+    "image": "zhuyin/img/19_zuqiu.png",
+    "audio": "zhuyin/audio/w_19_zuqiu.m4a",
+    "imagePrompt": "A black and white soccer ball, cute flat illustration, single subject, centered, plain light background, no text"
+   }
+  ]
+ },
+ {
+  "symbol": "ㄘ",
+  "words": [
+   {
+    "word": "草莓",
+    "zhuyin": "ㄘㄠˇ ㄇㄟˊ",
+    "image": "zhuyin/img/20_caomei.png",
+    "audio": "audio/k_20_caomei.m4a",
+    "imagePrompt": "A red strawberry with green leaves, cute flat illustration, single subject, centered, plain light background, no text"
+   },
+   {
+    "word": "刺蝟",
+    "zhuyin": "ㄘˋ ㄨㄟˋ",
+    "image": "zhuyin/img/20_ciwei.png",
+    "audio": "zhuyin/audio/w_20_ciwei.m4a",
+    "imagePrompt": "A round little hedgehog with soft spikes, cute flat illustration, single subject, centered, plain light background, no text"
+   },
+   {
+    "word": "蔥",
+    "zhuyin": "ㄘㄨㄥ",
+    "image": "zhuyin/img/20_cong.png",
+    "audio": "zhuyin/audio/w_20_cong.m4a",
+    "imagePrompt": "A green onion stalk with white root end, cute flat illustration, single subject, centered, plain light background, no text"
+   }
+  ]
+ },
+ {
+  "symbol": "ㄙ",
+  "words": [
+   {
+    "word": "三",
+    "zhuyin": "ㄙㄢ",
+    "image": "zhuyin/img/21_san.png",
+    "audio": "audio/k_21_san.m4a",
+    "imagePrompt": "A child's hand holding up three fingers, cute flat illustration, single subject, centered, plain light background, no text"
+   },
+   {
+    "word": "傘",
+    "zhuyin": "ㄙㄢˇ",
+    "image": "zhuyin/img/21_san3.png",
+    "audio": "zhuyin/audio/w_21_san3.m4a",
+    "imagePrompt": "An open red umbrella, cute flat illustration, single subject, centered, plain light background, no text"
+   },
+   {
+    "word": "松鼠",
+    "zhuyin": "ㄙㄨㄥ ㄕㄨˇ",
+    "image": "zhuyin/img/21_songshu.png",
+    "audio": "zhuyin/audio/w_21_songshu.m4a",
+    "imagePrompt": "A squirrel holding an acorn, cute flat illustration, single subject, centered, plain light background, no text"
+   }
+  ]
+ },
+ {
+  "symbol": "ㄧ",
+  "words": [
+   {
+    "word": "衣服",
+    "zhuyin": "ㄧ ˙ㄈㄨ",
+    "image": "zhuyin/img/22_yifu.png",
+    "audio": "audio/k_22_yifu.m4a",
+    "imagePrompt": "A kids' yellow T-shirt, cute flat illustration, single subject, centered, plain light background, no text"
+   },
+   {
+    "word": "椅子",
+    "zhuyin": "ㄧˇ ˙ㄗ",
+    "image": "zhuyin/img/22_yizi.png",
+    "audio": "zhuyin/audio/w_22_yizi.m4a",
+    "imagePrompt": "A small wooden chair, cute flat illustration, single subject, centered, plain light background, no text"
+   },
+   {
+    "word": "鴨子",
+    "zhuyin": "ㄧㄚ ˙ㄗ",
+    "image": "zhuyin/img/22_yazi.png",
+    "audio": "zhuyin/audio/w_22_yazi.m4a",
+    "imagePrompt": "A yellow duck with an orange beak, cute flat illustration, single subject, centered, plain light background, no text"
+   }
+  ]
+ },
+ {
+  "symbol": "ㄨ",
+  "words": [
+   {
+    "word": "烏龜",
+    "zhuyin": "ㄨ ㄍㄨㄟ",
+    "image": "zhuyin/img/23_wugui.png",
+    "audio": "audio/k_23_wugui.m4a",
+    "imagePrompt": "A green turtle smiling, cute flat illustration, single subject, centered, plain light background, no text"
+   },
+   {
+    "word": "碗",
+    "zhuyin": "ㄨㄢˇ",
+    "image": "zhuyin/img/23_wan.png",
+    "audio": "zhuyin/audio/w_23_wan.m4a",
+    "imagePrompt": "An empty blue rice bowl, cute flat illustration, single subject, centered, plain light background, no text"
+   },
+   {
+    "word": "襪子",
+    "zhuyin": "ㄨㄚˋ ˙ㄗ",
+    "image": "zhuyin/img/23_wazi.png",
+    "audio": "zhuyin/audio/w_23_wazi.m4a",
+    "imagePrompt": "A pair of striped kids' socks, cute flat illustration, single subject, centered, plain light background, no text"
+   }
+  ]
+ },
+ {
+  "symbol": "ㄩ",
+  "words": [
+   {
+    "word": "魚",
+    "zhuyin": "ㄩˊ",
+    "image": "zhuyin/img/24_yu.png",
+    "audio": "audio/k_24_yu.m4a",
+    "imagePrompt": "An orange fish swimming, cute flat illustration, single subject, centered, plain light background, no text"
+   },
+   {
+    "word": "雲",
+    "zhuyin": "ㄩㄣˊ",
+    "image": "zhuyin/img/24_yun.png",
+    "audio": "zhuyin/audio/w_24_yun.m4a",
+    "imagePrompt": "A fluffy white cloud on a light blue background, cute flat illustration, single subject, centered, no text"
+   },
+   {
+    "word": "羽毛",
+    "zhuyin": "ㄩˇ ㄇㄠˊ",
+    "image": "zhuyin/img/24_yumao.png",
+    "audio": "zhuyin/audio/w_24_yumao.m4a",
+    "imagePrompt": "A single soft blue feather, cute flat illustration, single subject, centered, plain light background, no text"
+   }
+  ]
+ },
+ {
+  "symbol": "ㄚ",
+  "words": [
+   {
+    "word": "阿姨",
+    "zhuyin": "ㄚ ㄧˊ",
+    "image": "zhuyin/img/25_ayi.png",
+    "audio": "audio/k_25_ayi.m4a",
+    "imagePrompt": "A smiling young woman waving, cute flat illustration, single subject, centered, plain light background, no text"
+   },
+   {
+    "word": "沙發",
+    "zhuyin": "ㄕㄚ ㄈㄚ",
+    "image": "zhuyin/img/25_shafa.png",
+    "audio": "zhuyin/audio/w_25_shafa.m4a",
+    "imagePrompt": "A soft orange sofa, cute flat illustration, single subject, centered, plain light background, no text"
+   },
+   {
+    "word": "牙刷",
+    "zhuyin": "ㄧㄚˊ ㄕㄨㄚ",
+    "image": "zhuyin/img/25_yashua.png",
+    "audio": "zhuyin/audio/w_25_yashua.m4a",
+    "imagePrompt": "A kids' toothbrush with toothpaste on it, cute flat illustration, single subject, centered, plain light background, no text"
+   }
+  ]
+ },
+ {
+  "symbol": "ㄛ",
+  "words": [
+   {
+    "word": "喔",
+    "zhuyin": "ㄛ",
+    "image": "zhuyin/img/26_o.png",
+    "audio": "audio/k_26_o.m4a",
+    "imagePrompt": "A child with a round open mouth looking surprised, cute flat illustration, single subject, centered, plain light background, no text"
+   },
+   {
+    "word": "菠菜",
+    "zhuyin": "ㄅㄛ ㄘㄞˋ",
+    "image": "zhuyin/img/26_bocai.png",
+    "audio": "zhuyin/audio/w_26_bocai.m4a",
+    "imagePrompt": "A bunch of green spinach leaves, cute flat illustration, single subject, centered, plain light background, no text"
+   },
+   {
+    "word": "火車",
+    "zhuyin": "ㄏㄨㄛˇ ㄔㄜ",
+    "image": "zhuyin/img/26_huoche.png",
+    "audio": "zhuyin/audio/w_26_huoche.m4a",
+    "imagePrompt": "A colorful toy train with three cars, side view, cute flat illustration, single subject, centered, plain light background, no text"
+   }
+  ]
+ },
+ {
+  "symbol": "ㄜ",
+  "words": [
+   {
+    "word": "鵝",
+    "zhuyin": "ㄜˊ",
+    "image": "zhuyin/img/27_e.png",
+    "audio": "audio/k_27_e.m4a",
+    "imagePrompt": "A white goose with an orange beak, cute flat illustration, single subject, centered, plain light background, no text"
+   },
+   {
+    "word": "鴿子",
+    "zhuyin": "ㄍㄜ ˙ㄗ",
+    "image": "zhuyin/img/27_gezi.png",
+    "audio": "zhuyin/audio/w_27_gezi.m4a",
+    "imagePrompt": "A gray pigeon standing, cute flat illustration, single subject, centered, plain light background, no text"
+   },
+   {
+    "word": "盒子",
+    "zhuyin": "ㄏㄜˊ ˙ㄗ",
+    "image": "zhuyin/img/27_hezi.png",
+    "audio": "zhuyin/audio/w_27_hezi.m4a",
+    "imagePrompt": "A closed cardboard box, cute flat illustration, single subject, centered, plain light background, no text"
+   }
+  ]
+ },
+ {
+  "symbol": "ㄝ",
+  "words": [
+   {
+    "word": "爺爺",
+    "zhuyin": "ㄧㄝˊ ˙ㄧㄝ",
+    "image": "zhuyin/img/28_yeye.png",
+    "audio": "audio/k_28_yeye.m4a",
+    "imagePrompt": "A smiling grandpa with white hair and glasses, cute flat illustration, single subject, centered, plain light background, no text"
+   },
+   {
+    "word": "鞋子",
+    "zhuyin": "ㄒㄧㄝˊ ˙ㄗ",
+    "image": "zhuyin/img/28_xiezi.png",
+    "audio": "zhuyin/audio/w_28_xiezi.m4a",
+    "imagePrompt": "A pair of red kids' sneakers, cute flat illustration, single subject, centered, plain light background, no text"
+   },
+   {
+    "word": "葉子",
+    "zhuyin": "ㄧㄝˋ ˙ㄗ",
+    "image": "zhuyin/img/28_yezi.png",
+    "audio": "zhuyin/audio/w_28_yezi.m4a",
+    "imagePrompt": "A single green leaf, cute flat illustration, single subject, centered, plain light background, no text"
+   }
+  ]
+ },
+ {
+  "symbol": "ㄞ",
+  "words": [
+   {
+    "word": "愛心",
+    "zhuyin": "ㄞˋ ㄒㄧㄣ",
+    "image": "zhuyin/img/29_aixin.png",
+    "audio": "audio/k_29_aixin.m4a",
+    "imagePrompt": "A red heart shape, cute flat illustration, single subject, centered, plain light background, no text"
+   },
+   {
+    "word": "海豚",
+    "zhuyin": "ㄏㄞˇ ㄊㄨㄣˊ",
+    "image": "zhuyin/img/29_haitun.png",
+    "audio": "zhuyin/audio/w_29_haitun.m4a",
+    "imagePrompt": "A smiling blue dolphin jumping, cute flat illustration, single subject, centered, plain light background, no text"
+   },
+   {
+    "word": "奶瓶",
+    "zhuyin": "ㄋㄞˇ ㄆㄧㄥˊ",
+    "image": "zhuyin/img/29_naiping.png",
+    "audio": "zhuyin/audio/w_29_naiping.m4a",
+    "imagePrompt": "A baby bottle with milk, cute flat illustration, single subject, centered, plain light background, no text"
+   }
+  ]
+ },
+ {
+  "symbol": "ㄟ",
+  "words": [
+   {
+    "word": "妹妹",
+    "zhuyin": "ㄇㄟˋ ˙ㄇㄟ",
+    "image": "zhuyin/img/30_meimei.png",
+    "audio": "audio/k_30_meimei.m4a",
+    "imagePrompt": "A smiling little girl with pigtails, cute flat illustration, single subject, centered, plain light background, no text"
+   },
+   {
+    "word": "被子",
+    "zhuyin": "ㄅㄟˋ ˙ㄗ",
+    "image": "zhuyin/img/30_beizi.png",
+    "audio": "zhuyin/audio/w_30_beizi.m4a",
+    "imagePrompt": "A folded fluffy blue blanket, cute flat illustration, single subject, centered, plain light background, no text"
+   },
+   {
+    "word": "黑板",
+    "zhuyin": "ㄏㄟ ㄅㄢˇ",
+    "image": "zhuyin/img/30_heiban.png",
+    "audio": "zhuyin/audio/w_30_heiban.m4a",
+    "imagePrompt": "A blank green chalkboard with a wooden frame and chalk, cute flat illustration, single subject, centered, plain light background, no text"
+   }
+  ]
+ },
+ {
+  "symbol": "ㄠ",
+  "words": [
+   {
+    "word": "貓",
+    "zhuyin": "ㄇㄠ",
+    "image": "zhuyin/img/31_mao.png",
+    "audio": "audio/k_31_mao.m4a",
+    "imagePrompt": "An orange cat sitting, cute flat illustration, single subject, centered, plain light background, no text"
+   },
+   {
+    "word": "桃子",
+    "zhuyin": "ㄊㄠˊ ˙ㄗ",
+    "image": "zhuyin/img/31_taozi.png",
+    "audio": "zhuyin/audio/w_31_taozi.m4a",
+    "imagePrompt": "A pink peach with a green leaf, cute flat illustration, single subject, centered, plain light background, no text"
+   },
+   {
+    "word": "毛巾",
+    "zhuyin": "ㄇㄠˊ ㄐㄧㄣ",
+    "image": "zhuyin/img/31_maojin.png",
+    "audio": "zhuyin/audio/w_31_maojin.m4a",
+    "imagePrompt": "A folded striped bath towel, cute flat illustration, single subject, centered, plain light background, no text"
+   }
+  ]
+ },
+ {
+  "symbol": "ㄡ",
+  "words": [
+   {
+    "word": "手",
+    "zhuyin": "ㄕㄡˇ",
+    "image": "zhuyin/img/32_shou.png",
+    "audio": "audio/k_32_shou.m4a",
+    "imagePrompt": "A child's open hand waving, cute flat illustration, single subject, centered, plain light background, no text"
+   },
+   {
+    "word": "樓梯",
+    "zhuyin": "ㄌㄡˊ ㄊㄧ",
+    "image": "zhuyin/img/32_louti.png",
+    "audio": "zhuyin/audio/w_32_louti.m4a",
+    "imagePrompt": "A short wooden staircase, side view, cute flat illustration, single subject, centered, plain light background, no text"
+   },
+   {
+    "word": "豆子",
+    "zhuyin": "ㄉㄡˋ ˙ㄗ",
+    "image": "zhuyin/img/32_douzi.png",
+    "audio": "zhuyin/audio/w_32_douzi.m4a",
+    "imagePrompt": "A green pea pod open with round peas inside, cute flat illustration, single subject, centered, plain light background, no text"
+   }
+  ]
+ },
+ {
+  "symbol": "ㄢ",
+  "words": [
+   {
+    "word": "蛋",
+    "zhuyin": "ㄉㄢˋ",
+    "image": "zhuyin/img/33_dan.png",
+    "audio": "audio/k_33_dan.m4a",
+    "imagePrompt": "A white egg, cute flat illustration, single subject, centered, plain light background, no text"
+   },
+   {
+    "word": "盤子",
+    "zhuyin": "ㄆㄢˊ ˙ㄗ",
+    "image": "zhuyin/img/33_panzi.png",
+    "audio": "zhuyin/audio/w_33_panzi.m4a",
+    "imagePrompt": "An empty round white plate, cute flat illustration, single subject, centered, plain light background, no text"
+   },
+   {
+    "word": "山",
+    "zhuyin": "ㄕㄢ",
+    "image": "zhuyin/img/33_shan.png",
+    "audio": "zhuyin/audio/w_33_shan.m4a",
+    "imagePrompt": "A green mountain with a snowy top, cute flat illustration, single subject, centered, plain light background, no text"
+   }
+  ]
+ },
+ {
+  "symbol": "ㄤ",
+  "words": [
+   {
+    "word": "糖",
+    "zhuyin": "ㄊㄤˊ",
+    "image": "zhuyin/img/34_tang.png",
+    "audio": "audio/k_34_tang.m4a",
+    "imagePrompt": "A wrapped candy with twisted ends, cute flat illustration, single subject, centered, plain light background, no text"
+   },
+   {
+    "word": "黃瓜",
+    "zhuyin": "ㄏㄨㄤˊ ㄍㄨㄚ",
+    "image": "zhuyin/img/34_huanggua.png",
+    "audio": "zhuyin/audio/w_34_huanggua.m4a",
+    "imagePrompt": "A green cucumber, cute flat illustration, single subject, centered, plain light background, no text"
+   },
+   {
+    "word": "鋼琴",
+    "zhuyin": "ㄍㄤ ㄑㄧㄣˊ",
+    "image": "zhuyin/img/34_gangqin.png",
+    "audio": "zhuyin/audio/w_34_gangqin.m4a",
+    "imagePrompt": "A small black piano with white keys, cute flat illustration, single subject, centered, plain light background, no text"
+   }
+  ]
+ },
+ {
+  "symbol": "ㄣ",
+  "words": [
+   {
+    "word": "門",
+    "zhuyin": "ㄇㄣˊ",
+    "image": "zhuyin/img/35_men.png",
+    "audio": "audio/k_35_men.m4a",
+    "imagePrompt": "A wooden door with a round knob, cute flat illustration, single subject, centered, plain light background, no text"
+   },
+   {
+    "word": "金魚",
+    "zhuyin": "ㄐㄧㄣ ㄩˊ",
+    "image": "zhuyin/img/35_jinyu.png",
+    "audio": "zhuyin/audio/w_35_jinyu.m4a",
+    "imagePrompt": "An orange goldfish with a flowing tail, cute flat illustration, single subject, centered, plain light background, no text"
+   },
+   {
+    "word": "枕頭",
+    "zhuyin": "ㄓㄣˇ ˙ㄊㄡ",
+    "image": "zhuyin/img/35_zhentou.png",
+    "audio": "zhuyin/audio/w_35_zhentou.m4a",
+    "imagePrompt": "A soft white pillow, cute flat illustration, single subject, centered, plain light background, no text"
+   }
+  ]
+ },
+ {
+  "symbol": "ㄥ",
+  "words": [
+   {
+    "word": "燈",
+    "zhuyin": "ㄉㄥ",
+    "image": "zhuyin/img/36_deng.png",
+    "audio": "audio/k_36_deng.m4a",
+    "imagePrompt": "A glowing table lamp, cute flat illustration, single subject, centered, plain light background, no text"
+   },
+   {
+    "word": "繩子",
+    "zhuyin": "ㄕㄥˊ ˙ㄗ",
+    "image": "zhuyin/img/36_shengzi.png",
+    "audio": "zhuyin/audio/w_36_shengzi.m4a",
+    "imagePrompt": "A coiled jump rope with two handles, cute flat illustration, single subject, centered, plain light background, no text"
+   },
+   {
+    "word": "鏡子",
+    "zhuyin": "ㄐㄧㄥˋ ˙ㄗ",
+    "image": "zhuyin/img/36_jingzi.png",
+    "audio": "zhuyin/audio/w_36_jingzi.m4a",
+    "imagePrompt": "A round hand mirror with a pink handle, cute flat illustration, single subject, centered, plain light background, no text"
+   }
+  ]
+ },
+ {
+  "symbol": "ㄦ",
+  "words": [
+   {
+    "word": "耳朵",
+    "zhuyin": "ㄦˇ ˙ㄉㄨㄛ",
+    "image": "zhuyin/img/37_erduo.png",
+    "audio": "audio/k_37_erduo.m4a",
+    "imagePrompt": "A child's ear, side view, cute flat illustration, single subject, centered, plain light background, no text"
+   },
+   {
+    "word": "耳環",
+    "zhuyin": "ㄦˇ ㄏㄨㄢˊ",
+    "image": "zhuyin/img/37_erhuan.png",
+    "audio": "zhuyin/audio/w_37_erhuan.m4a",
+    "imagePrompt": "A pair of round gold hoop earrings, cute flat illustration, single subject, centered, plain light background, no text"
+   },
+   {
+    "word": "二",
+    "zhuyin": "ㄦˋ",
+    "image": "zhuyin/img/37_er4.png",
+    "audio": "zhuyin/audio/w_37_er4.m4a",
+    "imagePrompt": "A child's hand holding up two fingers, cute flat illustration, single subject, centered, plain light background, no text"
+   }
+  ]
+ }
+]

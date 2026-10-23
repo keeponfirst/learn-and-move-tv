@@ -1,0 +1,132 @@
+[
+  { "upper": "A", "words": [
+    { "word": "apple", "zh": "蘋果", "image": "abc/img/a_apple.png", "audio": "abc/audio/w_apple.m4a", "imagePrompt": "A shiny red apple with one leaf, cute flat illustration, single subject, centered, plain light background, no text" },
+    { "word": "ant", "zh": "螞蟻", "image": "abc/img/a_ant.png", "audio": "abc/audio/w_ant.m4a", "imagePrompt": "A friendly red cartoon ant, cute flat illustration, single subject, centered, plain light background, no text" },
+    { "word": "airplane", "zh": "飛機", "image": "abc/img/a_airplane.png", "audio": "abc/audio/w_airplane.m4a", "imagePrompt": "A small airplane flying, side view, cute flat illustration, single subject, centered, plain light background, no text" }
+  ]},
+  { "upper": "B", "words": [
+    { "word": "ball", "zh": "球", "image": "abc/img/b_ball.png", "audio": "abc/audio/w_ball.m4a", "imagePrompt": "A colorful striped beach ball, cute flat illustration, single subject, centered, plain light background, no text" },
+    { "word": "banana", "zh": "香蕉", "image": "abc/img/b_banana.png", "audio": "abc/audio/w_banana.m4a", "imagePrompt": "A yellow banana, cute flat illustration, single subject, centered, plain light background, no text" },
+    { "word": "bear", "zh": "熊", "image": "abc/img/b_bear.png", "audio": "abc/audio/w_bear.m4a", "imagePrompt": "A friendly brown bear sitting, cute flat illustration, single subject, centered, plain light background, no text" }
+  ]},
+  { "upper": "C", "words": [
+    { "word": "cat", "zh": "貓", "image": "abc/img/c_cat.png", "audio": "abc/audio/w_cat.m4a", "imagePrompt": "An orange cat sitting, cute flat illustration, single subject, centered, plain light background, no text" },
+    { "word": "car", "zh": "汽車", "image": "abc/img/c_car.png", "audio": "abc/audio/w_car.m4a", "imagePrompt": "A small red car, side view, cute flat illustration, single subject, centered, plain light background, no text" },
+    { "word": "cake", "zh": "蛋糕", "image": "abc/img/c_cake.png", "audio": "abc/audio/w_cake.m4a", "imagePrompt": "A slice of strawberry cream cake, cute flat illustration, single subject, centered, plain light background, no text" }
+  ]},
+  { "upper": "D", "words": [
+    { "word": "dog", "zh": "狗", "image": "abc/img/d_dog.png", "audio": "abc/audio/w_dog.m4a", "imagePrompt": "A brown puppy wagging its tail, cute flat illustration, single subject, centered, plain light background, no text" },
+    { "word": "duck", "zh": "鴨子", "image": "abc/img/d_duck.png", "audio": "abc/audio/w_duck.m4a", "imagePrompt": "A yellow duck with an orange beak, cute flat illustration, single subject, centered, plain light background, no text" },
+    { "word": "door", "zh": "門", "image": "abc/img/d_door.png", "audio": "abc/audio/w_door.m4a", "imagePrompt": "A wooden door with a round knob, cute flat illustration, single subject, centered, plain light background, no text" }
+  ]},
+  { "upper": "E", "words": [
+    { "word": "egg", "zh": "蛋", "image": "abc/img/e_egg.png", "audio": "abc/audio/w_egg.m4a", "imagePrompt": "A white egg, cute flat illustration, single subject, centered, plain light background, no text" },
+    { "word": "elephant", "zh": "大象", "image": "abc/img/e_elephant.png", "audio": "abc/audio/w_elephant.m4a", "imagePrompt": "A gray elephant with its trunk up, cute flat illustration, single subject, centered, plain light background, no text" },
+    { "word": "ear", "zh": "耳朵", "image": "abc/img/e_ear.png", "audio": "abc/audio/w_ear.m4a", "imagePrompt": "A child's ear, side view, cute flat illustration, single subject, centered, plain light background, no text" }
+  ]},
+  { "upper": "F", "words": [
+    { "word": "fish", "zh": "魚", "image": "abc/img/f_fish.png", "audio": "abc/audio/w_fish.m4a", "imagePrompt": "An orange fish swimming, cute flat illustration, single subject, centered, plain light background, no text" },
+    { "word": "frog", "zh": "青蛙", "image": "abc/img/f_frog.png", "audio": "abc/audio/w_frog.m4a", "imagePrompt": "A green frog sitting and smiling, cute flat illustration, single subject, centered, plain light background, no text" },
+    { "word": "flower", "zh": "花", "image": "abc/img/f_flower.png", "audio": "abc/audio/w_flower.m4a", "imagePrompt": "A pink flower with a green stem, cute flat illustration, single subject, centered, plain light background, no text" }
+  ]},
+  { "upper": "G", "words": [
+    { "word": "grapes", "zh": "葡萄", "image": "abc/img/g_grapes.png", "audio": "abc/audio/w_grapes.m4a", "imagePrompt": "A bunch of purple grapes with a green leaf, cute flat illustration, single subject, centered, plain light background, no text" },
+    { "word": "giraffe", "zh": "長頸鹿", "image": "abc/img/g_giraffe.png", "audio": "abc/audio/w_giraffe.m4a", "imagePrompt": "A tall yellow giraffe with brown spots, cute flat illustration, single subject, centered, plain light background, no text" },
+    { "word": "goat", "zh": "山羊", "image": "abc/img/g_goat.png", "audio": "abc/audio/w_goat.m4a", "imagePrompt": "A white goat with small horns and a beard, cute flat illustration, single subject, centered, plain light background, no text" }
+  ]},
+  { "upper": "H", "words": [
+    { "word": "hat", "zh": "帽子", "image": "abc/img/h_hat.png", "audio": "abc/audio/w_hat.m4a", "imagePrompt": "A yellow sun hat with a ribbon, cute flat illustration, single subject, centered, plain light background, no text" },
+    { "word": "horse", "zh": "馬", "image": "abc/img/h_horse.png", "audio": "abc/audio/w_horse.m4a", "imagePrompt": "A brown horse standing, cute flat illustration, single subject, centered, plain light background, no text" },
+    { "word": "house", "zh": "房子", "image": "abc/img/h_house.png", "audio": "abc/audio/w_house.m4a", "imagePrompt": "A small house with a red roof and a door, cute flat illustration, single subject, centered, plain light background, no text" }
+  ]},
+  { "upper": "I", "words": [
+    { "word": "ice cream", "zh": "冰淇淋", "image": "abc/img/i_icecream.png", "audio": "abc/audio/w_icecream.m4a", "imagePrompt": "A strawberry ice cream cone, cute flat illustration, single subject, centered, plain light background, no text" },
+    { "word": "igloo", "zh": "冰屋", "image": "abc/img/i_igloo.png", "audio": "abc/audio/w_igloo.m4a", "imagePrompt": "A round white igloo made of snow blocks, cute flat illustration, single subject, centered, plain light background, no text" },
+    { "word": "island", "zh": "小島", "image": "abc/img/i_island.png", "audio": "abc/audio/w_island.m4a", "imagePrompt": "A small sandy island with one palm tree in blue sea, cute flat illustration, single subject, centered, no text" }
+  ]},
+  { "upper": "J", "words": [
+    { "word": "juice", "zh": "果汁", "image": "abc/img/j_juice.png", "audio": "abc/audio/w_juice.m4a", "imagePrompt": "A glass of orange juice with a straw, cute flat illustration, single subject, centered, plain light background, no text" },
+    { "word": "jellyfish", "zh": "水母", "image": "abc/img/j_jellyfish.png", "audio": "abc/audio/w_jellyfish.m4a", "imagePrompt": "A pink smiling jellyfish with wavy tentacles, cute flat illustration, single subject, centered, plain light background, no text" },
+    { "word": "jacket", "zh": "外套", "image": "abc/img/j_jacket.png", "audio": "abc/audio/w_jacket.m4a", "imagePrompt": "A kids' red zip-up jacket, cute flat illustration, single subject, centered, plain light background, no text" }
+  ]},
+  { "upper": "K", "words": [
+    { "word": "kite", "zh": "風箏", "image": "abc/img/k_kite.png", "audio": "abc/audio/w_kite.m4a", "imagePrompt": "A diamond-shaped kite with a ribbon tail, cute flat illustration, single subject, centered, plain light background, no text" },
+    { "word": "key", "zh": "鑰匙", "image": "abc/img/k_key.png", "audio": "abc/audio/w_key.m4a", "imagePrompt": "A golden key, cute flat illustration, single subject, centered, plain light background, no text" },
+    { "word": "koala", "zh": "無尾熊", "image": "abc/img/k_koala.png", "audio": "abc/audio/w_koala.m4a", "imagePrompt": "A gray koala hugging a branch, cute flat illustration, single subject, centered, plain light background, no text" }
+  ]},
+  { "upper": "L", "words": [
+    { "word": "lion", "zh": "獅子", "image": "abc/img/l_lion.png", "audio": "abc/audio/w_lion.m4a", "imagePrompt": "A friendly lion with a fluffy mane, cute flat illustration, single subject, centered, plain light background, no text" },
+    { "word": "leaf", "zh": "葉子", "image": "abc/img/l_leaf.png", "audio": "abc/audio/w_leaf.m4a", "imagePrompt": "A single green leaf, cute flat illustration, single subject, centered, plain light background, no text" },
+    { "word": "lemon", "zh": "檸檬", "image": "abc/img/l_lemon.png", "audio": "abc/audio/w_lemon.m4a", "imagePrompt": "A yellow lemon with one leaf, cute flat illustration, single subject, centered, plain light background, no text" }
+  ]},
+  { "upper": "M", "words": [
+    { "word": "moon", "zh": "月亮", "image": "abc/img/m_moon.png", "audio": "abc/audio/w_moon.m4a", "imagePrompt": "A yellow crescent moon, cute flat illustration, single subject, centered, plain dark blue background, no text" },
+    { "word": "monkey", "zh": "猴子", "image": "abc/img/m_monkey.png", "audio": "abc/audio/w_monkey.m4a", "imagePrompt": "A brown monkey holding a banana, cute flat illustration, single subject, centered, plain light background, no text" },
+    { "word": "milk", "zh": "牛奶", "image": "abc/img/m_milk.png", "audio": "abc/audio/w_milk.m4a", "imagePrompt": "A glass of white milk, cute flat illustration, single subject, centered, plain light background, no text" }
+  ]},
+  { "upper": "N", "words": [
+    { "word": "nose", "zh": "鼻子", "image": "abc/img/n_nose.png", "audio": "abc/audio/w_nose.m4a", "imagePrompt": "A child's face with the nose highlighted, cute flat illustration, single subject, centered, plain light background, no text" },
+    { "word": "nest", "zh": "鳥巢", "image": "abc/img/n_nest.png", "audio": "abc/audio/w_nest.m4a", "imagePrompt": "A bird nest with three blue eggs, cute flat illustration, single subject, centered, plain light background, no text" },
+    { "word": "noodles", "zh": "麵", "image": "abc/img/n_noodles.png", "audio": "abc/audio/w_noodles.m4a", "imagePrompt": "A bowl of noodles with chopsticks, cute flat illustration, single subject, centered, plain light background, no text" }
+  ]},
+  { "upper": "O", "words": [
+    { "word": "orange", "zh": "柳橙", "image": "abc/img/o_orange.png", "audio": "abc/audio/w_orange.m4a", "imagePrompt": "A round orange with a green leaf, cute flat illustration, single subject, centered, plain light background, no text" },
+    { "word": "octopus", "zh": "章魚", "image": "abc/img/o_octopus.png", "audio": "abc/audio/w_octopus.m4a", "imagePrompt": "A friendly purple octopus smiling, cute flat illustration, single subject, centered, plain light background, no text" },
+    { "word": "owl", "zh": "貓頭鷹", "image": "abc/img/o_owl.png", "audio": "abc/audio/w_owl.m4a", "imagePrompt": "A round brown owl with big friendly eyes, cute flat illustration, single subject, centered, plain light background, no text" }
+  ]},
+  { "upper": "P", "words": [
+    { "word": "pig", "zh": "豬", "image": "abc/img/p_pig.png", "audio": "abc/audio/w_pig.m4a", "imagePrompt": "A pink pig smiling, cute flat illustration, single subject, centered, plain light background, no text" },
+    { "word": "panda", "zh": "熊貓", "image": "abc/img/p_panda.png", "audio": "abc/audio/w_panda.m4a", "imagePrompt": "A panda eating bamboo, cute flat illustration, single subject, centered, plain light background, no text" },
+    { "word": "pizza", "zh": "披薩", "image": "abc/img/p_pizza.png", "audio": "abc/audio/w_pizza.m4a", "imagePrompt": "A slice of cheese pizza, cute flat illustration, single subject, centered, plain light background, no text" }
+  ]},
+  { "upper": "Q", "words": [
+    { "word": "queen", "zh": "皇后", "image": "abc/img/q_queen.png", "audio": "abc/audio/w_queen.m4a", "imagePrompt": "A smiling fairy-tale queen wearing a crown, cute flat illustration, single subject, centered, plain light background, no text" },
+    { "word": "quilt", "zh": "被子", "image": "abc/img/q_quilt.png", "audio": "abc/audio/w_quilt.m4a", "imagePrompt": "A colorful patchwork quilt, cute flat illustration, single subject, centered, plain light background, no text" },
+    { "word": "quail", "zh": "鵪鶉", "image": "abc/img/q_quail.png", "audio": "abc/audio/w_quail.m4a", "imagePrompt": "A round little brown quail bird, cute flat illustration, single subject, centered, plain light background, no text" }
+  ]},
+  { "upper": "R", "words": [
+    { "word": "rabbit", "zh": "兔子", "image": "abc/img/r_rabbit.png", "audio": "abc/audio/w_rabbit.m4a", "imagePrompt": "A white rabbit with long ears, cute flat illustration, single subject, centered, plain light background, no text" },
+    { "word": "rainbow", "zh": "彩虹", "image": "abc/img/r_rainbow.png", "audio": "abc/audio/w_rainbow.m4a", "imagePrompt": "A bright rainbow arc with two small clouds, cute flat illustration, single subject, centered, plain light background, no text" },
+    { "word": "robot", "zh": "機器人", "image": "abc/img/r_robot.png", "audio": "abc/audio/w_robot.m4a", "imagePrompt": "A friendly toy robot waving, cute flat illustration, single subject, centered, plain light background, no text" }
+  ]},
+  { "upper": "S", "words": [
+    { "word": "sun", "zh": "太陽", "image": "abc/img/s_sun.png", "audio": "abc/audio/w_sun.m4a", "imagePrompt": "A bright yellow sun with a smiling face, cute flat illustration, single subject, centered, plain light background, no text" },
+    { "word": "star", "zh": "星星", "image": "abc/img/s_star.png", "audio": "abc/audio/w_star.m4a", "imagePrompt": "A yellow five-pointed star, cute flat illustration, single subject, centered, plain dark blue background, no text" },
+    { "word": "sock", "zh": "襪子", "image": "abc/img/s_sock.png", "audio": "abc/audio/w_sock.m4a", "imagePrompt": "A single striped kids' sock, cute flat illustration, single subject, centered, plain light background, no text" }
+  ]},
+  { "upper": "T", "words": [
+    { "word": "tree", "zh": "樹", "image": "abc/img/t_tree.png", "audio": "abc/audio/w_tree.m4a", "imagePrompt": "A green round tree with a brown trunk, cute flat illustration, single subject, centered, plain light background, no text" },
+    { "word": "tiger", "zh": "老虎", "image": "abc/img/t_tiger.png", "audio": "abc/audio/w_tiger.m4a", "imagePrompt": "A friendly baby tiger sitting, cute flat illustration, single subject, centered, plain light background, no text" },
+    { "word": "train", "zh": "火車", "image": "abc/img/t_train.png", "audio": "abc/audio/w_train.m4a", "imagePrompt": "A colorful toy train with three cars, side view, cute flat illustration, single subject, centered, plain light background, no text" }
+  ]},
+  { "upper": "U", "words": [
+    { "word": "umbrella", "zh": "雨傘", "image": "abc/img/u_umbrella.png", "audio": "abc/audio/w_umbrella.m4a", "imagePrompt": "An open red umbrella, cute flat illustration, single subject, centered, plain light background, no text" },
+    { "word": "unicorn", "zh": "獨角獸", "image": "abc/img/u_unicorn.png", "audio": "abc/audio/w_unicorn.m4a", "imagePrompt": "A white unicorn with a rainbow mane, cute flat illustration, single subject, centered, plain light background, no text" },
+    { "word": "ukulele", "zh": "烏克麗麗", "image": "abc/img/u_ukulele.png", "audio": "abc/audio/w_ukulele.m4a", "imagePrompt": "A small wooden ukulele, cute flat illustration, single subject, centered, plain light background, no text" }
+  ]},
+  { "upper": "V", "words": [
+    { "word": "violin", "zh": "小提琴", "image": "abc/img/v_violin.png", "audio": "abc/audio/w_violin.m4a", "imagePrompt": "A brown violin with a bow, cute flat illustration, single subject, centered, plain light background, no text" },
+    { "word": "van", "zh": "廂型車", "image": "abc/img/v_van.png", "audio": "abc/audio/w_van.m4a", "imagePrompt": "A small blue van, side view, cute flat illustration, single subject, centered, plain light background, no text" },
+    { "word": "vase", "zh": "花瓶", "image": "abc/img/v_vase.png", "audio": "abc/audio/w_vase.m4a", "imagePrompt": "A blue vase with yellow flowers, cute flat illustration, single subject, centered, plain light background, no text" }
+  ]},
+  { "upper": "W", "words": [
+    { "word": "watermelon", "zh": "西瓜", "image": "abc/img/w_watermelon.png", "audio": "abc/audio/w_watermelon.m4a", "imagePrompt": "A slice of red watermelon with black seeds, cute flat illustration, single subject, centered, plain light background, no text" },
+    { "word": "whale", "zh": "鯨魚", "image": "abc/img/w_whale.png", "audio": "abc/audio/w_whale.m4a", "imagePrompt": "A smiling blue whale spouting water, cute flat illustration, single subject, centered, plain light background, no text" },
+    { "word": "watch", "zh": "手錶", "image": "abc/img/w_watch.png", "audio": "abc/audio/w_watch.m4a", "imagePrompt": "A kids' wristwatch with a round face and no numbers, cute flat illustration, single subject, centered, plain light background, no text" }
+  ]},
+  { "upper": "X", "words": [
+    { "word": "xylophone", "zh": "木琴", "image": "abc/img/x_xylophone.png", "audio": "abc/audio/w_xylophone.m4a", "imagePrompt": "A rainbow toy xylophone with two mallets, cute flat illustration, single subject, centered, plain light background, no text" },
+    { "word": "x-ray", "zh": "X光片", "image": "abc/img/x_xray.png", "audio": "abc/audio/w_xray.m4a", "imagePrompt": "A friendly x-ray picture of a hand bone on a dark blue sheet, cute flat illustration, single subject, centered, no text" },
+    { "word": "fox", "zh": "狐狸", "image": "abc/img/x_fox.png", "audio": "abc/audio/w_fox.m4a", "imagePrompt": "An orange fox sitting with a fluffy tail, cute flat illustration, single subject, centered, plain light background, no text" }
+  ]},
+  { "upper": "Y", "words": [
+    { "word": "yo-yo", "zh": "溜溜球", "image": "abc/img/y_yoyo.png", "audio": "abc/audio/w_yoyo.m4a", "imagePrompt": "A red yo-yo on a string, cute flat illustration, single subject, centered, plain light background, no text" },
+    { "word": "yogurt", "zh": "優格", "image": "abc/img/y_yogurt.png", "audio": "abc/audio/w_yogurt.m4a", "imagePrompt": "A cup of yogurt with strawberries on top, cute flat illustration, single subject, centered, plain light background, no text" },
+    { "word": "yarn", "zh": "毛線", "image": "abc/img/y_yarn.png", "audio": "abc/audio/w_yarn.m4a", "imagePrompt": "A pink ball of yarn, cute flat illustration, single subject, centered, plain light background, no text" }
+  ]},
+  { "upper": "Z", "words": [
+    { "word": "zebra", "zh": "斑馬", "image": "abc/img/z_zebra.png", "audio": "abc/audio/w_zebra.m4a", "imagePrompt": "A black and white striped zebra, cute flat illustration, single subject, centered, plain light background, no text" },
+    { "word": "zipper", "zh": "拉鍊", "image": "abc/img/z_zipper.png", "audio": "abc/audio/w_zipper.m4a", "imagePrompt": "A big shiny zipper half open, cute flat illustration, single subject, centered, plain light background, no text" },
+    { "word": "zucchini", "zh": "櫛瓜", "image": "abc/img/z_zucchini.png", "audio": "abc/audio/w_zucchini.m4a", "imagePrompt": "A green zucchini, cute flat illustration, single subject, centered, plain light background, no text" }
+  ]}
+]

@@ -1,0 +1,58 @@
+注音卡（Zhuyin Cards for Android TV）
+Copyright (c) 2026 KeepOnFirst
+
+程式碼採 MIT License（見 LICENSE）。
+下列素材不適用 MIT License，各自依其授權條款使用。
+
+======================================================================
+1. 注音符號音檔
+======================================================================
+檔案：app/src/main/assets/audio/moe/F1.WAV … F37.WAV
+來源：教育部《國語注音符號手冊》數位版開放部件
+授權：創用CC 姓名標示 4.0 國際版（CC BY 4.0）
+      https://creativecommons.org/licenses/by/4.0/deed.zh_TW
+標示：
+  ・2017 © 教育部，國語注音符號手冊-開放部件。
+  ・此素材依「創用CC 姓名標示 4.0 國際版本」授權條款進行公眾釋出，
+    使用者於遵守本條款各項規定之前提下，得利用之。
+原文：app/src/main/assets/audio/moe/license.txt
+修改：無（原檔未經剪輯或轉檔）。
+
+======================================================================
+2. 內建合成語音
+======================================================================
+檔案：
+  app/src/main/assets/audio/k_*.m4a、p_*.m4a（注音關鍵字、固定語句）
+  app/src/main/assets/zhuyin/audio/*.m4a（注音例詞）
+  app/src/main/assets/abc/audio/*.m4a（ABC 字母與單字）
+  app/src/main/assets/yoga/audio/*.m4a（瑜伽口令）
+來源：TODO（文字轉語音服務名稱與聲音型號）
+授權：TODO（服務條款對生成音檔再散布的規定，附條款網址與查證日期）
+標示：TODO（服務條款要求的標示文字；不需要就寫「無」）
+
+======================================================================
+3. 插圖
+======================================================================
+檔案：
+  app/src/main/assets/zhuyin/img/*.png（注音例詞）
+  app/src/main/assets/abc/img/*.png（ABC）
+  app/src/main/assets/yoga/img/*.png（瑜伽姿勢）
+來源：TODO（AI 圖像生成服務名稱與模型）
+授權：TODO（服務條款對生成圖像的權利歸屬與再散布規定，附條款網址與查證日期）
+標示：TODO
+
+======================================================================
+4. App 圖示（banner）
+======================================================================
+檔案：app/src/main/res/drawable-xhdpi/banner.png
+來源：tools/make_banner.py 產生（文字渲染）。
+授權：TODO（確認渲染所用字型的授權是否允許嵌入點陣圖再散布）
+
+======================================================================
+5. 第三方程式庫
+======================================================================
+建置時由 Gradle 下載，不包含在本 repo。版本見 gradle/libs.versions.toml。
+  ・AndroidX（Compose、TV Material、Activity、DataStore）— Apache License 2.0
+  ・Kotlin、kotlinx.serialization — Apache License 2.0
+  ・JUnit 4（僅測試）— Eclipse Public License 1.0
+  ・Gradle Wrapper（gradle/wrapper/）— Apache License 2.0
