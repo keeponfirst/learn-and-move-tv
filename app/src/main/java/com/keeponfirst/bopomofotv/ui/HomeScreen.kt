@@ -25,6 +25,9 @@ import androidx.tv.material3.Text
 /** CC BY 4.0 要求的標示（教育部手冊開放部件 license.txt）。 */
 const val MOE_ATTRIBUTION = "符號音檔：2017 © 教育部，國語注音符號手冊-開放部件，CC BY 4.0"
 
+/** 第三方授權全文（Apache 2.0 等）放在 APK 的 assets/licenses/。 */
+const val LICENSES_HINT = "完整授權見 assets/licenses"
+
 @Composable
 fun HomeScreen(onParent: () -> Unit, onSelf: () -> Unit, onAbc: () -> Unit, onYoga: () -> Unit) {
     val first = remember { FocusRequester() }
@@ -46,7 +49,7 @@ fun HomeScreen(onParent: () -> Unit, onSelf: () -> Unit, onAbc: () -> Unit, onYo
             }
         }
         Text(
-            MOE_ATTRIBUTION,
+            "$MOE_ATTRIBUTION　｜　$LICENSES_HINT",
             modifier = Modifier.align(Alignment.BottomCenter).padding(bottom = 16.dp),
             fontSize = 14.sp,
             color = SubtleColor,

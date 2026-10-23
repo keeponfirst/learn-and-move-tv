@@ -131,6 +131,17 @@ repo 裡沒有任何金鑰。沒有 `keystore.properties` 時只能建 debug 版
 
 `keystore.properties`、`*.jks`、`*.keystore` 都在 `.gitignore` 裡。不要提交它們。金鑰弄丟就不能更新已安裝的 App，請自己備份。
 
+### 重產 TV banner
+
+banner 用 Noto Sans TC（SIL OFL 1.1）。repo 不收錄字型檔，請自己下載：https://fonts.google.com/noto/specimen/Noto+Sans+TC
+
+```
+pip install pillow
+python3 tools/make_banner.py app/src/main/res/drawable-xhdpi/banner.png --font <NotoSansTC 字型檔路徑>
+```
+
+也可以設環境變數 `BANNER_FONT` 指定字型檔，省略 `--font`。
+
 ### 模擬器截圖
 
 ```
@@ -174,8 +185,14 @@ App 內建合成語音。家長可以換成自己錄的聲音，孩子會更有�
 | 素材 | 來源 | 授權 |
 |---|---|---|
 | 注音符號音檔 `audio/moe/F1.WAV`…`F37.WAV` | 教育部《國語注音符號手冊》開放部件 | CC BY 4.0 |
-| 內建合成語音（關鍵字、固定語句、ABC、瑜伽口令） | 文字轉語音服務生成 | 見 NOTICE |
-| 插圖（注音例詞、ABC、瑜伽） | AI 圖像生成 | 見 NOTICE |
+| 內建合成語音（關鍵字、固定語句、ABC、瑜伽口令） | Google Cloud Text-to-Speech 合成，不是真人錄音 | MIT |
+| 插圖（注音例詞、ABC、瑜伽） | 本專案以程式繪製（SVG 轉 PNG），沒有 AI 生圖 | MIT |
+| TV banner | `tools/make_banner.py` 產生，文字用 Noto Sans TC | MIT（字型為 SIL OFL 1.1） |
+| 第三方套件（AndroidX、Kotlin 等） | 隨 APK 散布 | Apache 2.0；protobuf-lite 為 BSD 3-Clause |
+
+**音檔請勿用於訓練語音模型。**
+
+第三方授權全文在 `LICENSES/`。APK 裡的 `assets/licenses/` 也有同樣的 NOTICE、套件清單（THIRD_PARTY.md）和授權全文。
 
 教育部音檔的標示：
 
@@ -205,4 +222,4 @@ App 首頁底部也有一行標示。
 
 **Custom voice.** Put your own `.m4a` recordings in `app/src/main/assets/audio/custom/`. Use the same file names as the bundled audio. Then rebuild.
 
-**License.** Code is MIT. Assets have their own licenses. See [NOTICE](NOTICE).
+**License.** Code is MIT. Assets have their own licenses. See [NOTICE](NOTICE). Voice clips are synthesized with Google Cloud Text-to-Speech. Do not use them to train speech models. Third-party license texts are in `LICENSES/` and in the APK under `assets/licenses/`.

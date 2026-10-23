@@ -1,0 +1,126 @@
+動動學學（Learn & Move for Android TV）
+Copyright (c) 2026 KeepOnFirst
+
+本專案的程式碼採 MIT License 授權，全文見 LICENSE。
+本專案收錄的素材與第三方軟體各有授權，列在下面。
+素材的授權不因收錄在本專案而改變。
+
+This project's source code is licensed under the MIT License (see LICENSE).
+Bundled assets and third-party software keep their own licenses, listed below.
+
+本檔與第三方授權全文也放在 APK 的 assets/licenses/：
+  NOTICE、THIRD_PARTY.md、Apache-2.0.txt、BSD-3-Clause-protobuf.txt
+repo 內的授權全文在 LICENSES/。
+
+======================================================================
+1. 教育部《國語注音符號手冊》開放部件音檔
+======================================================================
+檔案：app/src/main/assets/audio/moe/F1.WAV ～ F37.WAV（共 37 個）
+標示：
+  ・2017 © 教育部，國語注音符號手冊-開放部件。
+  ・此素材依「創用CC 姓名標示 4.0 國際版本」授權條款進行公眾釋出，
+    使用者於遵守本條款各項規定之前提下，得利用之。
+  ・創用CC 姓名標示 4.0 國際版授權條款：
+    https://creativecommons.org/licenses/by/4.0/deed.zh_TW
+素材來源：https://language.moe.gov.tw/001/Upload/files/site_content/M0001/juyin/index.html
+修改情形：未修改。原檔收錄，App 播放時不與動畫同步。
+授權方原始聲明：app/src/main/assets/audio/moe/license.txt
+授權方不提供任何擔保（見授權條款第 5 條「免責聲明」）。
+
+Bopomofo phonetic audio, © 2017 Ministry of Education, R.O.C. (Taiwan).
+Licensed under CC BY 4.0 (https://creativecommons.org/licenses/by/4.0/). Not modified.
+
+======================================================================
+2. 合成語音
+======================================================================
+檔案：
+  app/src/main/assets/audio/k_*.m4a、p_*.m4a（注音關鍵字、固定語句）
+  app/src/main/assets/zhuyin/audio/*.m4a（注音例詞）
+  app/src/main/assets/abc/audio/*.m4a（ABC 字母與單字）
+  app/src/main/assets/yoga/audio/*.m4a（瑜伽口令）
+這些語音由 Google Cloud Text-to-Speech 合成，不是真人錄音。
+  ・中文聲音：cmn-TW-Wavenet-A
+  ・英文聲音：en-US-Neural2-F
+朗讀的文字由本專案撰寫。音檔隨本專案以 MIT License 提供。
+請勿用這些音檔訓練語音模型。
+App 執行時不連線 Google，音檔都已預先產生並放在 APK 裡。
+「Google Cloud」與「Text-to-Speech」是 Google LLC 的商標。
+本專案與 Google 無關聯，也未獲 Google 背書。
+
+Voice clips were synthesized with Google Cloud Text-to-Speech.
+They are not human recordings. Do not use them to train speech models.
+
+======================================================================
+3. 插圖
+======================================================================
+檔案：
+  app/src/main/assets/zhuyin/img/*.png（注音例詞）
+  app/src/main/assets/abc/img/*.png（ABC）
+  app/src/main/assets/yoga/img/*.png（瑜伽姿勢）
+插圖由本專案以程式繪製向量圖（SVG），再轉成 PNG。
+沒有使用 AI 生圖，也沒有使用第三方圖庫。
+插圖隨本專案以 MIT License 提供。
+
+All illustrations were drawn programmatically by this project (SVG to PNG).
+No AI image generation and no stock art.
+
+======================================================================
+4. TV banner
+======================================================================
+檔案：app/src/main/res/drawable-xhdpi/banner.png
+由 tools/make_banner.py 產生，圖隨本專案以 MIT License 提供。
+banner 文字用 Noto Sans TC 字型繪製。
+  ・Copyright 2014-2021 Adobe (http://www.adobe.com/),
+    with Reserved Font Name 'Source'.
+  ・授權：SIL Open Font License 1.1（https://openfontlicense.org/）
+  ・OFL 不限制用字型製作的文件或圖片。本專案不收錄字型檔。
+
+Banner text is rendered with Noto Sans TC (SIL Open Font License 1.1).
+The font file is not included in this project.
+
+======================================================================
+5. 文字內容
+======================================================================
+例詞清單（cards.json、words-zhuyin.json、words-abc.json）
+與瑜伽口令（yoga/sets.json、yoga/poses.json）由本專案撰寫。
+例詞的注音已對照教育部《重編國語辭典修訂本》核對。本專案沒有收錄辭典內容。
+瑜伽動作參考了公開的兒童瑜伽教學資料。口令與安全提示皆為本專案自行撰寫，沒有引用原文。
+本 App 的瑜伽內容不是醫療建議。請大人陪同孩子練習。
+
+======================================================================
+6. 字型
+======================================================================
+本 App 不打包字型檔，畫面文字使用裝置的系統字型。
+
+======================================================================
+7. 第三方軟體（隨 APK 散布）
+======================================================================
+完整清單（120 個套件、版本、授權、著作權人）：
+  APK：assets/licenses/THIRD_PARTY.md
+  repo：app/src/main/assets/licenses/THIRD_PARTY.md
+
+摘要：
+  ・AndroidX（Compose、TV Material、Activity、DataStore、Lifecycle 等）
+    — Copyright The Android Open Source Project — Apache License 2.0
+  ・Kotlin standard library、kotlinx.coroutines、kotlinx.serialization、
+    JetBrains annotations
+    — Copyright JetBrains s.r.o. and respective authors and developers — Apache License 2.0
+  ・Okio — Copyright Square, Inc. — Apache License 2.0
+  ・Guava ListenableFuture — Copyright The Guava Authors — Apache License 2.0
+  ・JSpecify — Copyright The JSpecify Authors — Apache License 2.0
+  ・androidx.datastore:datastore-preferences-external-protobuf
+    （重新打包的 protobuf-lite）
+    — Copyright 2008 Google Inc. — BSD 3-Clause License
+授權全文：LICENSES/Apache-2.0.txt、LICENSES/BSD-3-Clause-protobuf.txt
+
+Kotlin standard library 內含下列第三方程式碼：
+  ・kotlin.time 部分程式碼：Copyright (c) 2007-present,
+    Stephen Colebourne & Michael Nascimento Santos。採 BSD 3-Clause License。
+  ・MathJVM.kt 部分程式碼：採 Boost Software License 1.0。
+  ・部分集合與無號數程式碼：衍生自 GWT（Copyright 2007-2008 Google Inc.）
+    與 Guava，採 Apache License 2.0。
+  ・授權全文：https://github.com/JetBrains/kotlin/tree/master/license/third_party
+
+只在建置時使用，不包含在 APK 內：
+  ・JUnit 4.13.2（僅測試）— Eclipse Public License 1.0
+  ・Gradle Wrapper（gradle/wrapper/）— Apache License 2.0
