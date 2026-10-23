@@ -19,6 +19,7 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -56,8 +57,11 @@ const val MOE_ATTRIBUTION = "符號音檔：2017 © 教育部，國語注音符�
 /** 第三方授權全文（Apache 2.0 等）放在 APK 的 assets/licenses/。 */
 const val LICENSES_HINT = "完整授權見 assets/licenses"
 
-/** 首頁的五個入口，順序同畫面由左到右。 */
-enum class HomeEntry { JOURNEY, PARENT, SELF, ABC, YOGA }
+/** CC BY 4.0 要附授權網址。電視上點不開 APK 裡的檔，所以網址直接寫在首頁。 */
+const val CC_BY_URL = "https://creativecommons.org/licenses/by/4.0/deed.zh_TW"
+
+/** 首頁的六個入口，順序同畫面由左到右。 */
+enum class HomeEntry { JOURNEY, PARENT, SELF, ABC, YOGA, LISTEN }
 
 /** 首頁入口的大字與小字，順序同 [HomeEntry]。 */
 private val ENTRY_LABELS = listOf(
@@ -66,22 +70,30 @@ private val ENTRY_LABELS = listOf(
     "自己玩" to "自己翻注音卡",
     "ABC" to "英文字母",
     "瑜伽" to "跟著做動作",
+    "聽聽看" to "聽音找符號",
 )
 
 /**
- * 入口卡尺寸。第一張「小旅程」寬 [firstWidth]，其他 4 張寬 [width]。整排置中。
- * 200 ＋ 4 × 140 ＋ 4 × 14 ＝ 816 dp，置中後兩側各 72 dp（安全區內再各留 24 dp）。
+ * 入口卡尺寸。第一張「小旅程」寬 [firstWidth]，其他 5 張寬 [width]。整排置中。
+ * 180 ＋ 5 × 120 ＋ 5 × 10 ＝ 830 dp，置中後兩側各 65 dp（安全區內再各留 17 dp）。
  * B 原本左邊的導遊角色放不下，拿掉，改在小旅程卡上方放對話框。
  * 聚焦放大、傾斜後外框仍在安全區內（SafeAreaTest 驗）。
+ * 加第 6 張「聽聽看」之後：卡從 140 縮到 120 dp，卡名從 36 縮到 30 sp（3 個字 90 dp，放得進 96 dp 的內寬）。
  */
 internal data class CardSize(val firstWidth: Dp, val width: Dp, val height: Dp, val gap: Dp) {
     fun widthOf(entry: HomeEntry) = if (entry == HomeEntry.JOURNEY) firstWidth else width
 }
 
 internal fun cardSize(theme: AppTheme) = when (theme.id) {
-    ThemeId.B -> CardSize(200.dp, 140.dp, 250.dp, 14.dp)
-    else -> CardSize(200.dp, 140.dp, 268.dp, 14.dp)
+    ThemeId.B -> CardSize(180.dp, 120.dp, 250.dp, 10.dp)
+    else -> CardSize(180.dp, 120.dp, 268.dp, 10.dp)
 }
+
+/**
+ * 首頁「接著玩」：[entry] 那張卡上加「接著玩」標籤，小字換成 [detail]（例「上次到 ㄆ」）。
+ * 進首頁時焦點放在這張。
+ */
+data class ResumeBadge(val entry: HomeEntry, val detail: String)
 
 /** 焦點卡下方標籤的高度。 */
 private val TAG_HEIGHT = 40.dp
@@ -92,6 +104,7 @@ private val TAG_HEIGHT = 40.dp
  * 右上角兩顆圓鈕：貼紙冊（OK 進入 [onStickerBook]）與齒輪（大人設定）。只有從卡片按「上」才到得了，
  * 左右鍵不會從卡片經過它們；上鍵先到貼紙冊，右鍵到齒輪。齒輪要長按 OK 2 秒才呼叫 [onSettings]。
  * [journeyDone]／[journeyTotal]：今天的小旅程走了幾站，畫在小旅程卡上。
+ * [resume] 不是 null：那張卡加「接著玩」標籤，焦點先放在它（不管 [focus]）。
  */
 @Composable
 fun HomeScreen(
@@ -102,18 +115,21 @@ fun HomeScreen(
     onSelf: () -> Unit,
     onAbc: () -> Unit,
     onYoga: () -> Unit,
+    onListen: () -> Unit,
     onStickerBook: () -> Unit,
     onSettings: () -> Unit,
     journeyDone: Int = 0,
     journeyTotal: Int = 3,
+    resume: ResumeBadge? = null,
 ) {
     val theme = LocalAppTheme.current
     val requesters = remember { HomeEntry.entries.associateWith { FocusRequester() } }
     val book = remember { FocusRequester() }
     val gear = remember { FocusRequester() }
-    var last by remember { mutableStateOf(focus) }
-    LaunchedEffect(Unit) { requesters.getValue(focus).requestFocus() }
-    val actions = listOf(onJourney, onParent, onSelf, onAbc, onYoga)
+    val start = resume?.entry ?: focus
+    var last by remember { mutableStateOf(start) }
+    LaunchedEffect(start) { requesters.getValue(start).requestFocus() }
+    val actions = listOf(onJourney, onParent, onSelf, onAbc, onYoga, onListen)
     val size = cardSize(theme)
     val cardsTop = when (theme.id) {
         ThemeId.A -> 104.dp
@@ -136,6 +152,7 @@ fun HomeScreen(
                         size = size,
                         onClick = actions[entry.ordinal],
                         journey = journeyDone to journeyTotal,
+                        resume = resume?.takeIf { it.entry == entry },
                         modifier = Modifier
                             .focusRequester(requesters.getValue(entry))
                             .focusProperties {
@@ -151,7 +168,10 @@ fun HomeScreen(
                     )
                 }
             }
-            if (theme.id == ThemeId.B) JourneyBubble(Modifier.padding(top = cardsTop - 46.dp, start = (864.dp - size.firstWidth - size.width * 4 - size.gap * 4) / 2))
+            val others = HomeEntry.entries.size - 1
+            if (theme.id == ThemeId.B && resume?.entry != HomeEntry.JOURNEY) {
+                JourneyBubble(Modifier.padding(top = cardsTop - 46.dp, start = (864.dp - size.firstWidth - size.width * others - size.gap * others) / 2))
+            }
             Row(Modifier.align(Alignment.TopEnd), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(Spacing.S)) {
                 StickerBookButton(
                     onOpen = onStickerBook,
@@ -176,14 +196,18 @@ fun HomeScreen(
                         },
                 )
             }
-            // 底部授權標示一行很長，按鍵提示放在它上面一行，不疊在一起（模擬器看過）。
-            KeyHint("← → 選擇　↑ 貼紙冊／大人　OK 進入", Modifier.align(Alignment.BottomEnd).padding(bottom = 26.dp))
-            Text(
-                "$MOE_ATTRIBUTION　｜　$LICENSES_HINT",
-                modifier = Modifier.align(Alignment.BottomStart).padding(bottom = Spacing.XS),
-                fontSize = TextSize.Legal,
-                color = TextColor,
-            )
+            // 授權標示：左下兩行（出處與授權、授權網址），右下「完整授權見…」放在按鍵提示上面。
+            // 三段都寫在左邊會太寬，和按鍵提示疊在一起；按鍵提示再往上會壓到最後一張卡的焦點標籤（模擬器看過）。
+            // A 背景左下角的葉子會壓到字，墊一層頁面色。
+            val legalBg = if (theme.id == ThemeId.A) theme.background.copy(alpha = 0.85f) else Color.Transparent
+            Column(Modifier.align(Alignment.BottomStart).background(legalBg, RoundedCornerShape(6.dp)).padding(horizontal = 4.dp)) {
+                Text(MOE_ATTRIBUTION, fontSize = TextSize.Legal, color = TextColor)
+                Text("授權條款：$CC_BY_URL", fontSize = TextSize.Legal, color = TextColor)
+            }
+            Column(Modifier.align(Alignment.BottomEnd), horizontalAlignment = Alignment.End) {
+                Text(LICENSES_HINT, Modifier.background(legalBg, RoundedCornerShape(6.dp)).padding(horizontal = 4.dp), fontSize = TextSize.Legal, color = TextColor)
+                KeyHint("← → 選擇　↑ 貼紙冊／大人　OK 進入")
+            }
         }
     }
 }
@@ -300,14 +324,24 @@ private fun RocketGirl() {
  * 卡的樣子照主題：A 米白紙卡＋紙膠帶、B 彩色卡＋白圈深框＋閃光、C 半透明玻璃＋金框＋角落星。
  */
 @Composable
-private fun EntryCard(entry: HomeEntry, size: CardSize, onClick: () -> Unit, journey: Pair<Int, Int>, onFocused: () -> Unit, modifier: Modifier) {
+private fun EntryCard(
+    entry: HomeEntry,
+    size: CardSize,
+    onClick: () -> Unit,
+    journey: Pair<Int, Int>,
+    resume: ResumeBadge?,
+    onFocused: () -> Unit,
+    modifier: Modifier,
+) {
     val theme = LocalAppTheme.current
     var focused by remember { mutableStateOf(false) }
     var pressed by remember { mutableStateOf(false) }
     val f by animateFloatAsState(if (focused) 1f else 0f, tween(Motion.FOCUS_MS), label = "focus")
     val i = entry.ordinal
     val shape = RoundedCornerShape(theme.cardRadius)
-    val (label, sub) = ENTRY_LABELS[i]
+    val (label, sub0) = ENTRY_LABELS[i]
+    val sub = resume?.detail ?: sub0
+    val labelSize = if (entry == HomeEntry.JOURNEY) 36.sp else 30.sp
 
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         Box(
@@ -349,42 +383,86 @@ private fun EntryCard(entry: HomeEntry, size: CardSize, onClick: () -> Unit, jou
             ) {
                 if (entry == HomeEntry.JOURNEY) {
                     // 小旅程卡比較寬：插圖固定 120 dp，下面多一排今天的站點圓。
-                    rememberThemeImage(theme.entryArt[i])?.let { Image(it, label, Modifier.size(120.dp)) }
+                    theme.entryArt[i]?.let { path -> rememberThemeImage(path)?.let { Image(it, label, Modifier.size(120.dp)) } }
                     Spacer(Modifier.height(Spacing.XS))
-                    EntryLabel(label, sub)
+                    EntryLabel(label, sub, labelSize)
                     Spacer(Modifier.height(4.dp))
                     StationDots(journey.first, journey.second, size = 12.dp)
                 } else {
-                    rememberThemeImage(theme.entryArt[i])?.let { Image(it, label, Modifier.fillMaxWidth(0.92f).aspectRatio(1f)) }
+                    val art = theme.entryArt[i]
+                    if (art != null) {
+                        rememberThemeImage(art)?.let { Image(it, label, Modifier.fillMaxWidth(0.92f).aspectRatio(1f)) }
+                    } else {
+                        ListenEntryArt(theme, i, Modifier.fillMaxWidth(0.92f).aspectRatio(1f))
+                    }
                     Spacer(Modifier.height(Spacing.XS))
-                    EntryLabel(label, sub)
+                    EntryLabel(label, sub, labelSize)
                 }
             }
             CardDecoration(theme, f)
+            if (resume != null) ResumeRibbon(Modifier.align(Alignment.TopCenter).offset(y = (-14).dp))
         }
         Spacer(Modifier.height(Spacing.XS))
-        Box(Modifier.height(TAG_HEIGHT).graphicsLayer { alpha = f }, contentAlignment = Alignment.Center) {
-            FocusTag(theme)
+        // 標籤可以比卡寬（A「按 OK 開始 ▶」約 150 dp），但不能把這一欄撐寬：卡改成 120 dp 後，6 張會擠出畫面（模擬器看過）。
+        Box(Modifier.width(size.widthOf(entry)).height(TAG_HEIGHT).graphicsLayer { alpha = f }, contentAlignment = Alignment.Center) {
+            Box(Modifier.wrapContentWidth(unbounded = true)) { FocusTag(theme) }
         }
     }
 }
 
 @Composable
-private fun EntryLabel(label: String, sub: String) {
+private fun EntryLabel(label: String, sub: String, size: androidx.compose.ui.unit.TextUnit) {
     val theme = LocalAppTheme.current
     when (theme.id) {
         ThemeId.B -> {
-            DecoratedText(label, fontSize = 36.sp, color = theme.textOnEntry, stroke = theme.outline, strokeWidth = 3.dp)
+            DecoratedText(label, fontSize = size, color = theme.textOnEntry, stroke = theme.outline, strokeWidth = 3.dp)
             DecoratedText(sub, fontSize = 15.sp, color = theme.textOnEntry, stroke = theme.outline, strokeWidth = 1.5.dp)
         }
         ThemeId.C -> {
-            DecoratedText(label, fontSize = 36.sp, color = theme.textOnEntry)
-            Text(sub, fontSize = 15.sp, color = theme.textSecondary)
+            DecoratedText(label, fontSize = size, color = theme.textOnEntry)
+            Text(sub, fontSize = 15.sp, color = theme.textSecondary, maxLines = 1)
         }
         ThemeId.A -> {
-            DecoratedText(label, fontSize = 36.sp, color = theme.textPrimary)
-            Text(sub, fontSize = 15.sp, color = theme.textSecondary)
+            DecoratedText(label, fontSize = size, color = theme.textPrimary)
+            Text(sub, fontSize = 15.sp, color = theme.textSecondary, maxLines = 1)
         }
+    }
+}
+
+/**
+ * 「聽聽看」卡的插圖：主題還沒有這張卡的圖（待美術），先用畫的。
+ * 圓底（A 底板色、B 白、C 星球色）＋喇叭與聲波。
+ */
+@Composable
+private fun ListenEntryArt(theme: AppTheme, i: Int, modifier: Modifier) {
+    val plate = if (theme.id == ThemeId.B) Color.White else theme.entryColors[i]
+    val ink = theme.outline.copy(alpha = 1f)
+    Box(modifier, contentAlignment = Alignment.Center) {
+        androidx.compose.foundation.Canvas(Modifier.fillMaxSize(0.86f)) {
+            drawCircle(plate)
+            drawCircle(ink, style = androidx.compose.ui.graphics.drawscope.Stroke(2.5.dp.toPx()))
+        }
+        Speaker(Modifier.fillMaxSize(0.5f), active = false)
+    }
+}
+
+/** 「接著玩」標籤：卡片上緣中間的小牌子（主題焦點色，B 加深框、稍微傾斜）。 */
+@Composable
+private fun ResumeRibbon(modifier: Modifier) {
+    val theme = LocalAppTheme.current
+    val (bg, fg) = when (theme.id) {
+        ThemeId.A -> theme.focusFrame to Color.White
+        ThemeId.B -> Color(0xFFFFE14D) to theme.outline
+        ThemeId.C -> theme.focusFrame to Color(0xFF2A1F55)
+    }
+    Box(
+        modifier
+            .graphicsLayer { rotationZ = if (theme.id == ThemeId.B) -4f else 0f }
+            .background(bg, RoundedCornerShape(50))
+            .border(if (theme.id == ThemeId.C) 0.dp else 2.5.dp, theme.outline.copy(alpha = 1f), RoundedCornerShape(50))
+            .padding(horizontal = 10.dp, vertical = 2.dp),
+    ) {
+        Text("接著玩 ▶", fontSize = 16.sp, color = fg, fontWeight = FontWeight.Black)
     }
 }
 

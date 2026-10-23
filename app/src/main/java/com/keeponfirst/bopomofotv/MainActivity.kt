@@ -18,6 +18,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import com.keeponfirst.bopomofotv.audio.AudioPlayer
 import com.keeponfirst.bopomofotv.audio.AudioResolver
 import com.keeponfirst.bopomofotv.audio.Phrase
@@ -25,10 +26,12 @@ import com.keeponfirst.bopomofotv.data.AbcRepository
 import com.keeponfirst.bopomofotv.data.AbcWordCard
 import com.keeponfirst.bopomofotv.data.Card
 import com.keeponfirst.bopomofotv.data.CardRepository
+import com.keeponfirst.bopomofotv.data.DeckPosition
 import com.keeponfirst.bopomofotv.data.Decks
 import com.keeponfirst.bopomofotv.data.StickerCatalog
 import com.keeponfirst.bopomofotv.data.WordsRepository
 import com.keeponfirst.bopomofotv.data.YogaChoice
+import com.keeponfirst.bopomofotv.data.YogaParser
 import com.keeponfirst.bopomofotv.data.YogaProgram
 import com.keeponfirst.bopomofotv.data.YogaRepository
 import com.keeponfirst.bopomofotv.data.ZhuyinWord
@@ -40,6 +43,10 @@ import com.keeponfirst.bopomofotv.record.ThemeStore
 import com.keeponfirst.bopomofotv.session.ParentProgress
 import com.keeponfirst.bopomofotv.session.JourneyDay
 import com.keeponfirst.bopomofotv.session.JourneyRules
+import com.keeponfirst.bopomofotv.session.ListenRules
+import com.keeponfirst.bopomofotv.session.ResumeMode
+import com.keeponfirst.bopomofotv.session.ResumePoint
+import com.keeponfirst.bopomofotv.session.ResumeRules
 import com.keeponfirst.bopomofotv.ui.AbcCardScreen
 import com.keeponfirst.bopomofotv.ui.BopomofoTheme
 import com.keeponfirst.bopomofotv.ui.ParentCardScreen
@@ -48,6 +55,10 @@ import com.keeponfirst.bopomofotv.ui.DoneScreen
 import com.keeponfirst.bopomofotv.ui.HomeEntry
 import com.keeponfirst.bopomofotv.ui.HomeScreen
 import com.keeponfirst.bopomofotv.ui.JourneyScreen
+import com.keeponfirst.bopomofotv.ui.ListenItem
+import com.keeponfirst.bopomofotv.ui.ListenPickScreen
+import com.keeponfirst.bopomofotv.ui.ListenScreen
+import com.keeponfirst.bopomofotv.ui.ResumeBadge
 import com.keeponfirst.bopomofotv.ui.SelfPlayCardScreen
 import com.keeponfirst.bopomofotv.ui.SettingsScreen
 import com.keeponfirst.bopomofotv.ui.StationCelebration
@@ -58,7 +69,9 @@ import com.keeponfirst.bopomofotv.ui.ThemeId
 import com.keeponfirst.bopomofotv.ui.Themes
 import com.keeponfirst.bopomofotv.ui.YogaPickScreen
 import com.keeponfirst.bopomofotv.ui.YogaScreen
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.time.LocalDate
 
 class MainActivity : ComponentActivity() {
@@ -101,6 +114,20 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+/**
+ * 首頁「接著玩」要掛在哪張卡、小字寫什麼。上次的位置已經不能用（素材換過、旅程跨日或走完）就回 null，不顯示。
+ * 自己玩、ABC 寫上次停的符號或字母；小旅程寫接著第幾站；瑜伽寫這一輪的第幾個動作。
+ */
+private fun resumeBadge(p: ResumePoint, today: JourneyDay?, yoga: List<YogaChoice>, self: DeckPosition?, abc: DeckPosition?): ResumeBadge? =
+    when (p.mode) {
+        ResumeMode.SELF -> self?.let { ResumeBadge(HomeEntry.SELF, "上次到 ${it.key}") }
+        ResumeMode.ABC -> abc?.let { ResumeBadge(HomeEntry.ABC, "上次到 ${it.key}") }
+        ResumeMode.JOURNEY -> today?.takeIf { !it.finished && it.stations.isNotEmpty() }?.let { ResumeBadge(HomeEntry.JOURNEY, "接著第 ${it.done + 1} 站") }
+        ResumeMode.YOGA -> yoga.firstOrNull { it.id == p.yogaSet }
+            ?.takeIf { p.yogaStep in 0 until it.program.poses.size * it.rounds }
+            ?.let { ResumeBadge(HomeEntry.YOGA, "上次第 ${p.yogaStep % it.program.poses.size + 1} 個") }
+    }
+
 private sealed interface Screen {
     data object Home : Screen
     /** 小旅程地圖。[startedAt] 是這次從首頁進旅程的時間，10 分鐘上限從這裡算。 */
@@ -113,7 +140,11 @@ private sealed interface Screen {
     data class SelfPlay(val start: Int) : Screen
     data class Abc(val start: Int) : Screen
     data object YogaPick : Screen
-    data class Yoga(val choice: YogaChoice) : Screen
+    /** [startStep] 不是 null＝從上次繼續，直接到那個動作。 */
+    data class Yoga(val choice: YogaChoice, val startStep: Int? = null) : Screen
+    data object ListenPick : Screen
+    /** 聽音找符號。[seen] 是孩子看過的符號或字母，題目優先出這些。 */
+    data class Listen(val kind: StickerKind, val seen: Set<String>) : Screen
     data class Done(val locked: Boolean, val phrase: Phrase) : Screen
     data class YogaDone(val choice: YogaChoice) : Screen
     data object Settings : Screen
@@ -146,6 +177,39 @@ private fun BopomofoApp(
         screen = Screen.Home
     }
     val timeUp = { screen = Screen.Done(locked = true, phrase = Phrase.DONE) }
+    val context = LocalContext.current
+    // 瑜伽選套卡的「約 N 分鐘」：在背景讀每個口令音檔的長度再算。
+    val yogaMinutes by produceState(emptyMap<String, Int>(), yoga) {
+        value = withContext(Dispatchers.IO) {
+            val ms = mutableMapOf<String, Long?>()
+            yoga.associate { c -> c.id to YogaParser.minutes(c) { p -> ms.getOrPut(p) { AudioPlayer.durationMs(context.assets, p) } } }
+        }
+    }
+    // 孩子選了簡單版的動作（每個動作分開記）。
+    var yogaEasy by remember { mutableStateOf(emptySet<String>()) }
+    LaunchedEffect(Unit) { yogaEasy = store.yogaEasy() }
+    // 聽音找符號的題目：有音檔的符號、字母才能出題。
+    val listenItems = remember(selfDeck, abcDeck) {
+        mapOf(
+            StickerKind.ZHUYIN to selfDeck.groupBy { it.card.symbol }.map { (symbol, cs) ->
+                val first = cs.first()
+                ListenItem(symbol, symbol, cs.firstNotNullOfOrNull { it.word.image }, resolver.symbolPaths(first.card), resolver.keywordPaths(first.card, first.word))
+            },
+            StickerKind.ABC to abcDeck.groupBy { it.card.upper }.map { (upper, cs) ->
+                val c = cs.first().card
+                ListenItem(upper, "$upper${c.lower}", c.image, resolver.letterPaths(c), resolver.letterWordPaths(c, cs.first().word))
+            },
+        ).mapValues { (_, items) -> items.filter { it.audio.isNotEmpty() } }.filterValues { it.size >= 2 }
+    }
+
+    // 從上次繼續：只在打開 App 後第一次到首頁時看一次；進任何模式就收起來。
+    var resumeChecked by rememberSaveable { mutableStateOf(false) }
+    var resume by remember { mutableStateOf<Pair<ResumeBadge, ResumePoint>?>(null) }
+    fun saveResume(point: ResumePoint?) {
+        resume = null
+        scope.launch { store.saveResume(point) }
+    }
+    fun resumePoint(mode: ResumeMode, set: String? = null, step: Int = 0) = ResumePoint(mode, System.currentTimeMillis(), set, step)
 
     fun showGain(id: StickerId, isNew: Boolean) {
         catalog[id]?.let { gain = StickerGain(it, isNew, ++gainSeq) }
@@ -163,6 +227,8 @@ private fun BopomofoApp(
             val isNew = store.award(s.day.stations[s.index])
             val day = JourneyRules.complete(s.day, s.index)
             store.saveJourney(day)
+            // 走完了就不用「接著玩」；還沒走完，下次接著這一天。
+            store.saveResume(if (day.finished) null else resumePoint(ResumeMode.JOURNEY))
             player.stop()
             screen = Screen.Journey(day, s.startedAt, StationCelebration(s.index, isNew))
         }
@@ -172,28 +238,65 @@ private fun BopomofoApp(
         when (val s = screen) {
             Screen.Home -> {
                 var journeyDone by remember { mutableIntStateOf(0) }
-                LaunchedEffect(Unit) { journeyDone = store.journey()?.takeIf { it.date == LocalDate.now() }?.done ?: 0 }
+                LaunchedEffect(Unit) {
+                    val today = store.journey()?.takeIf { it.date == LocalDate.now() }
+                    journeyDone = today?.done ?: 0
+                    if (!resumeChecked) {
+                        resumeChecked = true
+                        resume = ResumeRules.shown(store.resume(), System.currentTimeMillis())?.let { p ->
+                            resumeBadge(p, today, yoga, store.position(Deck.SELF_PLAY), store.position(Deck.ABC))?.let { it to p }
+                        }
+                    }
+                }
                 HomeScreen(
                     focus = homeFocus,
                     onFocus = { homeFocus = it },
                     onJourney = {
+                        saveResume(resumePoint(ResumeMode.JOURNEY))
                         scope.launch { screen = Screen.Journey(store.journeyToday(catalog.journeyPool()), SystemClock.elapsedRealtime()) }
                     },
-                    onParent = { scope.launch { screen = Screen.ParentStart(store.parentProgress()) } },
+                    onParent = {
+                        saveResume(null)
+                        scope.launch { screen = Screen.ParentStart(store.parentProgress()) }
+                    },
                     onSelf = {
+                        saveResume(resumePoint(ResumeMode.SELF))
                         scope.launch {
                             screen = Screen.SelfPlay(Decks.resumeIndex(selfDeck, store.position(Deck.SELF_PLAY)) { Decks.position(it) })
                         }
                     },
                     onAbc = {
                         if (abcDeck.isNotEmpty()) {
+                            saveResume(resumePoint(ResumeMode.ABC))
                             scope.launch { screen = Screen.Abc(Decks.resumeIndex(abcDeck, store.position(Deck.ABC)) { Decks.position(it) }) }
                         }
                     },
-                    onYoga = { if (yoga.isNotEmpty()) screen = Screen.YogaPick },
-                    onStickerBook = { screen = Screen.StickerBook },
-                    onSettings = { screen = Screen.Settings },
+                    onYoga = {
+                        // 接著玩：直接回到那一套的那個動作，不經過選套。
+                        val p = resume?.second?.takeIf { it.mode == ResumeMode.YOGA }
+                        val choice = p?.let { yoga.firstOrNull { c -> c.id == it.yogaSet } }
+                        resume = null
+                        when {
+                            choice != null -> screen = Screen.Yoga(choice, p.yogaStep)
+                            yoga.isNotEmpty() -> screen = Screen.YogaPick
+                        }
+                    },
+                    onListen = {
+                        if (listenItems.isNotEmpty()) {
+                            saveResume(null)
+                            screen = Screen.ListenPick
+                        }
+                    },
+                    onStickerBook = {
+                        resume = null
+                        screen = Screen.StickerBook
+                    },
+                    onSettings = {
+                        resume = null
+                        screen = Screen.Settings
+                    },
                     journeyDone = journeyDone,
+                    resume = resume?.first,
                 )
             }
             is Screen.Journey -> key(s) {
@@ -294,14 +397,55 @@ private fun BopomofoApp(
                 choices = yoga,
                 onStart = { screen = Screen.Yoga(it) },
                 onExit = goHome,
+                minutes = yogaMinutes,
             )
-            is Screen.Yoga -> YogaScreen(
-                choice = s.choice,
-                player = player,
+            is Screen.Yoga -> key(s) {
+                YogaScreen(
+                    choice = s.choice,
+                    player = player,
+                    onExit = goHome,
+                    onDone = {
+                        saveResume(null)
+                        screen = Screen.YogaDone(s.choice)
+                    },
+                    onPoseDone = { award(StickerId(StickerKind.YOGA, it.id)) },
+                    easyPoses = yogaEasy,
+                    onEasy = { pose, easy ->
+                        yogaEasy = if (easy) yogaEasy + pose.id else yogaEasy - pose.id
+                        scope.launch { store.saveYogaEasy(pose.id, easy) }
+                    },
+                    startStep = s.startStep,
+                    onStep = { saveResume(resumePoint(ResumeMode.YOGA, s.choice.id, it)) },
+                )
+            }
+            Screen.ListenPick -> ListenPickScreen(
+                kinds = listenItems.keys.toList(),
+                onStart = { kind ->
+                    scope.launch {
+                        val owned = store.stickers().filter { it.kind == kind }.map { it.key }.toSet()
+                        val seen = if (kind == StickerKind.ZHUYIN) {
+                            ListenRules.seen(selfDeck.map { it.card.symbol }.distinct(), store.position(Deck.SELF_PLAY)?.key, owned, store.practicedSymbols())
+                        } else {
+                            ListenRules.seen(abcDeck.map { it.card.upper }.distinct(), store.position(Deck.ABC)?.key, owned)
+                        }
+                        screen = Screen.Listen(kind, seen)
+                    }
+                },
                 onExit = goHome,
-                onDone = { screen = Screen.YogaDone(s.choice) },
-                onPoseDone = { award(StickerId(StickerKind.YOGA, it.id)) },
             )
+            is Screen.Listen -> key(s) {
+                ListenScreen(
+                    kind = s.kind,
+                    items = listenItems.getValue(s.kind),
+                    seen = s.seen,
+                    player = player,
+                    listenAgain = resolver.phrasePaths(Phrase.LISTEN_AGAIN),
+                    correct = resolver.phrasePaths(Phrase.CORRECT),
+                    onCorrect = { award(StickerId(s.kind, it.key)) },
+                    onExit = goHome,
+                    onTimeUp = timeUp,
+                )
+            }
             is Screen.Done -> DoneScreen(
                 locked = s.locked,
                 onEnter = { player.play(resolver.phrasePaths(s.phrase)) },

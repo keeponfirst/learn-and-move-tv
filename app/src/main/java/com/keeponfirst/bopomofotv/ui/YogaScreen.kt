@@ -19,6 +19,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -68,9 +69,10 @@ private const val YOGA_PICK_HINT = "← → 換一套　OK 開始　返回 回�
 /**
  * 選一套：一次一張大卡（第一個動作的圖＋套名大字），左右鍵換、確定鍵開始。照 [ParentStartScreen] 的做法。
  * 圖不在就只放套名。到頭不繞回。
+ * [minutes]：每套（id）約幾分鐘，畫在圖的右下角（時鐘＋「約 N 分鐘」）；還沒算好或沒有就不畫。
  */
 @Composable
-fun YogaPickScreen(choices: List<YogaChoice>, onStart: (YogaChoice) -> Unit, onExit: () -> Unit) {
+fun YogaPickScreen(choices: List<YogaChoice>, onStart: (YogaChoice) -> Unit, onExit: () -> Unit, minutes: Map<String, Int> = emptyMap()) {
     var index by remember { mutableIntStateOf(0) }
     val choice = choices[index]
     // 封面用第一個不是「高山」的動作：每套都從高山暖身，用第一個會每套封面都一樣。
@@ -91,13 +93,18 @@ fun YogaPickScreen(choices: List<YogaChoice>, onStart: (YogaChoice) -> Unit, onE
         BoxWithConstraints(Modifier.fillMaxSize().padding(Spacing.L)) {
             val imageW = minOf(maxWidth * 0.5f, maxHeight * 0.55f * 16f / 9f)
             Column(Modifier.fillMaxSize(), verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally) {
+                val length = minutes[choice.id]
                 if (image != null) {
-                    PoseStage(image, choice.nameZh, imageW)
+                    Box {
+                        PoseStage(image, choice.nameZh, imageW)
+                        length?.let { DurationPill(it, Modifier.align(Alignment.BottomEnd).padding(bottom = 40.dp, end = 24.dp)) }
+                    }
                     Spacer(Modifier.height(Spacing.XS))
                 }
                 val left = if (index > 0) "‹  " else "    "
                 val right = if (index < choices.lastIndex) "  ›" else "    "
                 Text("$left${choice.nameZh}$right", fontSize = if (image != null) TextSize.Display else TextSize.Hero, color = SymbolColor)
+                if (image == null) length?.let { DurationPill(it, Modifier) }
                 Text("${index + 1} / ${choices.size}", fontSize = TextSize.Info, color = SubtleColor)
             }
             KeyHint(YOGA_PICK_HINT, Modifier.align(Alignment.BottomEnd))
@@ -105,16 +112,49 @@ fun YogaPickScreen(choices: List<YogaChoice>, onStart: (YogaChoice) -> Unit, onE
     }
 }
 
-/** 瑜伽頁右下角的按鍵提示（給大人看）。 */
+/** 套的長度標示：小時鐘＋「約 N 分鐘」。B 深色膠囊白字；A、C 白底（C 深藍底）深框。 */
+@Composable
+private fun DurationPill(minutes: Int, modifier: Modifier) {
+    val theme = LocalAppTheme.current
+    val (bg, fg) = when (theme.id) {
+        ThemeId.B -> theme.hud to theme.hudText
+        ThemeId.C -> Color(0xE61A1B4A) to Color.White
+        ThemeId.A -> Color.White to theme.textPrimary
+    }
+    val shape = RoundedCornerShape(50)
+    Row(
+        modifier
+            .background(bg, shape)
+            .border(2.dp, if (theme.id == ThemeId.C) Color(0xFFFFE27A) else theme.outline.copy(alpha = 1f), shape)
+            .padding(horizontal = 12.dp, vertical = 4.dp),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Canvas(Modifier.size(20.dp)) {
+            val w = 2.2.dp.toPx()
+            drawCircle(fg, radius = size.minDimension / 2 - w / 2, style = Stroke(w))
+            drawLine(fg, center, Offset(center.x, size.height * 0.24f), w, StrokeCap.Round)
+            drawLine(fg, center, Offset(size.width * 0.72f, center.y), w, StrokeCap.Round)
+        }
+        Spacer(Modifier.width(6.dp))
+        Text("約 $minutes 分鐘", fontSize = 20.sp, color = fg, fontWeight = FontWeight.Black)
+    }
+}
+
+/** 瑜伽頁右下角的按鍵提示（給大人看）。有簡單版的動作前面多一段「↓ 簡單版」或「↑ 一般版」。 */
 private const val YOGA_KEY_HINT = "OK 暫停／繼續　→ 下一個　返回 回首頁"
 
 /**
  * 瑜伽（跟著做）：開場 → 每個姿勢「口令 → 倒數」→ 做完進 [onDone]。規則在 [YogaRules]。
- * 確定鍵暫停／繼續，右鍵跳下一個，返回鍵回首頁。其他方向鍵不理會。不偵測動作、不計分。
+ * 確定鍵暫停／繼續，右鍵跳下一個，返回鍵回首頁。左鍵不理會。不偵測動作、不計分。
  * 暫停會停掉語音；繼續時，口令段重播口令，倒數段接著倒數。離開 App 自動暫停。
  * 缺音：AudioPlayer 打不開檔會直接呼叫 onDone，等於口令立即播完，照樣倒數。
  * 一個動作倒數到 0（不是按右鍵跳過）呼叫 [onPoseDone]（給貼紙）。
  * 小旅程的動一動站：[choice] 只放一個動作，[skipIntro]＝不播開場，直接進口令。
+ *
+ * 簡單版：有簡單版的動作，下鍵換簡單版的圖與口令，上鍵換回一般版。
+ * 口令段切換會重播那一版的口令；倒數段只換圖和字，倒數不重來。
+ * [easyPoses] 是孩子上次選簡單版的動作 id，每切一次呼叫 [onEasy] 記住。
+ * 從上次繼續：[startStep] 不是 null 就不播開場，直接到那個動作。每換一個動作呼叫 [onStep]。
  */
 @Composable
 fun YogaScreen(
@@ -124,19 +164,34 @@ fun YogaScreen(
     onDone: () -> Unit,
     skipIntro: Boolean = false,
     onPoseDone: (YogaPose) -> Unit = {},
+    easyPoses: Set<String> = emptySet(),
+    onEasy: (YogaPose, Boolean) -> Unit = { _, _ -> },
+    startStep: Int? = null,
+    onStep: (Int) -> Unit = {},
 ) {
     val program = choice.program
     var session by remember {
         val start = YogaRules.start(program.poses.map { it.seconds }, choice.rounds)
-        mutableStateOf(if (skipIntro) YogaRules.cueFinished(start) else start)
+        mutableStateOf(
+            when {
+                startStep != null -> YogaRules.resumeAt(start, startStep)
+                skipIntro -> YogaRules.cueFinished(start)
+                else -> start
+            },
+        )
     }
+    var easy by remember { mutableStateOf(easyPoses) }
     val pose = program.poses[session.poseIndex]
+    val useEasy = pose.hasEasy && pose.id in easy
 
-    // 語音：開場與口令段播音，播完才換段。暫停就停音。
-    LaunchedEffect(session.phase, session.step, session.paused) {
+    LaunchedEffect(session.step, session.phase == YogaPhase.INTRO) {
+        if (session.phase != YogaPhase.INTRO && session.phase != YogaPhase.DONE) onStep(session.step)
+    }
+    // 語音：開場與口令段播音，播完才換段。暫停就停音。口令段換版本（useEasy）會重播那一版。
+    LaunchedEffect(session.phase, session.step, session.paused, useEasy) {
         val audio = when (session.phase) {
             YogaPhase.INTRO -> program.intro.cueAudio
-            YogaPhase.CUE -> pose.cueAudio
+            YogaPhase.CUE -> if (useEasy) pose.cueAudioEasy ?: pose.cueAudio else pose.cueAudio
             else -> null
         }
         when {
@@ -171,6 +226,13 @@ fun YogaScreen(
                     player.stop()
                     session = YogaRules.next(session)
                 }
+                RemoteKey.DOWN, RemoteKey.UP -> {
+                    val want = key == RemoteKey.DOWN
+                    if (session.phase != YogaPhase.INTRO && pose.hasEasy && want != useEasy) {
+                        easy = if (want) easy + pose.id else easy - pose.id
+                        onEasy(pose, want)
+                    }
+                }
                 else -> Unit
             }
         },
@@ -179,7 +241,7 @@ fun YogaScreen(
             if (session.phase == YogaPhase.INTRO) {
                 YogaIntro(choice.nameZh)
             } else {
-                YogaPoseFace(pose, session.phase == YogaPhase.COUNTDOWN, session.remaining)
+                YogaPoseFace(pose, session.phase == YogaPhase.COUNTDOWN, session.remaining, useEasy)
             }
             // 角落文字都放在安全區內。
             Box(Modifier.fillMaxSize().safeArea()) {
@@ -196,7 +258,12 @@ fun YogaScreen(
                     if (session.phase != YogaPhase.INTRO && pose.safety.isNotEmpty()) {
                         Text(pose.safety, fontSize = TextSize.Note, color = TextColor)
                     }
-                    KeyHint(YOGA_KEY_HINT)
+                    val easyHint = when {
+                        session.phase == YogaPhase.INTRO || !pose.hasEasy -> ""
+                        useEasy -> "↑ 一般版　"
+                        else -> "↓ 簡單版　"
+                    }
+                    KeyHint(easyHint + YOGA_KEY_HINT)
                 }
             }
             PauseOverlay(visible = session.paused)
@@ -286,8 +353,9 @@ private val RING_SIZE = 160.dp
  * 圖不在或解不開：不留圖位，圓環與名字置中。
  */
 @Composable
-private fun YogaPoseFace(pose: YogaPose, counting: Boolean, remaining: Int) {
-    val image = rememberAssetImage(pose.image)
+private fun YogaPoseFace(pose: YogaPose, counting: Boolean, remaining: Int, easy: Boolean) {
+    val image = rememberAssetImage(if (easy) pose.imageEasy ?: pose.image else pose.image)
+    val cue = if (easy) pose.cueTextEasy ?: pose.cueText else pose.cueText
     // 上面留給進度列，下面留給安全提醒與按鍵提示兩行。
     Box(Modifier.fillMaxSize().safeArea().padding(top = 44.dp, bottom = 64.dp)) {
         if (image != null) {
@@ -296,12 +364,58 @@ private fun YogaPoseFace(pose: YogaPose, counting: Boolean, remaining: Int) {
                 horizontalArrangement = Arrangement.spacedBy(Spacing.M, Alignment.CenterHorizontally),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
-                PoseStage(image, pose.nameZh, 480.dp)
-                CountdownColumn(pose, counting, remaining)
+                Box {
+                    PoseStage(image, pose.nameZh, 480.dp)
+                    if (pose.hasEasy) EasyToggle(easy, Modifier.align(Alignment.TopEnd).offset(x = 10.dp, y = (-14).dp))
+                    if (easy) GoodJobBadge(Modifier.align(Alignment.BottomStart).offset(x = (-10).dp, y = (-30).dp))
+                }
+                CountdownColumn(pose, counting, remaining, cue)
             }
         } else {
-            Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) { CountdownColumn(pose, counting, remaining) }
+            Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) { CountdownColumn(pose, counting, remaining, cue) }
         }
+    }
+}
+
+/** 示範圖右上角的切換標籤「一般｜簡單」：目前那格亮（主題焦點色），另一格淡（畫面設計稿）。 */
+@Composable
+private fun EasyToggle(easy: Boolean, modifier: Modifier) {
+    val theme = LocalAppTheme.current
+    val on = when (theme.id) {
+        ThemeId.A -> theme.focusFrame to Color.White
+        ThemeId.B -> Color(0xFFFFE14D) to theme.outline
+        ThemeId.C -> theme.focusFrame to Color(0xFF2A1F55)
+    }
+    val off = (if (theme.id == ThemeId.C) Color(0xCC1A1B4A) else Color.White) to theme.textSecondary
+    val shape = RoundedCornerShape(50)
+    Row(
+        modifier
+            .background(off.first, shape)
+            .border(2.dp, theme.outline.copy(alpha = 1f), shape)
+            .padding(3.dp),
+    ) {
+        listOf("一般" to !easy, "簡單" to easy).forEach { (label, selected) ->
+            val (bg, fg) = if (selected) on else Color.Transparent to off.second
+            Box(Modifier.background(bg, shape).padding(horizontal = 12.dp, vertical = 2.dp)) {
+                Text(label, fontSize = 18.sp, color = fg, fontWeight = FontWeight.Black)
+            }
+        }
+    }
+}
+
+/** 簡單版示範圖旁的小貼紙「這樣也很棒！」，讓孩子不覺得是降級。顏色用貼紙的瑜伽色。 */
+@Composable
+private fun GoodJobBadge(modifier: Modifier) {
+    val theme = LocalAppTheme.current
+    val style = stickerStyle(theme)
+    Box(
+        modifier
+            .graphicsLayer { rotationZ = -6f }
+            .background(style.stationColors[2], RoundedCornerShape(14.dp))
+            .border(2.5.dp, if (theme.id == ThemeId.C) Color.White else theme.outline.copy(alpha = 1f), RoundedCornerShape(14.dp))
+            .padding(horizontal = 12.dp, vertical = 4.dp),
+    ) {
+        Text("這樣也很棒！", fontSize = 20.sp, color = style.pillText, fontWeight = FontWeight.Black)
     }
 }
 
@@ -348,7 +462,7 @@ private fun PoseStage(image: ImageBitmap, description: String, width: Dp) {
 
 /** 右欄：倒數圓環（剩餘秒數在中間）、動作名、口令文字。最後 3 秒數字換強調色（沒有提示音素材）。 */
 @Composable
-private fun CountdownColumn(pose: YogaPose, counting: Boolean, remaining: Int) {
+private fun CountdownColumn(pose: YogaPose, counting: Boolean, remaining: Int, cueText: String) {
     val theme = LocalAppTheme.current
     val fraction = if (counting && pose.seconds > 0) remaining.toFloat() / pose.seconds else 1f
     // 每秒跳一次的數值用 1 秒線性動畫接起來，圓環連續縮短。
@@ -388,11 +502,11 @@ private fun CountdownColumn(pose: YogaPose, counting: Boolean, remaining: Int) {
         Spacer(Modifier.height(Spacing.XS))
         PoseLabel(pose.nameZh)
         Text(pose.nameEn, fontSize = 20.sp, color = SubtleColor, textAlign = TextAlign.Center)
-        if (pose.cueText.isNotEmpty()) {
+        if (cueText.isNotEmpty()) {
             Spacer(Modifier.height(Spacing.XS))
             InfoPill {
                 Text(
-                    pose.cueText,
+                    cueText,
                     fontSize = 16.sp,
                     color = if (theme.id == ThemeId.B) theme.hudText else theme.textPrimary,
                     textAlign = TextAlign.Center,

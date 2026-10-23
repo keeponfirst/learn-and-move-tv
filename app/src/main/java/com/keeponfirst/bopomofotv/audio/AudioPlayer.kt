@@ -1,6 +1,7 @@
 package com.keeponfirst.bopomofotv.audio
 
 import android.content.res.AssetManager
+import android.media.MediaMetadataRetriever
 import android.media.MediaPlayer
 import android.util.Log
 
@@ -78,6 +79,17 @@ class AudioPlayer(private val assets: AssetManager) {
 
     companion object {
         private const val TAG = "AudioPlayer"
+
+        /** 音檔長度（毫秒）。打不開回 null。瑜伽選套卡算「約 N 分鐘」用，要在背景執行緒呼叫。 */
+        fun durationMs(assets: AssetManager, path: String): Long? = runCatching {
+            val r = MediaMetadataRetriever()
+            try {
+                assets.openFd(path).use { fd -> r.setDataSource(fd.fileDescriptor, fd.startOffset, fd.length) }
+                r.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION)?.toLongOrNull()
+            } finally {
+                r.release()
+            }
+        }.getOrNull()
 
         /** 列出 assets 裡所有可能用到的音檔路徑，給 [AudioResolver] 用。 */
         fun listAvailable(assets: AssetManager): Set<String> {

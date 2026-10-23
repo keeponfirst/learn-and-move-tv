@@ -35,7 +35,7 @@ class ThemeTokensTest {
     @Test
     fun everyThemeImageExists() {
         Themes.all.forEach { t ->
-            val paths = listOf(t.bgHome, t.bgCard, t.bgYoga, t.preview) + t.entryArt + FeedbackImages.paths(t.id)
+            val paths = listOf(t.bgHome, t.bgCard, t.bgYoga, t.preview) + t.entryArt.filterNotNull() + FeedbackImages.paths(t.id)
             paths.forEach { assertTrue("${t.name} 少了 $it", File(assets, it).isFile) }
         }
     }

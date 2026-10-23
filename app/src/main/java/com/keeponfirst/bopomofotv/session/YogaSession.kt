@@ -62,6 +62,10 @@ object YogaRules {
         }
     }
 
+    /** 從上次繼續：不播開場，直接到第 [step] 個（跨輪攤平）的口令。超出範圍就從第 1 個開始。 */
+    fun resumeAt(s: YogaSession, step: Int): YogaSession =
+        s.copy(phase = YogaPhase.CUE, step = step.takeIf { it in 0 until s.totalSteps } ?: 0, remaining = 0, paused = false)
+
     /** 確定鍵：暫停／繼續。做完後不理會。 */
     fun togglePause(s: YogaSession): YogaSession =
         if (s.phase == YogaPhase.DONE) s else s.copy(paused = !s.paused)

@@ -14,6 +14,8 @@ import com.keeponfirst.bopomofotv.session.JourneyDay
 import com.keeponfirst.bopomofotv.session.JourneyPool
 import com.keeponfirst.bopomofotv.session.JourneyRules
 import com.keeponfirst.bopomofotv.session.Phase
+import com.keeponfirst.bopomofotv.session.ResumePoint
+import com.keeponfirst.bopomofotv.session.ResumeRules
 import kotlinx.coroutines.flow.first
 import java.time.LocalDate
 
@@ -86,6 +88,9 @@ class PracticeStore(context: Context) {
     suspend fun againSymbols(): Set<String> =
         entries().filter { it.result == PracticeResult.AGAIN }.map { it.symbol }.toSet()
 
+    /** 大人陪練過的符號（不分結果、不分日期）。聽音找符號優先出這些。 */
+    suspend fun practicedSymbols(): Set<String> = entries().map { it.symbol }.toSet()
+
     /** 存著的小旅程（可能是之前某一天的）。 */
     suspend fun journey(): JourneyDay? {
         val prefs = dataStore.data.first()
@@ -109,6 +114,24 @@ class PracticeStore(context: Context) {
         return day
     }
 
+    /** 上次離開的模式與位置（「接著玩」用）。 */
+    suspend fun resume(): ResumePoint? = ResumeRules.decode(dataStore.data.first()[RESUME])
+
+    /** 存上次離開的位置；null＝清掉（做完了，或去了不能接著玩的模式）。 */
+    suspend fun saveResume(point: ResumePoint?) {
+        dataStore.edit { if (point == null) it.remove(RESUME) else it[RESUME] = ResumeRules.encode(point) }
+    }
+
+    /** 孩子選了簡單版的瑜伽動作 id（每個動作分開記）。 */
+    suspend fun yogaEasy(): Set<String> = dataStore.data.first()[YOGA_EASY].orEmpty()
+
+    suspend fun saveYogaEasy(poseId: String, easy: Boolean) {
+        dataStore.edit {
+            val now = it[YOGA_EASY].orEmpty()
+            it[YOGA_EASY] = if (easy) now + poseId else now - poseId
+        }
+    }
+
     enum class Deck(val key: Preferences.Key<String>) {
         SELF_PLAY(stringPreferencesKey("self_position")),
         ABC(stringPreferencesKey("abc_position")),
@@ -126,5 +149,7 @@ class PracticeStore(context: Context) {
         val JOURNEY_DATE = stringPreferencesKey("journey_date")
         val JOURNEY_STATIONS = stringPreferencesKey("journey_stations")
         val JOURNEY_DONE = intPreferencesKey("journey_done")
+        val RESUME = stringPreferencesKey("resume")
+        val YOGA_EASY = stringSetPreferencesKey("yoga_easy")
     }
 }
