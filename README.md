@@ -19,10 +19,14 @@
 | ![瑜伽動作](docs/screenshots/yoga-pose.png) | ![旅程地圖](docs/screenshots/journey.png) |
 | **拿到新貼紙** | **貼紙冊** |
 | ![拿到新貼紙](docs/screenshots/sticker-new.png) | ![貼紙冊](docs/screenshots/sticker-book.png) |
+| **瑜伽：簡單版** | **接著玩** |
+| ![瑜伽簡單版](docs/screenshots/yoga-easy.png) | ![接著玩](docs/screenshots/resume.png) |
+| **聽聽看** | **聽聽看：答對** |
+| ![聽音找符號](docs/screenshots/listen.png) | ![答對了](docs/screenshots/listen-correct.png) |
 
 ## 有哪些玩法
 
-首頁有五張卡：
+首頁有六張卡：
 
 | 按鈕 | 內容 |
 |---|---|
@@ -31,8 +35,11 @@
 | 自己玩 | 孩子自己按。任何方向鍵都換下一張卡並播音。10 分鐘自動結束。 |
 | ABC | 26 個英文字母，每個字母有幾個例詞和插圖。玩法同自己玩。 |
 | 瑜伽 | 跟著口令做動作。開場會提醒「請大人陪在旁邊」。 |
+| 聽聽看 | 聽音找符號：播一個注音或字母的音，從 3 張卡選對的那張。 |
 
 首頁右上角有兩顆圓鈕：貼紙冊、齒輪（大人設定）。從卡片按上鍵到達。
+
+**接著玩：** 上次在自己玩、ABC、小旅程或瑜伽套中途離開，再打開 App 時，那張卡上會有「接著玩 ▶」，焦點也先在它。瑜伽按 OK 直接回到那一套的那個動作。超過 1 天就不顯示。
 
 **大人設定：在首頁按上到貼紙冊、再按右到齒輪，長按 OK 可換主題。** 有三套主題：活力遊樂場（預設）、繪本小屋、星空探險。選好的主題會記住，重開 App 也一樣。短按 OK 只會提示「請大人長按 OK」，小孩不容易誤觸。
 
@@ -71,7 +78,16 @@
 
 - 每個姿勢先播口令，口令播完才倒數。大圓環顯示剩幾秒，上方進度點顯示「第幾個／共幾個」。
 - 確定鍵暫停／繼續，右鍵跳下一個，返回鍵回首頁。
+- 簡單版：8 個比較難的動作（單腳站、撐手、跪坐等）有減輕版。下鍵換簡單版的圖和口令，上鍵換回一般版。每個動作會記住上次選哪一版。
+- 選套時每套顯示「約 N 分鐘」（口令加倒數算出來的）。
 - 不偵測動作、不計分。請大人在旁邊看著孩子。
+
+### 聽聽看（聽音找符號）
+
+- 先選注音或 ABC。播一個音，畫面有 3 張卡：左右鍵選、OK 作答、上鍵再聽一次。
+- 題目優先出孩子看過的符號或字母（自己玩翻過的、已有貼紙的、大人陪練過的）。
+- 答對：卡翻成例詞圖，播答對動畫，拿到那一項的貼紙（同一項只給一次）。答錯：卡輕輕搖一下變淡，再播一次音。不打叉、不扣分。
+- 10 分鐘上限同自己玩。
 
 ## 安裝
 
@@ -227,7 +243,7 @@ App 內建合成語音。家長可以換成自己錄的聲音，孩子會更有�
 - 此素材依「創用CC 姓名標示 4.0 國際版本」授權條款進行公眾釋出，使用者於遵守本條款各項規定之前提下，得利用之。
 - 創用CC 姓名標示 4.0 國際版授權條款：https://creativecommons.org/licenses/by/4.0/deed.zh_TW
 
-App 首頁底部也有一行標示。
+App 首頁底部也有標示：出處與授權、授權網址，以及「完整授權見 assets/licenses」。
 
 ## 文件
 
@@ -244,6 +260,12 @@ App 首頁底部也有一行標示。
 - Collects no data. Practice records stay on the TV.
 
 **Today's trip.** The first home card plans 3 short stops each day: one Zhuyin symbol, one letter, one yoga pose. Each stop gives a sticker. The sticker book shows all stickers by category. There is no daily streak.
+
+**Listen and find.** The sixth home card plays a Zhuyin or letter sound. The child picks the matching card out of 3. Wrong picks fade gently, with no red marks.
+
+**Pick up where you left off.** If the child left a mode midway, the home card shows "接著玩" (continue) for one day.
+
+**Easier yoga.** Eight harder poses have an easier version. Press Down to switch, Up to switch back. Each set shows its length in minutes.
 
 **Install.** The app is not on Google Play. Download the APK from GitHub Releases. Then sideload it with the Downloader app, or with `adb install`. See the Chinese steps above. You can also paste [PROMPT.md](PROMPT.md) into an AI assistant and let it guide you.
 
