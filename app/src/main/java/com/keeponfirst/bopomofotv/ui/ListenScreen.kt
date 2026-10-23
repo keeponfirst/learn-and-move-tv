@@ -4,6 +4,7 @@ import android.os.SystemClock
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.snap
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
@@ -103,14 +104,17 @@ fun ListenPickScreen(kinds: List<StickerKind>, onStart: (StickerKind) -> Unit, o
 /** 遊戲頁的按鍵提示（給大人看）。 */
 private const val LISTEN_KEY_HINT = "← → 選　OK 確定　↑ 再聽一次　返回 回首頁"
 
-/** 答對回饋播完、給了貼紙之後，再停多久換下一題（卡翻面、例詞音）。 */
-private const val NEXT_QUESTION_MS = 2000L
+/**
+ * 答對回饋播完、給了貼紙之後，再停多久換下一題（卡翻面、例詞音）。
+ * 等「拿到新貼紙」動畫整段播完（原本 2 秒，下一題的題目列會和飛走中的貼紙疊在一起）。
+ */
+private const val NEXT_QUESTION_MS = STICKER_GAIN_MS.toLong()
 
 /**
  * 聽音找符號：播一個音，從 3 張卡選對的那張。
  * - 左右鍵選卡、OK 作答、上鍵再聽一次、返回鍵回首頁。
  * - 答對：卡翻成例詞圖、播例詞音、主題答對回饋（[FeedbackOverlay]）；回饋播完呼叫 [onCorrect]（給那一項的貼紙，同一項只給一次）。
- *   再停 [NEXT_QUESTION_MS] 換下一題。
+ *   再停 [NEXT_QUESTION_MS] 換下一題。答對到下一題之間，上方題目列隱藏。
  * - 答錯：那張卡輕輕搖一下、變淡（不打叉、不用紅色），播「再聽一次」＋題目音。變淡的卡跳過、不能再選。
  * - 題目優先出孩子看過的（[seen]），規則在 [ListenRules]。不記分，右上角只寫答對幾題。
  * - 10 分鐘上限同自己玩，到了呼叫 [onTimeUp]。
@@ -158,7 +162,12 @@ fun ListenScreen(
         delay(Motion.FEEDBACK_MS.toLong())
         target?.let(onCorrect)
         delay(NEXT_QUESTION_MS)
-        question = ListenRules.next(items.map { it.key }, seen, q.target, random)
+        // 換題時同一次就重設：等 LaunchedEffect(q) 才清，新題第一格會沿用上一題的變淡與隱藏。
+        val next = ListenRules.next(items.map { it.key }, seen, q.target, random)
+        wrong.clear()
+        focus = (next?.options?.size ?: 0) / 2
+        question = next
+        solved = false // 最後才設：這會取消本 LaunchedEffect。
     }
     LaunchedEffect(shake) {
         val (i, _) = shake ?: return@LaunchedEffect
@@ -214,7 +223,9 @@ fun ListenScreen(
             InfoPill(Modifier.align(Alignment.TopStart)) { ListenHud(if (kind == StickerKind.ZHUYIN) "聽音找符號" else "聽音找字母") }
             InfoPill(Modifier.align(Alignment.TopEnd).onGloballyPositioned { scoreTarget = it.boundsInRoot().center }) { ListenHud("答對 $score 題") }
             Column(Modifier.fillMaxSize().padding(top = 44.dp), horizontalAlignment = Alignment.CenterHorizontally) {
-                Row(verticalAlignment = Alignment.CenterVertically) {
+                // 答對後（回饋、拿到貼紙）題目列淡出，不和大字疊在一起；下一題出現時再淡入。
+                val questionAlpha by animateFloatAsState(if (solved) 0f else 1f, if (solved) snap() else tween(Motion.SHORT_MS), label = "question")
+                Row(Modifier.graphicsLayer { alpha = questionAlpha }, verticalAlignment = Alignment.CenterVertically) {
                     Speaker(Modifier.size(52.dp), active = replay > 0, pulse = replay)
                     Spacer(Modifier.width(Spacing.S))
                     StickerTitle("聽聽看，是哪一個？", 34.sp)
