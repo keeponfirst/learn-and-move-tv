@@ -23,6 +23,8 @@
 | ![瑜伽簡單版](docs/screenshots/yoga-easy.png) | ![接著玩](docs/screenshots/resume.png) |
 | **聽聽看** | **聽聽看：答對** |
 | ![聽音找符號](docs/screenshots/listen.png) | ![答對了](docs/screenshots/listen-correct.png) |
+| **筆順動畫：自己玩** | **筆順動畫：大人陪** |
+| ![筆順描到一半](docs/screenshots/stroke.png) | ![大人陪筆順](docs/screenshots/stroke-parent.png) |
 
 ## 有哪些玩法
 
@@ -64,6 +66,7 @@
 - 左右鍵換卡，確定鍵播音。
 - 上鍵記「答對」，下鍵記「再練」。按「再練」的卡會排到本輪最後。
 - 畫面下方有「再聽一次／答對了／再練練」三顆提示，分別對應確定鍵、上鍵、下鍵。按「答對了」會播一段約 0.8 秒的小動畫。
+- 長按確定鍵約 0.8 秒，播這個符號的筆順動畫（見「筆順動畫」）。下鍵已經是「再練」，所以大人陪用長按確定鍵。
 - 新卡做完會打亂順序再複習一輪。
 - 連續 2 次每張卡第一次就答對，或同一單元練滿 4 次，下次自動進下一單元。
 - 10 分鐘到會自動結束，下次從沒做完的卡接著做。
@@ -71,8 +74,16 @@
 ### 自己玩與 ABC
 
 - 任何方向鍵或確定鍵都換下一張。幼兒還分不清方向鍵，任何鍵都有反應比較不挫折。
+- 例外：自己玩（注音）的下鍵播這個符號的筆順動畫，不換卡。ABC 沒有筆順，下鍵照樣換卡。
 - 每個符號／字母的例詞連續出完，再換下一個。下次從上次那張接著。
 - 10 分鐘到停在「今天練完了」。只能按返回鍵回首頁。
+
+### 筆順動畫（注音）
+
+- 37 個注音符號都有。自己玩按下鍵、大人陪長按確定鍵，就從第一筆開始描。
+- 一筆一筆沿書寫方向畫出來，每筆約 0.6～0.9 秒，筆和筆之間停 0.2 秒。還沒畫到的筆畫是淡色底稿。
+- 描的時候卡片左上角顯示「第 N 筆」，畫完顯示「共 N 筆」並停在完整的字。再按一次重播，換卡就收起來。
+- 筆順路徑是本專案自己畫的（MIT），筆順參照教育部公告標準。
 
 ### 瑜伽
 
@@ -230,6 +241,7 @@ App 內建合成語音。家長可以換成自己錄的聲音，孩子會更有�
 | 內建合成語音（關鍵字、固定語句、ABC、瑜伽口令） | Google Cloud Text-to-Speech 合成，不是真人錄音 | MIT |
 | 插圖（注音例詞、ABC、瑜伽、三套主題） | 本專案以程式繪製（SVG 轉 PNG），沒有 AI 生圖 | MIT |
 | App icon、TV banner | 本專案以程式繪製 | MIT |
+| 注音筆順路徑 `zhuyin/strokes/*.json` | 本專案原創，筆順參照教育部公告標準 | MIT |
 | 字型 Noto Sans TC（Bold、Black 子集） | `res/font/`，全文 `LICENSES/OFL-1.1.txt` | SIL OFL 1.1 |
 | 第三方套件（AndroidX、Kotlin 等） | 隨 APK 散布 | Apache 2.0；protobuf-lite 為 BSD 3-Clause |
 
@@ -266,6 +278,8 @@ App 首頁底部也有標示：出處與授權、授權網址，以及「完整�
 **Pick up where you left off.** If the child left a mode midway, the home card shows "接著玩" (continue) for one day.
 
 **Easier yoga.** Eight harder poses have an easier version. Press Down to switch, Up to switch back. Each set shows its length in minutes.
+
+**Stroke order.** Every Zhuyin card can animate its stroke order, one stroke at a time. In self-play, press Down. In parent mode, hold OK. The paths are original work (MIT) and follow the Ministry of Education standard.
 
 **Install.** The app is not on Google Play. Download the APK from GitHub Releases. Then sideload it with the Downloader app, or with `adb install`. See the Chinese steps above. You can also paste [PROMPT.md](PROMPT.md) into an AI assistant and let it guide you.
 
