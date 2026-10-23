@@ -6,9 +6,13 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
+import androidx.datastore.preferences.core.stringSetPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import com.keeponfirst.bopomofotv.data.DeckPosition
 import com.keeponfirst.bopomofotv.session.ParentProgress
+import com.keeponfirst.bopomofotv.session.JourneyDay
+import com.keeponfirst.bopomofotv.session.JourneyPool
+import com.keeponfirst.bopomofotv.session.JourneyRules
 import com.keeponfirst.bopomofotv.session.Phase
 import kotlinx.coroutines.flow.first
 import java.time.LocalDate
@@ -62,6 +66,49 @@ class PracticeStore(context: Context) {
         dataStore.edit { it[deck.key] = "${position.key}$POSITION_SEPARATOR${position.wordIndex}" }
     }
 
+    /** 已收集的貼紙。 */
+    suspend fun stickers(): Set<StickerId> =
+        dataStore.data.first()[STICKERS].orEmpty().mapNotNull { StickerId.decode(it) }.toSet()
+
+    /** 給一張貼紙。同一項只給一次：已經有了回 false，第一次拿到回 true。 */
+    suspend fun award(id: StickerId): Boolean {
+        var added = false
+        dataStore.edit { prefs ->
+            StickerRules.award(prefs[STICKERS].orEmpty(), id)?.let {
+                prefs[STICKERS] = it
+                added = true
+            }
+        }
+        return added
+    }
+
+    /** 大人陪按過「再練」的符號（不分日期）。小旅程排注音站時優先選。 */
+    suspend fun againSymbols(): Set<String> =
+        entries().filter { it.result == PracticeResult.AGAIN }.map { it.symbol }.toSet()
+
+    /** 存著的小旅程（可能是之前某一天的）。 */
+    suspend fun journey(): JourneyDay? {
+        val prefs = dataStore.data.first()
+        val date = prefs[JOURNEY_DATE]?.let { runCatching { LocalDate.parse(it) }.getOrNull() } ?: return null
+        return JourneyDay(date, JourneyRules.decodeStations(prefs[JOURNEY_STATIONS].orEmpty()), prefs[JOURNEY_DONE] ?: 0)
+    }
+
+    suspend fun saveJourney(day: JourneyDay) {
+        dataStore.edit {
+            it[JOURNEY_DATE] = day.date.toString()
+            it[JOURNEY_STATIONS] = JourneyRules.encodeStations(day.stations)
+            it[JOURNEY_DONE] = day.done
+        }
+    }
+
+    /** 今天的小旅程：同一天接著存的那份；沒有或跨日就排新的並存起來。 */
+    suspend fun journeyToday(pool: JourneyPool, date: LocalDate = LocalDate.now()): JourneyDay {
+        val saved = journey()
+        val day = JourneyRules.today(saved, date, pool, stickers(), againSymbols())
+        if (day != saved) saveJourney(day)
+        return day
+    }
+
     enum class Deck(val key: Preferences.Key<String>) {
         SELF_PLAY(stringPreferencesKey("self_position")),
         ABC(stringPreferencesKey("abc_position")),
@@ -75,5 +122,9 @@ class PracticeStore(context: Context) {
         val PARENT_STREAK = intPreferencesKey("parent_streak")
         val PARENT_RESUME_PHASE = stringPreferencesKey("parent_resume_phase")
         val PARENT_RESUME = stringPreferencesKey("parent_resume")
+        val STICKERS = stringSetPreferencesKey("stickers")
+        val JOURNEY_DATE = stringPreferencesKey("journey_date")
+        val JOURNEY_STATIONS = stringPreferencesKey("journey_stations")
+        val JOURNEY_DONE = intPreferencesKey("journey_done")
     }
 }

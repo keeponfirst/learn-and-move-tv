@@ -113,6 +113,8 @@ private const val YOGA_KEY_HINT = "OK 暫停／繼續　→ 下一個　返回 �
  * 確定鍵暫停／繼續，右鍵跳下一個，返回鍵回首頁。其他方向鍵不理會。不偵測動作、不計分。
  * 暫停會停掉語音；繼續時，口令段重播口令，倒數段接著倒數。離開 App 自動暫停。
  * 缺音：AudioPlayer 打不開檔會直接呼叫 onDone，等於口令立即播完，照樣倒數。
+ * 一個動作倒數到 0（不是按右鍵跳過）呼叫 [onPoseDone]（給貼紙）。
+ * 小旅程的動一動站：[choice] 只放一個動作，[skipIntro]＝不播開場，直接進口令。
  */
 @Composable
 fun YogaScreen(
@@ -120,9 +122,14 @@ fun YogaScreen(
     player: AudioPlayer,
     onExit: () -> Unit,
     onDone: () -> Unit,
+    skipIntro: Boolean = false,
+    onPoseDone: (YogaPose) -> Unit = {},
 ) {
     val program = choice.program
-    var session by remember { mutableStateOf(YogaRules.start(program.poses.map { it.seconds }, choice.rounds)) }
+    var session by remember {
+        val start = YogaRules.start(program.poses.map { it.seconds }, choice.rounds)
+        mutableStateOf(if (skipIntro) YogaRules.cueFinished(start) else start)
+    }
     val pose = program.poses[session.poseIndex]
 
     // 語音：開場與口令段播音，播完才換段。暫停就停音。
@@ -143,7 +150,10 @@ fun YogaScreen(
         if (session.phase != YogaPhase.COUNTDOWN || session.paused) return@LaunchedEffect
         while (true) {
             delay(1000)
-            session = YogaRules.tick(session)
+            val before = session
+            session = YogaRules.tick(before)
+            // 倒數剩 1 秒再過一秒＝這個動作做完了。
+            if (before.phase == YogaPhase.COUNTDOWN && !before.paused && before.remaining == 1) onPoseDone(program.poses[before.poseIndex])
         }
     }
     // 離開 App 時 MainActivity.onStop 會停音，口令的 onDone 不會來。先暫停，回來按確定鍵重播口令。

@@ -51,6 +51,29 @@ class ThemeTokensTest {
         found.forEach { assertTrue("少了 $it", File(assets, it).isFile) }
     }
 
+    /** 小旅程與貼紙冊的素材路徑用主題資料夾組出來（上一個測試抓不到），這裡逐一列。 */
+    @Test
+    fun everyThemeHasJourneyAndStickerBookArt() {
+        val journey = listOf(
+            "journey_map_bg.jpg", "road_done_1.png", "road_done_2.png", "road_done_3.png",
+            "station_sign.png", "station_sign_current.png", "station_sign_todo.png", "station_done_badge.png",
+            "gift_open.png", "title_journey_done.png",
+        )
+        val book = listOf(
+            "book_bg_zhuyin.jpg", "book_bg_abc.jpg", "book_bg_yoga.jpg",
+            "sticker_base.png", "sticker_top.png", "sticker_empty.png", "sticker_new_glow.png", "title_new_sticker.png",
+        )
+        Themes.all.forEach { t ->
+            val dir = themeDir(t)
+            journey.forEach { assertTrue("${t.name} 少了 journey/$it", File(assets, "theme/$dir/journey/$it").isFile) }
+            book.forEach { assertTrue("${t.name} 少了 stickerbook/$it", File(assets, "theme/$dir/stickerbook/$it").isFile) }
+            // 貼紙冊背景照 StickerKind 的名字組檔名。
+            com.keeponfirst.bopomofotv.record.StickerKind.entries.forEach {
+                assertTrue(File(assets, "theme/$dir/stickerbook/book_bg_${it.name.lowercase()}.jpg").isFile)
+            }
+        }
+    }
+
     @Test
     fun unknownStoredKeyFallsBackToDefault() {
         assertEquals(ThemeId.B, ThemeId.fromKey(null))

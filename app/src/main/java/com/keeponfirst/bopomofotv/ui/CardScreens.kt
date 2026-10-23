@@ -36,6 +36,7 @@ import com.keeponfirst.bopomofotv.data.ZhuyinCard
 import com.keeponfirst.bopomofotv.data.ZhuyinWord
 import com.keeponfirst.bopomofotv.record.PracticeResult
 import com.keeponfirst.bopomofotv.record.PracticeStore
+import com.keeponfirst.bopomofotv.record.SeenTracker
 import com.keeponfirst.bopomofotv.session.Cue
 import com.keeponfirst.bopomofotv.session.PARENT_MILLIS
 import com.keeponfirst.bopomofotv.session.ParentProgress
@@ -227,6 +228,9 @@ fun ParentStartScreen(
  * 37 個符號照教育部順序，每個符號的例詞連續出完再換下一個；最後一張之後回到 ㄅ。
  * 從 [start] 開始。每換一張呼叫 [onPosition]，下次從這張接著。
  * 不記分。10 分鐘到呼叫 [onTimeUp]。返回鍵回首頁。
+ * 一個符號的例詞卡都看過一次，呼叫 [onSymbolDone]（給貼紙）。
+ * 小旅程的注音站也用這頁：[deck] 只放一個符號的卡，[onDeckEnd] 不是 null 時看完最後一張再按就呼叫它，不繞回；
+ * [startedAt] 是旅程開始的時間，10 分鐘一起算。
  */
 @Composable
 fun SelfPlayCardScreen(
@@ -237,13 +241,26 @@ fun SelfPlayCardScreen(
     onPosition: (ZhuyinCard) -> Unit,
     onExit: () -> Unit,
     onTimeUp: () -> Unit,
+    mode: String = "自己玩",
+    startedAt: Long? = null,
+    onDeckEnd: (() -> Unit)? = null,
+    onSymbolDone: (ZhuyinCard) -> Unit = {},
 ) {
     var step by rememberSaveable { mutableIntStateOf(start) }
-    val startedAt = rememberSaveable { SystemClock.elapsedRealtime() }
-    val item = deck[step % deck.size]
+    val startedAt = rememberSaveable { startedAt ?: SystemClock.elapsedRealtime() }
+    val ended = onDeckEnd != null && step >= deck.size
+    val index = (if (ended) deck.lastIndex else step) % deck.size
+    val item = deck[index]
+    val wordsPerSymbol = remember(deck) { deck.groupingBy { it.card.symbol }.eachCount() }
+    val seen = remember { SeenTracker() }
 
     LaunchedEffect(step) {
+        if (ended) {
+            onDeckEnd?.invoke()
+            return@LaunchedEffect
+        }
         onPosition(item)
+        if (seen.see(item.card.symbol, item.wordIndex, wordsPerSymbol.getValue(item.card.symbol))) onSymbolDone(item)
         player.play(resolver.cardPaths(item.card, item.word))
     }
     LaunchedEffect(Unit) {
@@ -252,8 +269,8 @@ fun SelfPlayCardScreen(
     }
     BackHandler { onExit() }
 
-    RemoteKeyBox(onKey = { step++ }) {
-        CardPage(mode = "自己玩", counter = cardCounter(step % deck.size, deck.size)) {
+    RemoteKeyBox(onKey = { if (!ended) step++ }) {
+        CardPage(mode = mode, counter = cardCounter(index, deck.size)) {
             CardSlide(item, forward = true) { CardFace(it.card, it.word) }
         }
     }
@@ -263,6 +280,7 @@ fun SelfPlayCardScreen(
  * ABC：玩法照自己玩。任一方向鍵換下一張，進卡自動播字母音。
  * 每個字母的例詞連續出完再換下一個字母。從 [start] 開始，每換一張呼叫 [onPosition]。
  * 確定鍵播「字母音 → 單字音」。不記分。10 分鐘到呼叫 [onTimeUp]。返回鍵回首頁。
+ * 貼紙與小旅程字母站的參數同 [SelfPlayCardScreen]。
  */
 @Composable
 fun AbcCardScreen(
@@ -273,13 +291,26 @@ fun AbcCardScreen(
     onPosition: (AbcWordCard) -> Unit,
     onExit: () -> Unit,
     onTimeUp: () -> Unit,
+    mode: String = "ABC",
+    startedAt: Long? = null,
+    onDeckEnd: (() -> Unit)? = null,
+    onLetterDone: (AbcWordCard) -> Unit = {},
 ) {
     var step by rememberSaveable { mutableIntStateOf(start) }
-    val startedAt = rememberSaveable { SystemClock.elapsedRealtime() }
-    val item = deck[step % deck.size]
+    val startedAt = rememberSaveable { startedAt ?: SystemClock.elapsedRealtime() }
+    val ended = onDeckEnd != null && step >= deck.size
+    val index = (if (ended) deck.lastIndex else step) % deck.size
+    val item = deck[index]
+    val wordsPerLetter = remember(deck) { deck.groupingBy { it.card.upper }.eachCount() }
+    val seen = remember { SeenTracker() }
 
     LaunchedEffect(step) {
+        if (ended) {
+            onDeckEnd?.invoke()
+            return@LaunchedEffect
+        }
         onPosition(item)
+        if (seen.see(item.card.upper, item.wordIndex, wordsPerLetter.getValue(item.card.upper))) onLetterDone(item)
         player.play(resolver.letterPaths(item.card))
     }
     LaunchedEffect(Unit) {
@@ -290,10 +321,14 @@ fun AbcCardScreen(
 
     RemoteKeyBox(
         onKey = { key ->
-            if (key == RemoteKey.OK) player.play(resolver.letterWordPaths(item.card, item.word)) else step++
+            when {
+                ended -> Unit
+                key == RemoteKey.OK -> player.play(resolver.letterWordPaths(item.card, item.word))
+                else -> step++
+            }
         },
     ) {
-        CardPage(mode = "ABC", counter = cardCounter(step % deck.size, deck.size)) {
+        CardPage(mode = mode, counter = cardCounter(index, deck.size)) {
             CardSlide(item, forward = true) { AbcCardFace(it.card, it.word) }
         }
     }

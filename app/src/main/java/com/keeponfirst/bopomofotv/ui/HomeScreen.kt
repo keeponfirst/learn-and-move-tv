@@ -56,11 +56,12 @@ const val MOE_ATTRIBUTION = "符號音檔：2017 © 教育部，國語注音符�
 /** 第三方授權全文（Apache 2.0 等）放在 APK 的 assets/licenses/。 */
 const val LICENSES_HINT = "完整授權見 assets/licenses"
 
-/** 首頁的四個入口，順序同畫面由左到右。 */
-enum class HomeEntry { PARENT, SELF, ABC, YOGA }
+/** 首頁的五個入口，順序同畫面由左到右。 */
+enum class HomeEntry { JOURNEY, PARENT, SELF, ABC, YOGA }
 
 /** 首頁入口的大字與小字，順序同 [HomeEntry]。 */
 private val ENTRY_LABELS = listOf(
+    "小旅程" to "3 站・約 5 分鐘",
     "大人陪" to "陪孩子學注音",
     "自己玩" to "自己翻注音卡",
     "ABC" to "英文字母",
@@ -68,61 +69,65 @@ private val ENTRY_LABELS = listOf(
 )
 
 /**
- * 入口卡尺寸與位置。[left] 是第一張卡離安全區左緣的距離；null＝整排置中。
- * B 左邊留給導遊角色，卡片窄一點：4 張 158 dp ＋ 3 個 14 dp ＝ 674 dp，從 x=226 dp 排到 900 dp。
- * A、C 4 張 192 dp ＋ 3 個 20 dp ＝ 828 dp，置中後兩側各 66 dp。
+ * 入口卡尺寸。第一張「小旅程」寬 [firstWidth]，其他 4 張寬 [width]。整排置中。
+ * 200 ＋ 4 × 140 ＋ 4 × 14 ＝ 816 dp，置中後兩側各 72 dp（安全區內再各留 24 dp）。
+ * B 原本左邊的導遊角色放不下，拿掉，改在小旅程卡上方放對話框。
  * 聚焦放大、傾斜後外框仍在安全區內（SafeAreaTest 驗）。
  */
-internal data class CardSize(val width: Dp, val height: Dp, val gap: Dp, val left: Dp?)
+internal data class CardSize(val firstWidth: Dp, val width: Dp, val height: Dp, val gap: Dp) {
+    fun widthOf(entry: HomeEntry) = if (entry == HomeEntry.JOURNEY) firstWidth else width
+}
 
 internal fun cardSize(theme: AppTheme) = when (theme.id) {
-    ThemeId.B -> CardSize(158.dp, 250.dp, 14.dp, left = 178.dp)
-    else -> CardSize(192.dp, 268.dp, 20.dp, left = null)
+    ThemeId.B -> CardSize(200.dp, 140.dp, 250.dp, 14.dp)
+    else -> CardSize(200.dp, 140.dp, 268.dp, 14.dp)
 }
 
 /** 焦點卡下方標籤的高度。 */
 private val TAG_HEIGHT = 40.dp
 
 /**
- * 首頁：主題字樣的標題＋單排 4 張大卡。進來時焦點放在 [focus]；焦點移動時呼叫 [onFocus]。
+ * 首頁：主題字樣的標題＋單排 5 張大卡（最左是小旅程）。進來時焦點放在 [focus]；焦點移動時呼叫 [onFocus]。
  * App 層記住最後一次的入口，從任何模式回來焦點都回到同一顆。
- * 右上角齒輪是大人設定：只有從卡片按「上」才到得了，左右鍵不會經過它；長按 OK 2 秒才呼叫 [onSettings]。
+ * 右上角兩顆圓鈕：貼紙冊（OK 進入 [onStickerBook]）與齒輪（大人設定）。只有從卡片按「上」才到得了，
+ * 左右鍵不會從卡片經過它們；上鍵先到貼紙冊，右鍵到齒輪。齒輪要長按 OK 2 秒才呼叫 [onSettings]。
+ * [journeyDone]／[journeyTotal]：今天的小旅程走了幾站，畫在小旅程卡上。
  */
 @Composable
 fun HomeScreen(
     focus: HomeEntry,
     onFocus: (HomeEntry) -> Unit,
+    onJourney: () -> Unit,
     onParent: () -> Unit,
     onSelf: () -> Unit,
     onAbc: () -> Unit,
     onYoga: () -> Unit,
+    onStickerBook: () -> Unit,
     onSettings: () -> Unit,
+    journeyDone: Int = 0,
+    journeyTotal: Int = 3,
 ) {
     val theme = LocalAppTheme.current
     val requesters = remember { HomeEntry.entries.associateWith { FocusRequester() } }
+    val book = remember { FocusRequester() }
     val gear = remember { FocusRequester() }
     var last by remember { mutableStateOf(focus) }
     LaunchedEffect(Unit) { requesters.getValue(focus).requestFocus() }
-    val actions = listOf(onParent, onSelf, onAbc, onYoga)
+    val actions = listOf(onJourney, onParent, onSelf, onAbc, onYoga)
     val size = cardSize(theme)
+    val cardsTop = when (theme.id) {
+        ThemeId.A -> 104.dp
+        ThemeId.B -> 126.dp
+        ThemeId.C -> 114.dp
+    }
 
     Box(Modifier.fillMaxSize()) {
         ThemeBackdrop(theme.bgHome)
-        when (theme.id) {
-            ThemeId.B -> GuideGirl()
-            ThemeId.C -> RocketGirl()
-            ThemeId.A -> Unit
-        }
+        if (theme.id == ThemeId.C) RocketGirl()
         Box(Modifier.fillMaxSize().safeArea()) {
             HomeTitle(Modifier.align(Alignment.TopCenter))
             Row(
-                Modifier
-                    .align(if (size.left != null) Alignment.TopStart else Alignment.TopCenter)
-                    .padding(start = size.left ?: 0.dp, top = when (theme.id) {
-                        ThemeId.A -> 104.dp
-                        ThemeId.B -> 126.dp
-                        ThemeId.C -> 114.dp
-                    }),
+                Modifier.align(Alignment.TopCenter).padding(top = cardsTop),
                 horizontalArrangement = Arrangement.spacedBy(size.gap),
             ) {
                 HomeEntry.entries.forEach { entry ->
@@ -130,10 +135,11 @@ fun HomeScreen(
                         entry = entry,
                         size = size,
                         onClick = actions[entry.ordinal],
+                        journey = journeyDone to journeyTotal,
                         modifier = Modifier
                             .focusRequester(requesters.getValue(entry))
                             .focusProperties {
-                                up = gear
+                                up = book
                                 down = FocusRequester.Cancel
                                 if (entry == HomeEntry.entries.first()) left = FocusRequester.Cancel
                                 if (entry == HomeEntry.entries.last()) right = FocusRequester.Cancel
@@ -145,19 +151,33 @@ fun HomeScreen(
                     )
                 }
             }
-            AdultGear(
-                onOpen = onSettings,
-                modifier = Modifier
-                    .align(Alignment.TopEnd)
-                    .focusRequester(gear)
-                    .focusProperties {
-                        left = FocusRequester.Cancel
-                        right = FocusRequester.Cancel
-                        up = FocusRequester.Cancel
-                        down = requesters.getValue(last)
-                    },
-            )
-            KeyHint("← → 選擇　OK 進入", Modifier.align(Alignment.BottomEnd))
+            if (theme.id == ThemeId.B) JourneyBubble(Modifier.padding(top = cardsTop - 46.dp, start = (864.dp - size.firstWidth - size.width * 4 - size.gap * 4) / 2))
+            Row(Modifier.align(Alignment.TopEnd), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(Spacing.S)) {
+                StickerBookButton(
+                    onOpen = onStickerBook,
+                    modifier = Modifier
+                        .focusRequester(book)
+                        .focusProperties {
+                            left = FocusRequester.Cancel
+                            right = gear
+                            up = FocusRequester.Cancel
+                            down = requesters.getValue(last)
+                        },
+                )
+                AdultGear(
+                    onOpen = onSettings,
+                    modifier = Modifier
+                        .focusRequester(gear)
+                        .focusProperties {
+                            left = book
+                            right = FocusRequester.Cancel
+                            up = FocusRequester.Cancel
+                            down = requesters.getValue(last)
+                        },
+                )
+            }
+            // 底部授權標示一行很長，按鍵提示放在它上面一行，不疊在一起（模擬器看過）。
+            KeyHint("← → 選擇　↑ 貼紙冊／大人　OK 進入", Modifier.align(Alignment.BottomEnd).padding(bottom = 26.dp))
             Text(
                 "$MOE_ATTRIBUTION　｜　$LICENSES_HINT",
                 modifier = Modifier.align(Alignment.BottomStart).padding(bottom = Spacing.XS),
@@ -178,7 +198,8 @@ private fun HomeTitle(modifier: Modifier) {
                 DecoratedText(
                     ch.toString(),
                     fontSize = 54.sp,
-                    color = theme.entryColors[i],
+                    // 跳過小旅程的顏色，四個字沿用原本四張卡的顏色。
+                    color = theme.entryColors[i + 1],
                     stroke = theme.outline,
                     strokeWidth = 4.dp,
                     modifier = Modifier.graphicsLayer { rotationZ = if (i % 2 == 0) -4f else 3f },
@@ -202,15 +223,66 @@ private fun HomeTitle(modifier: Modifier) {
     }
 }
 
-/** B：左邊的導遊小女孩與「今天玩什麼？」對話框。位置照設計稿（1 dp ＝ 設計稿 2 px）。 */
+/** B：小旅程卡上方的對話框「今天的小旅程準備好了！」（首頁設計稿）。 */
 @Composable
-private fun GuideGirl() {
-    Box(Modifier.fillMaxSize()) {
-        rememberThemeImage("theme/b/guide/guide_girl.png")?.let {
-            Image(it, null, Modifier.offset(x = 24.dp, y = 214.dp).size(214.dp, 260.dp))
-        }
-        rememberThemeImage("theme/b/guide/guide_bubble_today.png")?.let {
-            Image(it, null, Modifier.offset(x = 48.dp, y = 122.dp).size(186.dp, 75.dp))
+private fun JourneyBubble(modifier: Modifier) {
+    val theme = LocalAppTheme.current
+    Box(
+        modifier
+            .background(Color.White, RoundedCornerShape(16.dp))
+            .border(2.5.dp, theme.outline, RoundedCornerShape(16.dp))
+            .padding(horizontal = Spacing.S, vertical = 4.dp),
+    ) {
+        Text("今天的小旅程準備好了！", fontSize = 17.sp, color = theme.textPrimary, fontWeight = FontWeight.Black)
+    }
+}
+
+/**
+ * 首頁右上角的貼紙冊圓鈕：圓底＋打開的書。焦點時放大變亮（同齒輪）。短按 OK 就進（給小孩用，不用長按）。
+ * 放開才進入，同 [EntryCard]。
+ */
+@Composable
+private fun StickerBookButton(onOpen: () -> Unit, modifier: Modifier) {
+    val theme = LocalAppTheme.current
+    var focused by remember { mutableStateOf(false) }
+    var pressed by remember { mutableStateOf(false) }
+    val f by animateFloatAsState(if (focused) 1f else 0f, tween(Motion.FOCUS_MS), label = "book")
+    val color = if (focused) theme.focusFrame else theme.textSecondary
+    val accent = stickerStyle(theme).stationColors[0]
+    Box(
+        modifier
+            .size(44.dp)
+            .graphicsLayer {
+                val s = 1f + 0.2f * f
+                scaleX = s
+                scaleY = s
+                alpha = 0.55f + 0.45f * f
+            }
+            .onFocusChanged { focused = it.isFocused }
+            .onPreviewKeyEvent { event ->
+                if (event.remoteKey() != RemoteKey.OK) return@onPreviewKeyEvent false
+                when (event.type) {
+                    KeyEventType.KeyDown -> pressed = true
+                    KeyEventType.KeyUp -> if (pressed) {
+                        pressed = false
+                        onOpen()
+                    }
+                }
+                true
+            }
+            .focusable(),
+    ) {
+        androidx.compose.foundation.Canvas(Modifier.fillMaxSize()) {
+            val r = size.minDimension / 2
+            drawCircle(theme.outline.copy(alpha = 0.35f), radius = r)
+            // 打開的書：左右兩頁＋中間書脊，左頁上一顆圓點代表貼紙。
+            val w = r * 0.62f
+            val h = r * 0.9f
+            val top = center.y - h / 2
+            drawRoundRect(color, topLeft = Offset(center.x - w - r * 0.04f, top), size = Size(w, h), cornerRadius = CornerRadius(r * 0.1f))
+            drawRoundRect(color, topLeft = Offset(center.x + r * 0.04f, top), size = Size(w, h), cornerRadius = CornerRadius(r * 0.1f))
+            drawCircle(accent, radius = r * 0.17f, center = Offset(center.x - w / 2 - r * 0.04f, center.y - h * 0.08f))
+            drawCircle(theme.outline.copy(alpha = 1f), radius = r * 0.08f, center = Offset(center.x + w / 2 + r * 0.04f, center.y - h * 0.08f))
         }
     }
 }
@@ -228,7 +300,7 @@ private fun RocketGirl() {
  * 卡的樣子照主題：A 米白紙卡＋紙膠帶、B 彩色卡＋白圈深框＋閃光、C 半透明玻璃＋金框＋角落星。
  */
 @Composable
-private fun EntryCard(entry: HomeEntry, size: CardSize, onClick: () -> Unit, onFocused: () -> Unit, modifier: Modifier) {
+private fun EntryCard(entry: HomeEntry, size: CardSize, onClick: () -> Unit, journey: Pair<Int, Int>, onFocused: () -> Unit, modifier: Modifier) {
     val theme = LocalAppTheme.current
     var focused by remember { mutableStateOf(false) }
     var pressed by remember { mutableStateOf(false) }
@@ -240,7 +312,7 @@ private fun EntryCard(entry: HomeEntry, size: CardSize, onClick: () -> Unit, onF
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         Box(
             modifier
-                .size(size.width, size.height)
+                .size(size.widthOf(entry), size.height)
                 .graphicsLayer {
                     val s = lerp(1f, theme.focusScale, f)
                     scaleX = s
@@ -275,9 +347,18 @@ private fun EntryCard(entry: HomeEntry, size: CardSize, onClick: () -> Unit, onF
                     .padding(12.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
-                rememberThemeImage(theme.entryArt[i])?.let { Image(it, label, Modifier.fillMaxWidth(0.92f).aspectRatio(1f)) }
-                Spacer(Modifier.height(Spacing.XS))
-                EntryLabel(label, sub)
+                if (entry == HomeEntry.JOURNEY) {
+                    // 小旅程卡比較寬：插圖固定 120 dp，下面多一排今天的站點圓。
+                    rememberThemeImage(theme.entryArt[i])?.let { Image(it, label, Modifier.size(120.dp)) }
+                    Spacer(Modifier.height(Spacing.XS))
+                    EntryLabel(label, sub)
+                    Spacer(Modifier.height(4.dp))
+                    StationDots(journey.first, journey.second, size = 12.dp)
+                } else {
+                    rememberThemeImage(theme.entryArt[i])?.let { Image(it, label, Modifier.fillMaxWidth(0.92f).aspectRatio(1f)) }
+                    Spacer(Modifier.height(Spacing.XS))
+                    EntryLabel(label, sub)
+                }
             }
             CardDecoration(theme, f)
         }

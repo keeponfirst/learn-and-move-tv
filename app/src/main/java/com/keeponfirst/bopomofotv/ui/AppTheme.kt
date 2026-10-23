@@ -37,9 +37,9 @@ data class AppTheme(
     val bgYoga: String,
     /** 設定頁的預覽縮圖（首頁）。 */
     val preview: String,
-    /** 首頁 4 張入口插圖，順序同 [HomeEntry]。 */
+    /** 首頁 5 張入口插圖，順序同 [HomeEntry]。 */
     val entryArt: List<String>,
-    /** 入口卡顏色 4 個，順序同 [HomeEntry]。A 是插圖底板色，B 是卡片底色，C 是卡內星球色。 */
+    /** 入口卡顏色 5 個，順序同 [HomeEntry]。A 是插圖底板色，B 是卡片底色，C 是卡內星球色。 */
     val entryColors: List<Color>,
     /** 入口卡底下的立體厚度色。A 沒有，用投影色代替。 */
     val entryShade: List<Color>,
@@ -83,7 +83,12 @@ data class AppTheme(
 
 /** 三套主題的實際數值。 */
 object Themes {
-    private fun entries(dir: String) = listOf("parent", "self", "abc", "yoga").map { "theme/$dir/entry/entry_$it.png" }
+    /**
+     * 小旅程卡的圖：B 卡片本身是青綠色，用只有插圖的版本；A、C 的其他入口圖都含底板（紙板、星球），用含底板的版本。
+     */
+    private fun entries(dir: String) =
+        listOf("theme/$dir/journey/${if (dir == "b") "entry_journey_art" else "entry_journey"}.png") +
+            listOf("parent", "self", "abc", "yoga").map { "theme/$dir/entry/entry_$it.png" }
 
     val A = AppTheme(
         id = ThemeId.A,
@@ -94,8 +99,8 @@ object Themes {
         bgYoga = "theme/a/bg/bg_page.jpg",
         preview = "theme/a/preview.jpg",
         entryArt = entries("a"),
-        entryColors = listOf(Color(0xFFFFD9C2), Color(0xFFD5EEDF), Color(0xFFFFEAB0), Color(0xFFE5DBF8)),
-        entryShade = List(4) { Color(0x1F785A3C) },
+        entryColors = listOf(Color(0xFFCDEDEA), Color(0xFFFFD9C2), Color(0xFFD5EEDF), Color(0xFFFFEAB0), Color(0xFFE5DBF8)),
+        entryShade = List(5) { Color(0x1F785A3C) },
         surface = Color(0xFFFFFCF5),
         textPrimary = Color(0xFF4A3B35),
         textSecondary = Color(0xFF8A6E5A),
@@ -134,8 +139,8 @@ object Themes {
         bgYoga = "theme/b/bg/bg_all.jpg",
         preview = "theme/b/preview.jpg",
         entryArt = entries("b"),
-        entryColors = listOf(Color(0xFFFF6B5B), Color(0xFFFFB61E), Color(0xFF2FC46B), Color(0xFF8A5CF6)),
-        entryShade = listOf(Color(0xFFC9382A), Color(0xFFC98400), Color(0xFF178A45), Color(0xFF5A33B8)),
+        entryColors = listOf(Color(0xFF12B5B0), Color(0xFFFF6B5B), Color(0xFFFFB61E), Color(0xFF2FC46B), Color(0xFF8A5CF6)),
+        entryShade = listOf(Color(0xFF0B7F7B), Color(0xFFC9382A), Color(0xFFC98400), Color(0xFF178A45), Color(0xFF5A33B8)),
         surface = Color(0xFFFFFFFF),
         textPrimary = Color(0xFF2D2250),
         textSecondary = Color(0xFF8A5CF6),
@@ -174,8 +179,8 @@ object Themes {
         bgYoga = "theme/c/bg/bg_yoga.jpg",
         preview = "theme/c/preview.jpg",
         entryArt = entries("c"),
-        entryColors = listOf(Color(0xFFFF8A7A), Color(0xFF5CE1E6), Color(0xFFFFD66B), Color(0xFFB79CFF)),
-        entryShade = listOf(Color(0xFFE2546A), Color(0xFF2A9DB8), Color(0xFFE59A2C), Color(0xFF7A5BE0)),
+        entryColors = listOf(Color(0xFF7EE8A2), Color(0xFFFF8A7A), Color(0xFF5CE1E6), Color(0xFFFFD66B), Color(0xFFB79CFF)),
+        entryShade = listOf(Color(0xFF2FA866), Color(0xFFE2546A), Color(0xFF2A9DB8), Color(0xFFE59A2C), Color(0xFF7A5BE0)),
         surface = Color(0x17FFFFFF),
         textPrimary = Color(0xFFFFFFFF),
         textSecondary = Color(0xFFC9C6FF),

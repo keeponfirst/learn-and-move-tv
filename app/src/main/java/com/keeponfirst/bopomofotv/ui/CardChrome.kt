@@ -168,7 +168,7 @@ fun CardImage(image: ImageBitmap, description: String, size: Dp) {
                     .background(Color.White, shape)
                     .border(theme.borderNormal, theme.outline, shape)
                     .padding(10.dp)
-                    .background(theme.entryColors[3], RoundedCornerShape(6.dp)),
+                    .background(theme.entryColors[HomeEntry.YOGA.ordinal], RoundedCornerShape(6.dp)),
                 contentAlignment = Alignment.Center,
             ) { Image(image, description, Modifier.fillMaxSize(0.88f), contentScale = ContentScale.Fit) }
             rememberThemeImage("theme/a/guide/tape.png")?.let {
