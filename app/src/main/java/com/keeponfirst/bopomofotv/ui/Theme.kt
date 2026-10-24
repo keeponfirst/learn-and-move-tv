@@ -14,7 +14,8 @@ import com.keeponfirst.bopomofotv.R
 
 /**
  * Noto Sans TC 子集（SIL OFL 1.1）：Bold 700、Black 900。
- * 子集只收 App 用到的字。加新字串後要重產字型，否則缺的字會退回系統字型。
+ * 子集只收 App 用到的字。加新字串或素材後跑 `python3 scripts/font-subset.py` 重產（自動收字、驗缺字 0），
+ * 否則缺的字會退回系統字型。只驗不產：加 `--check`。
  */
 val NotoSansTc = FontFamily(
     Font(R.font.notosanstc_bold, FontWeight.Bold),
