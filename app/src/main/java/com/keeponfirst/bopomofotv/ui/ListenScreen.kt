@@ -116,7 +116,9 @@ private const val NEXT_QUESTION_MS = STICKER_GAIN_MS.toLong()
  * - 答對：卡翻成例詞圖、播例詞音、主題答對回饋（[FeedbackOverlay]）；回饋播完呼叫 [onCorrect]（給那一項的貼紙，同一項只給一次）。
  *   再停 [NEXT_QUESTION_MS] 換下一題。答對到下一題之間，上方題目列隱藏。
  * - 答錯：那張卡輕輕搖一下、變淡（不打叉、不用紅色），播「再聽一次」＋題目音。變淡的卡跳過、不能再選。
- * - 題目優先出孩子看過的（[seen]），規則在 [ListenRules]。不記分，右上角只寫答對幾題。
+ * - 題目和其他卡一樣眼熟，規則在 [ListenRules]。不記分，右上角只寫答對幾題。
+ * - 新卡題（約每 5 題 1 題）：先只放那張新卡（翻面看例詞圖），播符號音＋例詞音＋符號音，播完才放 3 張卡出題。
+ *   示範時按鍵不動作（返回鍵除外）。新卡從這題起算看過的，之後也會當其他卡。
  * - 10 分鐘上限同自己玩，到了呼叫 [onTimeUp]。
  * [listenAgain]、[correct] 是固定語句「再聽一次」「答對了」的音檔（沒有就空清單）。
  */
@@ -135,7 +137,12 @@ fun ListenScreen(
     val byKey = remember(items) { items.associateBy { it.key } }
     val random = remember { Random(SystemClock.elapsedRealtime()) }
     val startedAt = rememberSaveable { SystemClock.elapsedRealtime() }
+    // 看過的：進來時的 [seen]，加上這次示範過的新卡。[asked]＝已出到第幾題（從 0 起算）。[intros]＝這次出過幾題新卡題。
+    var known by remember { mutableStateOf(seen) }
+    var asked by remember { mutableIntStateOf(0) }
+    var intros by remember { mutableIntStateOf(0) }
     var question by remember { mutableStateOf(ListenRules.next(items.map { it.key }, seen, null, random)) }
+    var demo by remember { mutableStateOf(false) }
     var focus by remember { mutableIntStateOf(0) }
     val wrong = remember { mutableStateListOf<Int>() }
     var solved by remember { mutableStateOf(false) }
@@ -148,13 +155,23 @@ fun ListenScreen(
     val q = question
     val target = q?.let { byKey[it.target] }
 
-    // 每出一題：清掉答錯的卡，焦點回中間，播題目音。
+    // 每出一題：清掉答錯的卡，焦點回中間，播題目音。新卡題先示範，播完才出題。
     LaunchedEffect(q) {
         if (q == null) return@LaunchedEffect
         wrong.clear()
         solved = false
         focus = q.options.size / 2
-        player.play(target?.audio.orEmpty())
+        val audio = target?.audio.orEmpty()
+        if (q.intro) {
+            known = known + q.target
+            demo = true
+            player.play(audio + target?.reveal.orEmpty() + audio) {
+                demo = false
+                player.play(audio)
+            }
+        } else {
+            player.play(audio)
+        }
     }
     // 答對：先播完答對回饋，再給貼紙（兩個動畫不要疊在一起），再停一下換下一題。
     LaunchedEffect(solved) {
@@ -163,9 +180,12 @@ fun ListenScreen(
         target?.let(onCorrect)
         delay(NEXT_QUESTION_MS)
         // 換題時同一次就重設：等 LaunchedEffect(q) 才清，新題第一格會沿用上一題的變淡與隱藏。
-        val next = ListenRules.next(items.map { it.key }, seen, q.target, random)
+        asked++
+        val next = ListenRules.next(items.map { it.key }, known, q.target, random, asked, intros)
+        if (next?.intro == true) intros++
         wrong.clear()
         focus = (next?.options?.size ?: 0) / 2
+        demo = next?.intro == true // 新卡題第一格就是示範畫面，不先閃一下 3 張卡。
         question = next
         solved = false // 最後才設：這會取消本 LaunchedEffect。
     }
@@ -189,7 +209,7 @@ fun ListenScreen(
 
     RemoteKeyBox(
         onKey = { key ->
-            if (q == null || target == null || solved) return@RemoteKeyBox
+            if (q == null || target == null || solved || demo) return@RemoteKeyBox
             when (key) {
                 RemoteKey.LEFT -> move(-1)
                 RemoteKey.RIGHT -> move(1)
@@ -228,10 +248,14 @@ fun ListenScreen(
                 Row(Modifier.graphicsLayer { alpha = questionAlpha }, verticalAlignment = Alignment.CenterVertically) {
                     Speaker(Modifier.size(52.dp), active = replay > 0, pulse = replay)
                     Spacer(Modifier.width(Spacing.S))
-                    StickerTitle("聽聽看，是哪一個？", 34.sp)
+                    StickerTitle(if (demo) "新朋友！聽好囉" else "聽聽看，是哪一個？", 34.sp)
                 }
                 Spacer(Modifier.height(Spacing.M))
-                if (q != null) {
+                if (q != null && demo) {
+                    ChoiceCard(focused = true, dimmed = false, width = 260.dp, height = 284.dp) {
+                        target?.let { ListenCardFace(it, revealed = true) }
+                    }
+                } else if (q != null) {
                     Row(horizontalArrangement = Arrangement.spacedBy(Spacing.L)) {
                         q.options.forEachIndexed { i, key ->
                             val item = byKey[key]

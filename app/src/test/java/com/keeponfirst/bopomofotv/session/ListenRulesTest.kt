@@ -51,10 +51,17 @@ class ListenRulesTest {
     }
 
     @Test
-    fun distractorsMayBeUnseenSoTheGameWorksOnDayOne() {
-        val q = ListenRules.next(pool, setOf("ㄅ"), null, Random(5))!!
-        assertEquals("ㄅ", q.target)
-        assertEquals(3, q.options.size)
+    fun dayOneStillWorksWithCardsFromTheFrontOfTheDeck() {
+        // 只看過 ㄅ：3 張都從前 6 張挑，題目不一定是 ㄅ（不然選眼熟的 ㄅ 就對）。
+        val front = pool.take(ListenRules.FRONT).toSet()
+        val r = Random(5)
+        val targets = (1..200).map {
+            val q = ListenRules.next(pool, setOf("ㄅ"), null, r)!!
+            assertEquals(3, q.options.size)
+            assertTrue(front.containsAll(q.options))
+            q.target
+        }
+        assertTrue(targets.toSet().size > 1)
     }
 
     @Test
