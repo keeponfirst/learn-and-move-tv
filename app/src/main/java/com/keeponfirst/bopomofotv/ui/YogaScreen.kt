@@ -316,9 +316,9 @@ private fun PoseDots(index: Int, count: Int, modifier: Modifier) {
     }
 }
 
-/** 暫停：半透明遮罩蓋住整個畫面，中間大字「暫停」與「按 OK 繼續」。淡入淡出。 */
+/** 暫停：半透明遮罩蓋住整個畫面，中間大字「暫停」與「按 OK 繼續」。淡入淡出。刷牙頁也用。 */
 @Composable
-private fun PauseOverlay(visible: Boolean) {
+internal fun PauseOverlay(visible: Boolean) {
     AnimatedVisibility(
         visible = visible,
         enter = fadeIn(tween(Motion.SHORT_MS)),

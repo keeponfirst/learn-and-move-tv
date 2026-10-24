@@ -60,8 +60,8 @@ const val LICENSES_HINT = "完整授權見 assets/licenses"
 /** CC BY 4.0 要附授權網址。電視上點不開 APK 裡的檔，所以網址直接寫在首頁。 */
 const val CC_BY_URL = "https://creativecommons.org/licenses/by/4.0/deed.zh_TW"
 
-/** 首頁的六個入口，順序同畫面由左到右。 */
-enum class HomeEntry { JOURNEY, PARENT, SELF, ABC, YOGA, LISTEN }
+/** 首頁的八個入口，順序同畫面由左到右。 */
+enum class HomeEntry { JOURNEY, PARENT, SELF, ABC, YOGA, LISTEN, BRUSH, GIANT }
 
 /** 首頁入口的大字與小字，順序同 [HomeEntry]。 */
 private val ENTRY_LABELS = listOf(
@@ -71,23 +71,34 @@ private val ENTRY_LABELS = listOf(
     "ABC" to "英文字母",
     "瑜伽" to "跟著做動作",
     "聽聽看" to "聽音找符號",
+    // 卡寬只放得下 3 個字的卡名，「刷牙小怪獸」拆成大字「刷牙」＋小字。
+    "刷牙" to "打跑小怪獸",
+    // 「巨人小螞蟻」同刷牙拆成大字＋小字，上下連起來念就是全名。
+    "巨人" to "小螞蟻",
 )
 
 /**
- * 入口卡尺寸。第一張「小旅程」寬 [firstWidth]，其他 5 張寬 [width]。整排置中。
- * 180 ＋ 5 × 120 ＋ 5 × 10 ＝ 830 dp，置中後兩側各 65 dp（安全區內再各留 17 dp）。
+ * 入口卡尺寸。第一張「小旅程」寬 [firstWidth]，其他 7 張寬 [width]。整排置中。
+ * 136 ＋ 7 × 94 ＋ 7 × 6 ＝ 836 dp，置中後兩側各 62 dp（安全區 48 dp，聚焦放大＋傾斜用掉約 10 dp）。
  * B 原本左邊的導遊角色放不下，拿掉，改在小旅程卡上方放對話框。
  * 聚焦放大、傾斜後外框仍在安全區內（SafeAreaTest 驗）。
- * 加第 6 張「聽聽看」之後：卡從 140 縮到 120 dp，卡名從 36 縮到 30 sp（3 個字 90 dp，放得進 96 dp 的內寬）。
+ * 加第 6 張「聽聽看」之後：卡從 140 縮到 120 dp，卡名從 36 縮到 30 sp。
+ * 加第 7 張「刷牙」之後：小旅程 180 → 160 dp、其他 120 → 104 dp、間距 10 → 8 dp，
+ * 卡名 30 → 26 sp（3 個字 78 dp，放得進 80 dp 的內寬）。
+ * 加第 8 張「巨人」之後：小旅程 160 → 136 dp、其他 104 → 94 dp、間距 8 → 6 dp、卡內左右 10 → 8 dp（內寬 78 dp），
+ * 卡名 26 → 24 sp（3 字 72 dp）、小字 13 → 12 sp（6 字 72 dp）。版面規則見 docs/add-home-entry.md。
  */
 internal data class CardSize(val firstWidth: Dp, val width: Dp, val height: Dp, val gap: Dp) {
     fun widthOf(entry: HomeEntry) = if (entry == HomeEntry.JOURNEY) firstWidth else width
 }
 
 internal fun cardSize(theme: AppTheme) = when (theme.id) {
-    ThemeId.B -> CardSize(180.dp, 120.dp, 250.dp, 10.dp)
-    else -> CardSize(180.dp, 120.dp, 268.dp, 10.dp)
+    ThemeId.B -> CardSize(136.dp, 94.dp, 250.dp, 6.dp)
+    else -> CardSize(136.dp, 94.dp, 268.dp, 6.dp)
 }
+
+/** 卡內左右留白。卡寬 94 dp 時內寬 78 dp。 */
+private val CARD_PADDING_H = 8.dp
 
 /**
  * 首頁「接著玩」：[entry] 那張卡上加「接著玩」標籤，小字換成 [detail]（例「上次到 ㄆ」）。
@@ -116,6 +127,8 @@ fun HomeScreen(
     onAbc: () -> Unit,
     onYoga: () -> Unit,
     onListen: () -> Unit,
+    onBrush: () -> Unit,
+    onGiant: () -> Unit,
     onStickerBook: () -> Unit,
     onSettings: () -> Unit,
     journeyDone: Int = 0,
@@ -129,7 +142,7 @@ fun HomeScreen(
     val start = resume?.entry ?: focus
     var last by remember { mutableStateOf(start) }
     LaunchedEffect(start) { requesters.getValue(start).requestFocus() }
-    val actions = listOf(onJourney, onParent, onSelf, onAbc, onYoga, onListen)
+    val actions = listOf(onJourney, onParent, onSelf, onAbc, onYoga, onListen, onBrush, onGiant)
     val size = cardSize(theme)
     val cardsTop = when (theme.id) {
         ThemeId.A -> 104.dp
@@ -341,7 +354,7 @@ private fun EntryCard(
     val shape = RoundedCornerShape(theme.cardRadius)
     val (label, sub0) = ENTRY_LABELS[i]
     val sub = resume?.detail ?: sub0
-    val labelSize = if (entry == HomeEntry.JOURNEY) 36.sp else 30.sp
+    val labelSize = if (entry == HomeEntry.JOURNEY) 36.sp else 24.sp
 
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         Box(
@@ -378,7 +391,8 @@ private fun EntryCard(
                     .fillMaxSize()
                     .background(cardFill(theme, i), shape)
                     .border(lerp(theme.borderNormal, theme.borderFocused, f), cardBorder(theme, f), shape)
-                    .padding(12.dp),
+                    // 左右 [CARD_PADDING_H]：A、C 的 6 字小字要放得進一行（模擬器看過：10 → 12 dp 時被切掉）。
+                    .padding(horizontal = CARD_PADDING_H, vertical = 12.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 if (entry == HomeEntry.JOURNEY) {
@@ -409,17 +423,18 @@ private fun EntryCard(
 private fun EntryLabel(label: String, sub: String, size: androidx.compose.ui.unit.TextUnit) {
     val theme = LocalAppTheme.current
     when (theme.id) {
+        // 小字 12 sp：卡寬 94 dp 時 6 個字（「陪孩子學注音」）72 dp 放得進 78 dp 內寬。
         ThemeId.B -> {
             DecoratedText(label, fontSize = size, color = theme.textOnEntry, stroke = theme.outline, strokeWidth = 3.dp)
-            DecoratedText(sub, fontSize = 15.sp, color = theme.textOnEntry, stroke = theme.outline, strokeWidth = 1.5.dp)
+            DecoratedText(sub, fontSize = 12.sp, color = theme.textOnEntry, stroke = theme.outline, strokeWidth = 1.5.dp)
         }
         ThemeId.C -> {
             DecoratedText(label, fontSize = size, color = theme.textOnEntry)
-            Text(sub, fontSize = 15.sp, color = theme.textSecondary, maxLines = 1)
+            Text(sub, fontSize = 12.sp, color = theme.textSecondary, maxLines = 1)
         }
         ThemeId.A -> {
             DecoratedText(label, fontSize = size, color = theme.textPrimary)
-            Text(sub, fontSize = 15.sp, color = theme.textSecondary, maxLines = 1)
+            Text(sub, fontSize = 12.sp, color = theme.textSecondary, maxLines = 1)
         }
     }
 }

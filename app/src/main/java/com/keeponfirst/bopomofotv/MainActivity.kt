@@ -1,5 +1,6 @@
 package com.keeponfirst.bopomofotv
 
+import android.content.pm.ApplicationInfo
 import android.os.Bundle
 import android.os.SystemClock
 import androidx.activity.ComponentActivity
@@ -24,10 +25,12 @@ import com.keeponfirst.bopomofotv.audio.AudioResolver
 import com.keeponfirst.bopomofotv.audio.Phrase
 import com.keeponfirst.bopomofotv.data.AbcRepository
 import com.keeponfirst.bopomofotv.data.AbcWordCard
+import com.keeponfirst.bopomofotv.data.BrushLines
 import com.keeponfirst.bopomofotv.data.Card
 import com.keeponfirst.bopomofotv.data.CardRepository
 import com.keeponfirst.bopomofotv.data.DeckPosition
 import com.keeponfirst.bopomofotv.data.Decks
+import com.keeponfirst.bopomofotv.data.GiantLines
 import com.keeponfirst.bopomofotv.data.StickerCatalog
 import com.keeponfirst.bopomofotv.data.StrokeRepository
 import com.keeponfirst.bopomofotv.data.StrokeSymbol
@@ -42,6 +45,7 @@ import com.keeponfirst.bopomofotv.record.PracticeStore.Deck
 import com.keeponfirst.bopomofotv.record.StickerId
 import com.keeponfirst.bopomofotv.record.StickerKind
 import com.keeponfirst.bopomofotv.record.ThemeStore
+import com.keeponfirst.bopomofotv.session.BRUSH_ZONE_MILLIS
 import com.keeponfirst.bopomofotv.session.ParentProgress
 import com.keeponfirst.bopomofotv.session.JourneyDay
 import com.keeponfirst.bopomofotv.session.JourneyRules
@@ -51,9 +55,11 @@ import com.keeponfirst.bopomofotv.session.ResumePoint
 import com.keeponfirst.bopomofotv.session.ResumeRules
 import com.keeponfirst.bopomofotv.ui.AbcCardScreen
 import com.keeponfirst.bopomofotv.ui.BopomofoTheme
+import com.keeponfirst.bopomofotv.ui.BrushScreen
 import com.keeponfirst.bopomofotv.ui.ParentCardScreen
 import com.keeponfirst.bopomofotv.ui.ParentStartScreen
 import com.keeponfirst.bopomofotv.ui.DoneScreen
+import com.keeponfirst.bopomofotv.ui.GiantScreen
 import com.keeponfirst.bopomofotv.ui.HomeEntry
 import com.keeponfirst.bopomofotv.ui.HomeScreen
 import com.keeponfirst.bopomofotv.ui.JourneyScreen
@@ -86,6 +92,12 @@ class MainActivity : ComponentActivity() {
         val abcDeck = Decks.abc(AbcRepository.load(this), WordsRepository.loadAbc(this))
         val yoga = YogaRepository.load(this)
         val strokes = StrokeRepository.load(this)
+        val brushLines = BrushLines.load(this)
+        val giantLines = GiantLines.load(this)
+        // 刷牙每區秒數：正式是 20 秒。可除錯的版本（debug APK）可用 adb 帶參數縮短，給模擬器截圖用：
+        // adb shell am start -n com.keeponfirst.bopomofotv/.MainActivity --ei brushZoneSeconds 4
+        val debuggable = applicationInfo.flags and ApplicationInfo.FLAG_DEBUGGABLE != 0
+        val brushZoneMillis = intent.getIntExtra(BRUSH_ZONE_SECONDS_EXTRA, 0).takeIf { debuggable && it > 0 }?.let { it * 1000L } ?: BRUSH_ZONE_MILLIS
         val resolver = AudioResolver(AudioPlayer.listAvailable(assets))
         player = AudioPlayer(assets)
         val store = PracticeStore(this)
@@ -97,13 +109,17 @@ class MainActivity : ComponentActivity() {
             val scope = rememberCoroutineScope()
             themeId?.let { id ->
                 BopomofoTheme(Themes.of(id)) {
-                    BopomofoApp(cards, words, abcDeck, yoga, strokes, resolver, player, store, themeId = id) { picked ->
+                    BopomofoApp(cards, words, abcDeck, yoga, strokes, brushLines, brushZoneMillis, giantLines, resolver, player, store, themeId = id) { picked ->
                         themeId = picked
                         scope.launch { themeStore.save(picked) }
                     }
                 }
             }
         }
+    }
+
+    companion object {
+        const val BRUSH_ZONE_SECONDS_EXTRA = "brushZoneSeconds"
     }
 
     override fun onStop() {
@@ -151,6 +167,8 @@ private sealed interface Screen {
     data class Done(val locked: Boolean, val phrase: Phrase) : Screen
     data class YogaDone(val choice: YogaChoice) : Screen
     data object Settings : Screen
+    data object Brush : Screen
+    data object Giant : Screen
 }
 
 @Composable
@@ -160,6 +178,9 @@ private fun BopomofoApp(
     abcDeck: List<AbcWordCard>,
     yoga: List<YogaChoice>,
     strokes: Map<String, StrokeSymbol>,
+    brushLines: Map<String, String>,
+    brushZoneMillis: Long,
+    giantLines: Map<String, String>,
     resolver: AudioResolver,
     player: AudioPlayer,
     store: PracticeStore,
@@ -291,6 +312,16 @@ private fun BopomofoApp(
                             screen = Screen.ListenPick
                         }
                     },
+                    // 刷牙不算學習進度：只收起「接著玩」標籤，不清掉上次的位置。
+                    onBrush = {
+                        resume = null
+                        screen = Screen.Brush
+                    },
+                    // 巨人小螞蟻同刷牙：不算學習進度，只收起「接著玩」標籤。
+                    onGiant = {
+                        resume = null
+                        screen = Screen.Giant
+                    },
                     onStickerBook = {
                         resume = null
                         screen = Screen.StickerBook
@@ -357,6 +388,8 @@ private fun BopomofoApp(
                 val owned by produceState<Set<StickerId>?>(null) { value = store.stickers() }
                 owned?.let { StickerBookScreen(catalog = catalog, owned = it, onExit = goHome) }
             }
+            Screen.Brush -> BrushScreen(lines = brushLines, player = player, onExit = goHome, zoneMillis = brushZoneMillis)
+            Screen.Giant -> GiantScreen(lines = giantLines, player = player, onExit = goHome)
             Screen.Settings -> SettingsScreen(current = themeId, onApply = onTheme, onExit = goHome)
             is Screen.ParentStart -> ParentStartScreen(
                 cards = cards,

@@ -74,6 +74,16 @@ class ThemeTokensTest {
         }
     }
 
+    /** 巨人小螞蟻的插圖路徑用主題資料夾組出來，三套都要齊。 */
+    @Test
+    fun everyThemeHasGiantArt() {
+        Themes.all.forEach { t ->
+            val art = GiantArt(t)
+            assertEquals(21, art.all.size)
+            art.all.forEach { assertTrue("${t.name} 少了 $it", File(assets, it).isFile) }
+        }
+    }
+
     @Test
     fun unknownStoredKeyFallsBackToDefault() {
         assertEquals(ThemeId.B, ThemeId.fromKey(null))
