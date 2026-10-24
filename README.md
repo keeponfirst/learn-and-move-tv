@@ -5,6 +5,8 @@
 - **離線**：App 沒有網路權限，所有圖和聲音都在 APK 裡。
 - **無廣告**：沒有廣告，也沒有內購。
 - **不收集資料**：練習紀錄只存在電視本機，不上傳。
+- **不計分、不打叉**：答錯只會再聽一次，沒有分數，也不和別人比。
+- **動作安全**：瑜伽和巨人小螞蟻開場都會提醒「請大人陪在旁邊」。巨人小螞蟻沒有跳的動作。
 
 > English summary is at the [bottom](#english).
 
@@ -25,10 +27,14 @@
 | ![聽音找符號](docs/screenshots/listen.png) | ![答對了](docs/screenshots/listen-correct.png) |
 | **筆順動畫：自己玩** | **筆順動畫：大人陪** |
 | ![筆順描到一半](docs/screenshots/stroke.png) | ![大人陪筆順](docs/screenshots/stroke-parent.png) |
+| **刷牙小怪獸** | **刷牙：刷好了** |
+| ![刷牙小怪獸](docs/screenshots/brush.png) | ![刷好了](docs/screenshots/brush-done.png) |
+| **巨人小螞蟻** | **巨人小螞蟻：休息一下** |
+| ![巨人小螞蟻](docs/screenshots/giant.png) | ![休息頁](docs/screenshots/giant-rest.png) |
 
 ## 有哪些玩法
 
-首頁有六張卡：
+首頁有八張卡：
 
 | 按鈕 | 內容 |
 |---|---|
@@ -38,6 +44,8 @@
 | ABC | 26 個英文字母，每個字母有幾個例詞和插圖。玩法同自己玩。 |
 | 瑜伽 | 跟著口令做動作。開場會提醒「請大人陪在旁邊」。 |
 | 聽聽看 | 聽音找符號：播一個注音或字母的音，從 3 張卡選對的那張。 |
+| 刷牙 | 刷牙小怪獸：2 分鐘刷牙計時。6 個地方輪流刷，每區 20 秒，小怪會變成泡泡飛走。 |
+| 巨人 | 巨人小螞蟻：聽口令變巨人（踮腳手舉高）或變小螞蟻（蹲下抱膝），聽到別的就停住。 |
 
 首頁右上角有兩顆圓鈕：貼紙冊、齒輪（大人設定）。從卡片按上鍵到達。
 
@@ -96,9 +104,36 @@
 ### 聽聽看（聽音找符號）
 
 - 先選注音或 ABC。播一個音，畫面有 3 張卡：左右鍵選、OK 作答、上鍵再聽一次。
-- 題目優先出孩子看過的符號或字母（自己玩翻過的、已有貼紙的、大人陪練過的）。
+- 3 張卡一樣眼熟。孩子看過 3 張以上時，3 張都從看過的挑（看過＝自己玩翻過的、已有貼紙的、大人陪練過的）；不到 3 張時，3 張都從最前面 6 張挑。孩子要聽音才答得出來，不能靠「哪張看過」猜。
+- 第 5、10 題是新朋友題：先只放一張新卡，播「符號音、例詞、符號音」，再出 3 張卡讓孩子選。之後這張新卡也會當別題的選項。
+- 每次進聽聽看最多教 2 張新卡。
 - 答對：卡翻成例詞圖，播答對動畫，拿到那一項的貼紙（同一項只給一次）。答錯：卡輕輕搖一下變淡，再播一次音。不打叉、不扣分。
 - 10 分鐘上限同自己玩。
+
+### 刷牙小怪獸
+
+- 拿好牙刷後按 OK 開始。之後 2 分鐘自動跑完，不用再按鍵。
+- 牙齒分 6 區，每區 20 秒。那一區會亮起，「刷這裡！」箭頭指著它，冒出一隻小怪。
+- 刷的時候泡泡慢慢包住小怪。第 10 秒播一句鼓勵。時間到，小怪變成泡泡往上飄走，那一區打勾。
+- 畫面有大字倒數和 6 格進度。OK 暫停／繼續，返回鍵回首頁。離開 App 會自動暫停。
+- 刷完提醒「把泡泡吐掉就好」，也提醒「請大人再幫忙刷一遍」。
+- 不計分、不寫紀錄。完成頁有一張貼紙圖，但不放進貼紙冊。
+- 語音一句播完才播下一句，不會疊在一起。
+- 動畫只有移動、放大縮小和淡出，沒有閃爍。
+
+### 巨人小螞蟻
+
+- 聽口令做動作的遊戲。進來就自動開始，孩子不用按鍵。
+- 「變巨人」：踮腳、手舉高。「變小螞蟻」：蹲下、抱膝。聽到別的（大象、小鳥、大西瓜、小魚）就停住不動。
+- 動作只有踮腳和蹲下，沒有跳。
+- 每一輪開頭都會提醒：請大人陪在旁邊、往後退兩大步、兩手打開碰不到東西。安全提醒不能跳過。
+- 第一輪先講規則、練習兩次，再出 10 個口令，由慢到快（每個 6、5、4 秒）。10 個裡有 2 個是假口令。
+- 結尾巨人蹲下和螞蟻擊掌，再一起慢慢呼吸。還想玩，請大人按 OK。
+- 再玩一輪會換口令順序（3 組輪流），開頭只重播安全提醒。
+- 同一次連玩 3 輪，會停在休息頁「去喝口水」，大人按 OK 才能再玩。
+- 第一輪約 2 分半，再玩一輪約 1 分 40 秒。
+- OK 暫停，再按 OK 從這一段開頭繼續。返回鍵回首頁。
+- 不計分、不判對錯、不給貼紙、不寫紀錄。請大人在旁邊看著孩子。
 
 ## 安裝
 
@@ -237,11 +272,11 @@ App 內建合成語音。家長可以換成自己錄的聲音，孩子會更有�
 | 素材 | 來源 | 授權 |
 |---|---|---|
 | 注音符號音檔 `audio/moe/F1.WAV`…`F37.WAV` | 教育部《國語注音符號手冊》開放部件 | CC BY 4.0 |
-| 內建合成語音（關鍵字、固定語句、ABC、瑜伽口令） | Google Cloud Text-to-Speech 合成，不是真人錄音 | MIT |
-| 插圖（注音例詞、ABC、瑜伽、三套主題） | 本專案以程式繪製（SVG 轉 PNG），沒有 AI 生圖 | MIT |
+| 內建合成語音（關鍵字、固定語句、ABC、瑜伽口令、刷牙與巨人小螞蟻的台詞） | Google Cloud Text-to-Speech 合成，不是真人錄音 | MIT |
+| 插圖（注音例詞、ABC、瑜伽、刷牙小怪獸、巨人小螞蟻、三套主題） | 本專案以程式繪製（SVG 轉 PNG），沒有 AI 生圖 | MIT |
 | App icon、TV banner | 本專案以程式繪製 | MIT |
 | 注音筆順路徑 `zhuyin/strokes/*.json` | 本專案自行繪製；筆順參照教育部筆順學習網（與教育部無關聯） | MIT |
-| 文字內容（例詞清單、瑜伽口令與安全提醒） | 本專案撰寫 | MIT |
+| 文字內容（例詞清單、瑜伽口令、刷牙與巨人小螞蟻的台詞、安全提醒） | 本專案撰寫 | MIT |
 | 字型 Noto Sans TC（Bold、Black 子集） | `res/font/`，全文 `LICENSES/OFL-1.1.txt` | SIL OFL 1.1 |
 | 第三方套件（AndroidX、Kotlin 等） | 隨 APK 散布 | Apache 2.0；protobuf-lite 為 BSD 3-Clause |
 
@@ -260,6 +295,8 @@ App 首頁底部也有標示：出處與授權、授權網址，以及「完整�
 ## 文件
 
 - `docs/decisions.md`：技術選擇與理由。
+- `docs/add-home-entry.md`：新增首頁入口卡的步驟。
+- `docs/RELEASE-v0.2.0.md`：v0.2.0 的更新說明。
 
 ---
 
@@ -270,6 +307,7 @@ App 首頁底部也有標示：出處與授權、授權網址，以及「完整�
 - Works offline. The app has no network permission.
 - No ads and no in-app purchases.
 - Collects no data. Practice records stay on the TV.
+- No scores and no red marks. Yoga and Giant and ant ask for an adult nearby.
 
 **Today's trip.** The first home card plans 3 short stops each day: one Zhuyin symbol, one letter, one yoga pose. Each stop gives a sticker. The sticker book shows all stickers by category. There is no daily streak.
 
@@ -280,6 +318,12 @@ App 首頁底部也有標示：出處與授權、授權網址，以及「完整�
 **Easier yoga.** Eight harder poses have an easier version. Press Down to switch, Up to switch back. Each set shows its length in minutes.
 
 **Stroke order.** Every Zhuyin card can animate its stroke order, one stroke at a time. In self-play, press Down. In parent mode, hold OK. The paths were drawn by this project (MIT). Stroke order follows the Taiwan MOE stroke-order website; this project is not affiliated with or endorsed by the MOE.
+
+**Toothbrush monsters.** A 2-minute brushing timer. The mouth has 6 zones, 20 seconds each. A small monster appears in each zone. Brushing turns it into bubbles that float away. Press OK to start. After that, no key presses are needed. At the end, the app says to spit out the foam. It also asks an adult to brush once more.
+
+**Giant and ant.** A listen-and-move game. "Giant" means stand on tiptoe with arms up. "Ant" means squat and hug your knees. Any other word means freeze. There is no jumping. Each round starts with a safety check: an adult nearby, and room to stretch both arms. After 3 rounds, the app stops on a rest page. An adult presses OK to play again.
+
+**Fairer listening game.** All 3 cards in Listen and find are now equally familiar. The child must listen to find the answer. New cards are shown and played first, at most 2 per visit.
 
 **Install.** The app is not on Google Play. Download the APK from GitHub Releases. Then sideload it with the Downloader app, or with `adb install`. See the Chinese steps above. You can also paste [PROMPT.md](PROMPT.md) into an AI assistant and let it guide you.
 

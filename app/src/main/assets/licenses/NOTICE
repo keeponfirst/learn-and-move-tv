@@ -38,6 +38,8 @@ Licensed under CC BY 4.0 (https://creativecommons.org/licenses/by/4.0/). Not mod
   app/src/main/assets/zhuyin/audio/*.m4a（注音例詞）
   app/src/main/assets/abc/audio/*.m4a（ABC 字母與單字）
   app/src/main/assets/yoga/audio/*.m4a（瑜伽口令）
+  app/src/main/assets/brush/audio/*.m4a（刷牙小怪獸台詞）
+  app/src/main/assets/giant/audio/*.m4a（巨人小螞蟻台詞）
 這些語音由 Google Cloud Text-to-Speech 合成，不是真人錄音。
   ・中文聲音：cmn-TW-Wavenet-A
   ・英文聲音：en-US-Neural2-F
@@ -57,7 +59,8 @@ They are not human recordings. Do not use them to train speech models.
   app/src/main/assets/zhuyin/img/*.png（注音例詞）
   app/src/main/assets/abc/img/*.png（ABC）
   app/src/main/assets/yoga/img/*.png、yoga/img-easy/*.png（瑜伽姿勢與簡單版）
-  app/src/main/assets/theme/**（三套主題的背景、入口插圖、角色、答對回饋零件、設定頁預覽圖）
+  app/src/main/assets/theme/**（三套主題的背景、入口插圖、角色、答對回饋零件、
+    設定頁預覽圖、刷牙小怪獸與巨人小螞蟻的場景與角色）
 插圖由本專案以程式繪製向量圖（SVG），再轉成 PNG／JPEG。
 沒有使用 AI 生圖，也沒有使用第三方圖庫。
 插圖隨本專案以 MIT License 提供。
@@ -99,7 +102,13 @@ The app icon and TV banner were drawn programmatically by this project (MIT).
 與瑜伽口令（yoga/sets.json、yoga/poses.json、yoga/easy.json）由本專案撰寫。
 例詞的注音已對照教育部《重編國語辭典修訂本》核對。本專案沒有收錄辭典內容。
 瑜伽動作參考了公開的兒童瑜伽教學資料。口令與安全提示皆為本專案自行撰寫，沒有引用原文。
-本 App 的瑜伽內容不是醫療建議。請大人陪同孩子練習。
+刷牙小怪獸與巨人小螞蟻的台詞（brush/lines.tsv、giant/lines.tsv）
+與刷牙分區（brush/zones.json）由本專案撰寫。
+刷牙完成的提醒參考了公開的兒童口腔衛教資料，沒有引用原文。
+本 App 的瑜伽、刷牙、巨人小螞蟻內容不是醫療建議。請大人陪同孩子練習。
+
+Lines for Toothbrush monsters and Giant and ant were written by this project.
+This content is not medical advice. An adult should stay with the child.
 
 ======================================================================
 6. 字型：Noto Sans TC
